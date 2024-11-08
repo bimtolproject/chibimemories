@@ -112,6 +112,24 @@
         .show-password:hover {
             color: #3949ab;
         }
+        /* Gaya untuk tombol navigasi */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      height: 35px;
+      border-radius: 10%;
+    }
+
+    .bottom-nav button {
+      border: none;
+      background-color: transparent;
+    }
 
         /* Media query untuk layar kecil */
         @media (max-width: 768px) {
@@ -152,6 +170,17 @@
         <p><strong>Apakah Chibi Memories dapat menggunakan, mengirimkan, membagikan data peramban/data handphone Chian?:</strong> Tidak, Chibi Memories tidak dapat membagikan data penting yang tersimpan di handphone chian<br><i>*Kecuali adanya peretasan dan di hacking oleh seseorang yang berupaya membobol server BIMTOL PROJECT</p></i>
         <a href="https://wa.me/6289508984455" target="_blank" class="btn">Butuh Bantuan ke Bimtol!</a>
     </div>
+                <div class="bottom-nav">
+  <button onclick="location.href='tutor.html'">
+    <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-home" alt="User"></i>
+  </button>
+  <button onclick="location.href='info.html'">
+    <i class="fas fa-arrow-left" alt="Profile"></i>
+  </button>
+</div>
 
 <script>
     const menuToggle = document.querySelector('.menu-toggle');

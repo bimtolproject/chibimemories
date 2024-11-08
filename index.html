@@ -272,6 +272,24 @@
 .lyrics p.highlight {
     opacity: 2; /* Atur opasitas penuh untuk lirik yang disorot */
 }
+/* Gaya untuk tombol navigasi */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      height: 35px;
+      border-radius: 10%;
+    }
+
+    .bottom-nav button {
+      border: none;
+      background-color: transparent;
+    }
 @font-face {
     font-family: 'georgia';
     src: url('resource/georgia.ttf') format('ttf'),
@@ -299,12 +317,6 @@
             <p>Chat tentang kita</p>
             <a href="1.html" class="btn">Buka</a>
         </div>
-        <div class="menu-item">
-            <i class="fas fa-user-circle"></i>
-            <h3>Profile</h3>
-            <p>Biodata & Kesukaan Kita</p>
-            <a href="fav.html" class="btn">Buka</a>
-        </div>
         <div class="menu-item" id="lagu">
             <i class="fas fa-music"></i>
             <h3>Musik</h3>
@@ -318,18 +330,24 @@
             <a href="errorpage.html" class="btn">Buka</a>
         </div>
         <div class="menu-item">
-            <i class="fas fa-info-circle"></i>
-            <h3>Info</h3>
-            <p>Informasi, Tutorial, Pertanyaan tentang web</p>
-            <a href="info.html" class="btn">Buka</a>
-        </div>
-        <div class="menu-item">
             <i class="fas fa-file-download"></i>
             <h3>Unduh</h3>
             <p>Unduh Resource yang ada di web</p>
             <a href="downloadr.html" class="btn">Unduh</a>
         </div>
     </div>
+    <div class="bottom-nav">
+  <button onclick="location.href='fav.html'">
+    <i class="fas fa-user-circle" alt="Home"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-arrow-rotate-backward" alt="User"></i>
+  </button>
+  <button onclick="location.href='info.html'">
+    <i class="fas fa-info-circle" alt="Profile"></i>
+  </button>
+</div>
+
 </div>
 
 <!-- Modal untuk Setel Musik -->
@@ -658,6 +676,5 @@ function playMusic() {
     });
 });
 </script>
-
 </body>
 </html>

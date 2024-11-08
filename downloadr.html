@@ -147,6 +147,24 @@
     background-color: yellow; /* Warna penyorotan */
     transition: background-color 0.3s; /* Efek transisi */
 }
+/* Gaya untuk tombol navigasi */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      height: 35px;
+      border-radius: 10%;
+    }
+
+    .bottom-nav button {
+      border: none;
+      background-color: transparent;
+    }
 
         /* Media query untuk layar kecil */
         @media (max-width: 768px) {
@@ -239,6 +257,17 @@
         <p>Billie Elish - Watch<br>(Durasi 03:19 - Size 3,07 MB - Format .mp3)</p>
         <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/watch.mp3"  class="btn">Donwload</a>
     </div>
+            <div class="bottom-nav">
+  <button onclick="location.href='downloadr.html'">
+    <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-home" alt="User"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-arrow-left" alt="Profile"></i>
+  </button>
+</div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchMusic');

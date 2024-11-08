@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Info Web</title>
+    <title>Halaman Profil</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -112,6 +112,24 @@
         .show-password:hover {
             color: #3949ab;
         }
+        /* Gaya untuk tombol navigasi */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      height: 35px;
+      border-radius: 10%;
+    }
+
+    .bottom-nav button {
+      border: none;
+      background-color: transparent;
+    }
 
         /* Media query untuk layar kecil */
         @media (max-width: 768px) {
@@ -152,36 +170,58 @@
     <i text-align="center" class="fas fa-info-circle">   Info</i></p>
         </div>
     <div class="profile-info">
-        <h2>Info Web</h2>
-        <p><strong>Nama Web:</strong> Chibi Memories</p>
-        <p><strong>Versi Web:</strong> v1.5 Stable</p>
+    <h2>Info Web</h2>
+        <p><strong>Nama:</strong> Chibi Memories</p>
+        <p><strong>Versi:</strong> v1.5 Stable</p>
         <p><strong>Awal di buat:</strong> 09/07/2024</p>
         <p><strong>Dipublikasi pada:</strong> 01/11/2024</p>
-        <p><strong>Diupdate pada:</strong> 08/11/2024</p>
+        <p><strong>Diupdate pada:</strong> 09/11/2024</p>
         <p><strong>Dibuat oleh:</strong> BIMTOL</p>
         <p><strong>Dipublikasi oleh:</strong> BIM PROJECT</p>
         <p><strong>Dipelihara oleh:</strong> BIMTOL</p>
-        <p><strong>Hosting:</strong> Github, Google Drive, Cloudflare, IMGBB</p>
-        <p><strong>Ukuran All Resource:</strong> 157 MB Tersimpan di hosting dengan enkripsi</p>
+        <p><strong>Hosting:</strong> Github, Cloudflare, IMGBB</p>
+        <p><strong>Ukuran All Resource:</strong> 180 MB Tersimpan di hosting dengan enkripsi</p>
         <p><strong>Bahasa yang di gunakan:</strong> HTML, CSS, JAVASCRIPT, TXT</p>
         <p><strong>Format File yang tersedia:</strong> HTML, CSS, JS, TXT, MP4, MP3, JPG, PNG, TTF, OTF</p>
         <p><strong>Alamat Hosting:</strong> github.com</p>
         <p><strong>Domain:</strong> bimtolproject.github.io</p>
         <p><strong>Alamat Web:</strong> bimtolproject.github.io/chibimemories</p>
         <p><strong>Protokol:</strong> http atau https</p>
-        <p><strong>DNS Web:</strong> Tidak ada atau Otomatis dari perangkat</p>
+        <p><strong>DNS Web:</strong> Tidak ada</p>
         <p><strong>QR CODE WEB:</strong> Klik <a href="https://github.com/bimtolstore/chibi/raw/main/resource/qr.png">Disini</a> Untuk Mendownload</p>
-        <h2>Info App</h2>
-        <p><strong>Nama App:</strong> Chibi Memories</p>
-        <p><strong>Versi Web:</strong> v1.3.4 Beta not uploaded/launching yet</p>
-        <p><strong>Awal di buat:</strong> 28/10/2024</p>
-        <p><strong>Dipublikasi pada:</strong> Belum di publikasikan</p>
+    </div>
+    <div class="profile-info">
+    <h2>Info App</h2>
+        <p><strong>Nama:</strong> Chibi Memories</p>
+        <p><strong>Versi:</strong> v1.4 Beta (Belum dirilis atau dipublikasikan)</p>
+        <p><strong>Awal di buat:</strong> 30/10/2024</p>
+        <p><strong>Dipublikasi pada:</strong> Belum dipublikasikan</p>
         <p><strong>Diupdate pada:</strong> 08/11/2024</p>
         <p><strong>Dibuat oleh:</strong> BIMTOL</p>
-        <p><strong>Akan Dipublikasi oleh:</strong> BIM PROJECT</p>
+        <p><strong>Dipublikasi oleh:</strong> BIM PROJECT</p>
         <p><strong>Dipelihara oleh:</strong> BIMTOL</p>
-        <p><strong>Ukuran File:</strong> 157 MB (not yet compressed)</p>
-    </div>
+        <p><strong>Ukuran All Resource:</strong> 112 MB (Dengan Kompresi)</p>
+        </div>
+           <div class="profile-info">
+    <h2>Changelog di v1.5</h2>
+        <p><strong>BARU:</strong> Menambahkan navigasi agar memudahkan chian berinteraksi dengan web</p>
+        <p><strong>PERUBAHAN:</strong> Menghapus menu profile dan info, lalu memindahkan nya ke menu navigasi</p>
+        <p><strong>PERUBAHAN:</strong> Menghapus menu mabar game (karena adanya kesulitan)</p>
+        <p><strong>SISTEM:</strong> Optimasi kelancaran web</p>
+        <p><strong>SISTEM:</strong> Memperbaiki beberapa bug</p>
+                <a href="tutor.html" class="btn"><b class="fas fa-question"> Tutorial dan Pertanyaan</b></a>
+        </div>
+            <div class="bottom-nav">
+  <button onclick="location.href='info.html'">
+    <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-home" alt="User"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-arrow-left" alt="Profile"></i>
+  </button>
+</div>
 <script>
     const menuToggle = document.querySelector('.menu-toggle');
     const container = document.querySelector('.container');
