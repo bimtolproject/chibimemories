@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chibi Memories</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'georgia', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #74ebd5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .header .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .profile-info {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: left;
+            position: relative;
+        }
+        .h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #5c6bc0;
+        }
+        .profile-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #5c6bc0;
+        }
+        .profile-info p {
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+        .profile-info .password-field {
+            display: flex;
+            align-items: center;
+        }
+        .profile-info .password-field input {
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #666;
+            margin-left: 10px;
+            flex: 1;
+        }
+        .profile-info .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background: #5c6bc0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .profile-info .btn:hover {
+            background: #3949ab;
+        }
+        .customer-service {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #5c6bc0;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        .customer-service:hover {
+            background: #3949ab;
+        }
+        .show-password {
+            cursor: pointer;
+            color: #5c6bc0;
+            margin-left: 10px;
+        }
+        .show-password:hover {
+            color: #3949ab;
+        }
+                .search-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.search-container input[type=text] {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-container .search-btn {
+    padding: 10px;
+    background-color: #5c6bc0;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.search-container .search-btn:hover {
+    background-color: #3949ab;
+}
+.highlight {
+    background-color: yellow; /* Warna penyorotan */
+    transition: background-color 0.3s; /* Efek transisi */
+}
+
+        /* Media query untuk layar kecil */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 20px;
+            }
+            .profile-info {
+                padding: 15px;
+            }
+            @font-face {
+    font-family: 'georgia';
+    src: url('resource/georgia.ttf') format('ttf'),
+    font-weight: normal;
+    font-style: normal;
+}
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+<div class="header">
+<i text-align="center" class="fas fa-file">    Resource</i></p>
+    </div>
+     <div class="profile-info">
+       <div class="search-container">
+        <input type="text" id="searchMusic" placeholder="ini kolom buat nyari ya cill...">
+        <button class="search-btn"><i class="fa fa-search"></i></button>
+    </div>
+        <h2>Aplikasi</h2>
+        <p>Chibi Memories v1.3 Beta 64 Bit @1080p<br>(Size 198 MB - Format .apk)</p>
+        <a href="errorpage1.html"  class="btn">Donwload</a>
+        <p>Chibi Memories v1.3 Beta 64 Bit @720p<br>(Size 142 MB - Format .apk)</p>
+        <a href="errorpage1.html"  class="btn">Donwload</a>
+        <h2>Video</h2>
+        <p>JJ Perebutan MVP<br>(Resolusi 1080p - Size 14,49 MB - Format .mp4)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/adumvp.mp4"  class="btn">Donwload</a>
+        <p>Konten PP Couple<br>(Resolusi 1440p - Size 2,29 MB - Format .mp4)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/ppcouple.mp4"  class="btn">Donwload</a>
+        <p>Konten Genshin Latern Rite<br>(Resolusi 1080p - Size 8,76 MB - Format .mp4)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/latern.mp4"  class="btn">Donwload</a>
+        <h2>Foto</h2>
+        <p>BIMTOL & MONYET<br>(Resolusi 1080px - Size 758 KB - Format .jpg)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/bimtol.png"  class="btn">Donwload</a>
+        <p>CHIAN & MONYET<br>(Resolusi 1440px - Size 3,11 MB - Format .png)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/chian.png"  class="btn">Donwload</a>
+        <p>KELUARGA BERSAMA MONYET<br>(Resolusi 1440px - Size 2,68 MB - Format .png)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/keluarga.png"  class="btn">Donwload</a>
+        <p>QR WEB<br>(Resolusi 1440px - Size 304 KB - Format .png)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/qr.png" class="btn">Download</a>
+        <h2>File Lainnya</h2>
+        <p>Pesan WhatsApp Bersama<br>(Size 1,21 MB - Format .txt)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/1.txt"  class="btn">Donwload</a>
+        <p>Pesan WhatsApp Bersama<br>(Size 13,42 MB - Format .html)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/10.html"  class="btn">Donwload</a>
+        <h2>Musik</h2>
+        <p>One Direction - Night Changes<br>(Durasi 05:00 - Size 4,59 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/Nightchanges.mp3"  class="btn">Donwload</a>
+        <p>Ed Sheeran - Perfect<br>(Durasi 04:23 - Size 4,02 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/Perfectes.mp3"  class="btn">Donwload</a>
+        <p>Dimas M - sekarang hingga nanti kita tua<br>(Durasi 03:22 - Size 3,11 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/sekarang.mp3" class="btn">Donwload</a>
+        <p>Ricky M - Line without a hook<br>(Durasi 04:09 - Size 3,85 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/line.mp3"  class="btn">Donwload</a>
+        <p>Cigarattes After Sex - Apocalypse<br>(Durasi 04:50 - Size 4,47 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/apocalypse.mp3"  class="btn">Donwload</a>
+        <p>Cigarattes After Sex - Cry<br>(Durasi 04:16 - Size 3,96 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/cry.mp3"  class="btn">Donwload</a>
+        <p>Taylor Swift - Cardigan<br>(Durasi 04:34 - Size 4,23 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/cardigan.mp3"  class="btn">Donwload</a>
+        <p>Hindia - Cincin<br>(Durasi 04:26 - Size 4,11 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/cincin.mp3"  class="btn">Donwload</a>
+        <p>Last Child - Diary Depresiku<br>(Durasi 05:17 - Size 4,90 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/diarydepresiku.mp3" class="btn">Donwload</a>
+        <p>Arctic Monkeys - Do I Wanna Know<br>(Durasi 04:25 - Size 4,10 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/Do_I_Wanna_Know.mp3"  class="btn">Donwload</a>
+        <p>Taylor Swift - Enchanted<br>(Durasi 05:52 - Size 5,43 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/enchanted.mp3"  class="btn">Donwload</a>
+        <p>Cold Play - Fix You<br>(Durasi 04:16 - Size 3,96 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/fix_you.mp3"  class="btn">Donwload</a>
+          <p>Nidji - Rahasia Hati<br>(Durasi 04:10 - Size 3,87 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/rahasiahati.mp3"  class="btn">Donwload</a>
+        <p>James Arthur - A thousand years<br>(Durasi 04:14 - Size 3,92 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/thousandyear.mp3"  class="btn">Donwload</a>
+        <p>Pamungkas - To The Bone<br>(Durasi 05:53 - Size 5,45 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/tothebone.mp3" class="btn">Donwload</a>
+        <p>Billie Elish - Watch<br>(Durasi 03:19 - Size 3,07 MB - Format .mp3)</p>
+        <a href="https://github.com/bimtolstore/chibi/raw/main/resource/watch.mp3"  class="btn">Donwload</a>
+    </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchMusic');
+    const searchBtn = document.querySelector('.search-btn');
+    
+    // Event listener untuk tombol pencarian
+    searchBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        search();
+    });
+
+    // Event listener untuk tombol "Enter" di keyboard
+    searchInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            search();
+        }
+    });
+
+    // Fungsi pencarian
+    function search() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        const allTitles = document.querySelectorAll('.profile-info h2, .profile-info p');
+        
+        allTitles.forEach(function(title) {
+            const originalText = title.textContent;
+            const lowerCaseText = originalText.toLowerCase();
+            
+            // Hapus mark sebelumnya jika ada
+            title.querySelectorAll('mark').forEach(mark => {
+                mark.replaceWith(mark.textContent);
+            });
+
+            // Cari indeks kata kunci pertama dalam teks
+            const index = lowerCaseText.indexOf(searchTerm);
+            if (index !== -1) {
+                // Bagian teks sebelum dan sesudah kata kunci
+                const before = originalText.substring(0, index);
+                const after = originalText.substring(index + searchTerm.length);
+                
+                // Buat elemen mark untuk menyorot kata kunci
+                const markElement = document.createElement('mark');
+                markElement.textContent = originalText.substring(index, index + searchTerm.length);
+                
+                // Gabungkan kembali teks dengan elemen mark
+                title.innerHTML = `${before}<mark>${markElement.outerHTML}</mark>${after}`;
+                
+                // Scroll ke elemen yang menyorot
+                title.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                // Kembalikan teks asli jika kata kunci tidak ditemukan
+                title.textContent = originalText;
+            }
+        });
+    }
+});
+    const menuToggle = document.querySelector('.menu-toggle');
+    const container = document.querySelector('.container');
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const lastLogin = document.getElementById('lastLogin');
+
+    menuToggle.addEventListener('click', () => {
+        container.classList.toggle('show-menu');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!container.contains(e.target) && !menuToggle.contains(e.target)) {
+            container.classList.remove('show-menu');
+        }
+    });
+
+    togglePassword.addEventListener('click', () => {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
+
+    // Fungsi untuk memperbarui waktu terakhir login
+    function updateLastLogin() {
+        const now = new Date();
+        const dateFormatted = `${now.getDate()} ${getMonthName(now.getMonth())} ${now.getFullYear()}`;
+        const timeFormatted = `${padZero(now.getHours())}:${padZero(now.getMinutes())}`;
+        lastLogin.textContent = `Terakhir Masuk: ${dateFormatted} ${timeFormatted}`;
+    }
+
+    // Fungsi untuk mendapatkan nama bulan berdasarkan indeks bulan
+    function getMonthName(monthIndex) {
+        const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        return monthNames[monthIndex];
+    }
+
+    // Fungsi untuk menambah nol pada angka satu digit (untuk menampilkan waktu dalam format dua digit)
+    function padZero(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    updateLastLogin(); // Panggil fungsi untuk menetapkan waktu saat halaman dimuat
+</script>
+
+</body>
+</html>
