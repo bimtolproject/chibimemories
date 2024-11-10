@@ -168,6 +168,9 @@
      <div class="profile-info">
 <iframe src="resource/1.txt" width="340" height="650"></iframe>
     </div>
+    <audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
+<audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
+<audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
         <div class="bottom-nav">
   <button onclick="location.href='1.html'">
     <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
@@ -182,6 +185,64 @@
 </div>
 
 <script>
+// Fungsi untuk memainkan suara switch task
+function playSwitchSound() {
+    switchSound.currentTime = 0;
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window
+function playOpenWinSound() {
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window
+function playCloseWinSound() {
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+// Fungsi untuk memainkan suara switch task saat klik di luar button
+function playSwitchSound() {
+    var switchSound = document.getElementById('switchSound');
+    switchSound.currentTime = 0; // Kembali ke awal file audio jika sedang diputar
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window saat klik button
+function playOpenWinSound() {
+    var openWinSound = document.getElementById('openWinSound');
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window saat klik button di bottom nav
+function playCloseWinSound() {
+    var closeWinSound = document.getElementById('closeWinSound');
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+
+// Event listener untuk menangani klik di luar button (misalnya di dalam container)
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('button')) {
+        playSwitchSound(); // Memainkan suara saat klik di luar button
+    }
+});
+
+// Event listener untuk tombol-tombol yang ada di halaman Anda
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', function() {
+        playOpenWinSound(); // Memainkan suara saat klik button
+    });
+});
+
+// Event listener khusus untuk tombol di bottom nav
+document.querySelectorAll('.bottom-nav button').forEach(button => {
+    button.addEventListener('click', function() {
+        playCloseWinSound(); // Memainkan suara saat klik button di bottom nav
+    });
+});
     const menuToggle = document.querySelector('.menu-toggle');
     const container = document.querySelector('.container');
     const togglePassword = document.getElementById('togglePassword');

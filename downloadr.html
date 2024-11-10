@@ -223,6 +223,8 @@
         <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/1.txt"  class="btn">Donwload</a>
         <p>Pesan WhatsApp Bersama<br>(Size 13,42 MB - Format .html)</p>
         <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/10.html"  class="btn">Donwload</a>
+        <p>Pesan WhatsApp Bersama<br>(Size 4,89 MB - Format .pdf)</p>
+        <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/1.pdf" class="btn">Download</a>
         <h2>Musik</h2>
         <p>One Direction - Night Changes<br>(Durasi 05:00 - Size 4,59 MB - Format .mp3)</p>
         <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/Nightchanges.mp3"  class="btn">Donwload</a>
@@ -257,7 +259,10 @@
         <p>Billie Elish - Watch<br>(Durasi 03:19 - Size 3,07 MB - Format .mp3)</p>
         <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/watch.mp3"  class="btn">Donwload</a>
     </div>
-            <div class="bottom-nav">
+            <audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
+<audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
+<audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
+<div class="bottom-nav">
   <button onclick="location.href='downloadr.html'">
     <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
   </button>
@@ -269,6 +274,64 @@
   </button>
 </div>
 <script>
+// Fungsi untuk memainkan suara switch task
+function playSwitchSound() {
+    switchSound.currentTime = 0;
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window
+function playOpenWinSound() {
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window
+function playCloseWinSound() {
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+// Fungsi untuk memainkan suara switch task saat klik di luar button
+function playSwitchSound() {
+    var switchSound = document.getElementById('switchSound');
+    switchSound.currentTime = 0; // Kembali ke awal file audio jika sedang diputar
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window saat klik button
+function playOpenWinSound() {
+    var openWinSound = document.getElementById('openWinSound');
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window saat klik button di bottom nav
+function playCloseWinSound() {
+    var closeWinSound = document.getElementById('closeWinSound');
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+
+// Event listener untuk menangani klik di luar button (misalnya di dalam container)
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('button')) {
+        playSwitchSound(); // Memainkan suara saat klik di luar button
+    }
+});
+
+// Event listener untuk tombol-tombol yang ada di halaman Anda
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', function() {
+        playOpenWinSound(); // Memainkan suara saat klik button
+    });
+});
+
+// Event listener khusus untuk tombol di bottom nav
+document.querySelectorAll('.bottom-nav button').forEach(button => {
+    button.addEventListener('click', function() {
+        playCloseWinSound(); // Memainkan suara saat klik button di bottom nav
+    });
+});
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchMusic');
     const searchBtn = document.querySelector('.search-btn');
