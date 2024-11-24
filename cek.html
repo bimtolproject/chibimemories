@@ -45,6 +45,15 @@
             text-align: center;
             font-size: 16px;
         }
+        #download-link {
+            display: none;
+            margin-top: 10px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        #download-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -53,56 +62,64 @@
         <div id="loader-text">0%</div>
     </div>
     <div id="status-text">Mencoba menghubungkan ke server</div>
-    <a id="download-link" href="https://example.com/latest-version" style="display:none; margin-top: 10px; color: #3498db;">Klik di sini untuk unduh versi terbaru</a>
+    <a id="download-link" href="https://example.com/latest-version">Klik di sini untuk unduh versi terbaru</a>
 
     <script>
-async function fetchVersionInfo() {
-    try {
-        const currentVersion = await fetch('file:///android_assets/version.txt').then(res => res.text());
-        const latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version.txt').then(res => res.text());
+        let loaderBar = document.getElementById('loader-bar');
+        let loaderText = document.getElementById('loader-text');
+        let statusText = document.getElementById('status-text');
+        let downloadLink = document.getElementById('download-link');
+        let progress = 0;
 
-        return currentVersion.trim() === latestVersion.trim();
-    } catch (error) {
-        console.error('Error:', error);
-        return null; // Terjadi error
-    }
-}
+        function updateLoader() {
+            progress++;
+            loaderBar.style.width = progress + '%';
+            loaderText.textContent = progress + '%';
 
-function updateLoader() {
-    progress++;
-    loaderBar.style.width = progress + '%';
-    loaderText.textContent = progress + '%';
-
-    if (progress <= 15) {
-        statusText.textContent = 'Mencoba menghubungkan ke server';
-    } else if (progress <= 25) {
-        statusText.textContent = 'Berhasil menghubungkan ke server';
-    } else if (progress <= 50) {
-        statusText.textContent = 'Memeriksa versi aplikasi saat ini';
-    } else if (progress <= 80) {
-        statusText.textContent = 'Memeriksa apakah ada versi terbaru';
-    } else if (progress === 100) {
-        fetchVersionInfo().then(isLatest => {
-            if (isLatest === null) {
-                statusText.textContent = 'Tidak mendapatkan info versi terbaru. Silakan coba lagi.';
-            } else if (isLatest) {
-                statusText.textContent = 'Anda sudah menggunakan versi terbaru.';
-            } else {
-                statusText.textContent = 'Versi terbaru tersedia!';
-                const downloadLink = document.getElementById('download-link');
-                downloadLink.style.display = 'block';
+            if (progress <= 15) {
+                statusText.textContent = 'Mencoba menghubungkan ke server';
+            } else if (progress <= 25) {
+                statusText.textContent = 'Berhasil menghubungkan ke server';
+            } else if (progress <= 50) {
+                statusText.textContent = 'Memeriksa versi aplikasi saat ini';
+            } else if (progress <= 80) {
+                statusText.textContent = 'Memeriksa apakah ada versi terbaru';
+            } else if (progress === 100) {
+                fetchVersionInfo().then(isLatest => {
+                    if (isLatest === null) {
+                        statusText.textContent = 'Tidak mendapatkan info versi terbaru. Silakan coba lagi.';
+                    } else if (isLatest) {
+                        statusText.textContent = 'Anda sudah menggunakan versi terbaru.';
+                    } else {
+                        statusText.textContent = 'Versi terbaru tersedia!';
+                        downloadLink.style.display = 'block';
+                    }
+                });
             }
+
+            if (progress < 100) {
+                setTimeout(updateLoader, 25); // Sesuaikan waktu untuk animasi
+            }
+        }
+
+        async function fetchVersionInfo() {
+            try {
+                const currentVersion = await fetch('file:///android_assets/version.txt').then(res => res.text());
+                const latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version.txt').then(res => res.text());
+
+                console.log('Current Version:', currentVersion);
+                console.log('Latest Version:', latestVersion);
+
+                return currentVersion.trim() === latestVersion.trim();
+            } catch (error) {
+                console.error('Error fetching version info:', error);
+                return null;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLoader();
         });
-    }
-
-    if (progress < 100) {
-        setTimeout(updateLoader, 25); // 2.5 detik untuk selesai
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateLoader();
-});
     </script>
 </body>
 </html>
