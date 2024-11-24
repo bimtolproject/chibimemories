@@ -135,7 +135,7 @@
 
     async function fetchVersionInfo() {
         try {
-            let currentVersion = await fetch('assets/version.txt')
+            let currentVersion = await fetch('file:///android_assets/version.txt')
                 .then(res => res.ok ? res.text() : Promise.reject('Gagal mendapatkan versi saat ini.'))
                 .then(text => text.trim());
 
