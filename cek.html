@@ -90,7 +90,7 @@
   </button>
 </div>
 
-    <script>
+ <script>
     let loaderBar = document.getElementById('loader-bar');
     let loaderText = document.getElementById('loader-text');
     let statusText = document.getElementById('status-text');
@@ -112,7 +112,6 @@
         } else if (progress <= 80) {
             statusText.textContent = 'Memeriksa apakah ada versi terbaru...';
         } else if (progress === 100) {
-            // Periksa apakah ada pembaruan
             fetchVersionInfo().then(isLatest => {
                 if (isLatest === null) {
                     statusText.textContent = 'Tidak mendapatkan info versi terbaru, Silakan coba lagi.';
@@ -122,8 +121,10 @@
                     statusText.textContent = 'Berhasil mendapatkan info versi terbaru, Mengarahkan ke tautan unduhan...';
                     setTimeout(() => {
                         window.location.href = downloadLink;
-                    }, 3000); // Tunggu 3 detik sebelum mengarahkan
+                    }, 3000);
                 }
+            }).catch(() => {
+                statusText.textContent = 'Terjadi kesalahan saat memeriksa versi. Silakan coba lagi.';
             });
         }
 
@@ -134,16 +135,19 @@
 
     async function fetchVersionInfo() {
         try {
-            let currentVersion = await fetch('assets/version.txt').then(res => {
-                if (!res.ok) throw new Error('Gagal mendapatkan versi saat ini.');
-                return res.text();
-            });
-            let latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version.txt').then(res => {
-                if (!res.ok) throw new Error('Gagal mendapatkan versi terbaru.');
-                return res.text();
-            });
+            let currentVersion = await fetch('assets/version.txt')
+                .then(res => res.ok ? res.text() : Promise.reject('Gagal mendapatkan versi saat ini.'))
+                .then(text => text.trim());
 
-            return currentVersion.trim() === latestVersion.trim();
+            let latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version.txt')
+                .then(res => res.ok ? res.text() : Promise.reject('Gagal mendapatkan versi terbaru.'))
+                .then(text => text.trim());
+
+            // Log versi untuk debugging
+            console.log("Versi Saat Ini:", currentVersion);
+            console.log("Versi Terbaru:", latestVersion);
+
+            return currentVersion === latestVersion;
         } catch (error) {
             console.error('Error:', error);
             return null; // Terjadi kesalahan
@@ -153,6 +157,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         updateLoader();
     });
-    </script>
+</script>
 </body>
 </html>
