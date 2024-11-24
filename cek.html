@@ -139,7 +139,7 @@
                 .then(res => res.ok ? res.text() : Promise.reject('Gagal mendapatkan versi saat ini.'))
                 .then(text => text.trim());
 
-            let latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version.txt')
+            let latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version_n.txt')
                 .then(res => res.ok ? res.text() : Promise.reject('Gagal mendapatkan versi terbaru.'))
                 .then(text => text.trim());
 
