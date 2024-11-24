@@ -79,7 +79,7 @@
     </div>
     <div id="status-text">Mencoba menghubungkan ke server</div>
     <div class="bottom-nav">
-  <button onclick="location.href='1.html'">
+  <button onclick="location.href='cek.html'">
     <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
   </button>
   <button onclick="location.href='index.html'">
@@ -104,13 +104,13 @@
             loaderText.textContent = progress + '%';
 
             if (progress <= 15) {
-                statusText.textContent = 'Mencoba menghubungkan ke server';
+                statusText.textContent = 'Mencoba menghubungkan ke server...';
             } else if (progress <= 25) {
-                statusText.textContent = 'Berhasil menghubungkan ke server';
+                statusText.textContent = 'Berhasil menghubungkan ke server!';
             } else if (progress <= 50) {
-                statusText.textContent = 'Memeriksa versi aplikasi saat ini';
+                statusText.textContent = 'Memeriksa versi aplikasi saat ini...';
             } else if (progress <= 80) {
-                statusText.textContent = 'Memeriksa apakah ada versi terbaru';
+                statusText.textContent = 'Memeriksa apakah ada versi terbaru...';
             } else if (progress <= 100) {
                 // Periksa apakah ada pembaruan
                 fetchVersionInfo().then(isLatest => {
@@ -128,7 +128,7 @@
             }
 
             if (progress < 100) {
-                setTimeout(updateLoader, 130);
+                setTimeout(updateLoader, 140);
             }
         }
 
