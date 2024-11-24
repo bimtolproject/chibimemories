@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Animation</title>
+    <title>Cek Update</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body, html {
+            font-family: 'georgia', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             width: 100%;
@@ -14,14 +16,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #2c3e50;
-            font-family: Arial, sans-serif;
-            color: #ecf0f1;
+            background-color: #fff;
+            color: #333;
         }
         #loader {
             width: 300px;
             height: 30px;
-            border: 2px solid #ecf0f1;
+            border: 2px solid #333;
             border-radius: 15px;
             overflow: hidden;
             position: relative;
@@ -29,7 +30,7 @@
         #loader-bar {
             width: 0%;
             height: 100%;
-            background-color: #3498db;
+            background-color: #5c6bc0;
             transition: width 0.25s linear;
         }
         #loader-text {
@@ -43,8 +44,32 @@
         #status-text {
             margin-top: 10px;
             text-align: center;
-            font-size: 16px;
+            font-size: 14px;
         }
+        /* Gaya untuk tombol navigasi */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      height: 35px;
+      border-radius: 10%;
+    }
+
+    .bottom-nav button {
+      border: none;
+      background-color: transparent;
+    }
+        @font-face {
+    font-family: 'georgia';
+    src: url('https://bimtolproject.github.io/chibimemories/resource/georgia.ttf') format('ttf'),
+    font-weight: normal;
+    font-style: normal;
+}
     </style>
 </head>
 <body>
@@ -53,12 +78,25 @@
         <div id="loader-text">0%</div>
     </div>
     <div id="status-text">Mencoba menghubungkan ke server</div>
+    <div class="bottom-nav">
+  <button onclick="location.href='1.html'">
+    <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-home" alt="User"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-arrow-left" alt="Profile"></i>
+  </button>
+</div>
 
     <script>
         let loaderBar = document.getElementById('loader-bar');
         let loaderText = document.getElementById('loader-text');
         let statusText = document.getElementById('status-text');
         let progress = 0;
+
+        const downloadLink = "https://example.com"; // Ganti dengan tautan unduhan
 
         function updateLoader() {
             progress++;
@@ -74,27 +112,23 @@
             } else if (progress <= 80) {
                 statusText.textContent = 'Memeriksa apakah ada versi terbaru';
             } else if (progress <= 100) {
-                // Assume the result is fetched here for simplicity
+                // Periksa apakah ada pembaruan
                 fetchVersionInfo().then(isLatest => {
                     if (isLatest === null) {
-                        statusText.textContent = 'Tidak mendapatkan info versi terbaru';
-                        if (progress > 80) statusText.textContent = 'Tidak mendapatkan info versi terbaru';
-                        if (progress > 99) statusText.textContent = 'Silahkan coba lagi';
+                        statusText.textContent = 'Tidak mendapatkan info versi terbaru, Silakan coba lagi.';
                     } else if (isLatest) {
-                        statusText.textContent = 'Saat ini anda telah di versi terbaru';
+                        statusText.textContent = 'Saat ini Chian telah di versi terbaru.';
                     } else {
-                        statusText.textContent = 'Berhasil mendapatkan info versi terbaru';
-                        if (progress > 80) statusText.textContent = 'Berhasil mendapatkan info versi terbaru';
-                        if (progress > 90) statusText.textContent = 'Mencoba mengarahkan ke tautan unduhan versi terbaru';
+                        statusText.textContent = 'Berhasil mendapatkan info versi terbaru, Mengarahkan ke tautan unduhan...';
                         setTimeout(() => {
-                            window.location.href = example.com;
+                            window.location.href = downloadLink;
                         }, 3000); // Tunggu 3 detik sebelum mengarahkan
                     }
                 });
             }
 
             if (progress < 100) {
-                setTimeout(updateLoader, 130); // 25s total / 100 steps = 250ms per step
+                setTimeout(updateLoader, 130);
             }
         }
 
@@ -106,7 +140,7 @@
                 return currentVersion.trim() === latestVersion.trim();
             } catch (error) {
                 console.error('Error:', error);
-                return null; // Error occurred
+                return null; // Terjadi kesalahan
             }
         }
 
