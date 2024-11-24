@@ -91,62 +91,68 @@
 </div>
 
     <script>
-        let loaderBar = document.getElementById('loader-bar');
-        let loaderText = document.getElementById('loader-text');
-        let statusText = document.getElementById('status-text');
-        let progress = 0;
+    let loaderBar = document.getElementById('loader-bar');
+    let loaderText = document.getElementById('loader-text');
+    let statusText = document.getElementById('status-text');
+    let progress = 0;
 
-        const downloadLink = "https://example.com"; // Ganti dengan tautan unduhan
+    const downloadLink = "https://example.com"; // Ganti dengan tautan unduhan
 
-        function updateLoader() {
-            progress++;
-            loaderBar.style.width = progress + '%';
-            loaderText.textContent = progress + '%';
+    function updateLoader() {
+        progress++;
+        loaderBar.style.width = progress + '%';
+        loaderText.textContent = progress + '%';
 
-            if (progress <= 15) {
-                statusText.textContent = 'Mencoba menghubungkan ke server...';
-            } else if (progress <= 25) {
-                statusText.textContent = 'Berhasil menghubungkan ke server!';
-            } else if (progress <= 50) {
-                statusText.textContent = 'Memeriksa versi aplikasi saat ini...';
-            } else if (progress <= 80) {
-                statusText.textContent = 'Memeriksa apakah ada versi terbaru...';
-            } else if (progress <= 100) {
-                // Periksa apakah ada pembaruan
-                fetchVersionInfo().then(isLatest => {
-                    if (isLatest === null) {
-                        statusText.textContent = 'Tidak mendapatkan info versi terbaru, Silakan coba lagi.';
-                    } else if (isLatest) {
-                        statusText.textContent = 'Saat ini Chian telah di versi terbaru.';
-                    } else {
-                        statusText.textContent = 'Berhasil mendapatkan info versi terbaru, Mengarahkan ke tautan unduhan...';
-                        setTimeout(() => {
-                            window.location.href = downloadLink;
-                        }, 3000); // Tunggu 3 detik sebelum mengarahkan
-                    }
-                });
-            }
-
-            if (progress < 100) {
-                setTimeout(updateLoader, 140);
-            }
+        if (progress <= 15) {
+            statusText.textContent = 'Mencoba menghubungkan ke server...';
+        } else if (progress <= 25) {
+            statusText.textContent = 'Berhasil menghubungkan ke server!';
+        } else if (progress <= 50) {
+            statusText.textContent = 'Memeriksa versi aplikasi saat ini...';
+        } else if (progress <= 80) {
+            statusText.textContent = 'Memeriksa apakah ada versi terbaru...';
+        } else if (progress === 100) {
+            // Periksa apakah ada pembaruan
+            fetchVersionInfo().then(isLatest => {
+                if (isLatest === null) {
+                    statusText.textContent = 'Tidak mendapatkan info versi terbaru, Silakan coba lagi.';
+                } else if (isLatest) {
+                    statusText.textContent = 'Saat ini Chian telah di versi terbaru.';
+                } else {
+                    statusText.textContent = 'Berhasil mendapatkan info versi terbaru, Mengarahkan ke tautan unduhan...';
+                    setTimeout(() => {
+                        window.location.href = downloadLink;
+                    }, 3000); // Tunggu 3 detik sebelum mengarahkan
+                }
+            });
         }
 
-        async function fetchVersionInfo() {
-            try {
-                let currentVersion = await fetch('assets/version.txt').then(res => res.text());
-                let latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version.txt').then(res => res.text());
-
-                return currentVersion.trim() === latestVersion.trim();
-            } catch (error) {
-                console.error('Error:', error);
-                return null; // Terjadi kesalahan
-            }
+        if (progress < 100) {
+            setTimeout(updateLoader, 140);
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateLoader();
-        });
+    async function fetchVersionInfo() {
+        try {
+            let currentVersion = await fetch('assets/version.txt').then(res => {
+                if (!res.ok) throw new Error('Gagal mendapatkan versi saat ini.');
+                return res.text();
+            });
+            let latestVersion = await fetch('https://bimtolproject.github.io/chibimemories/version.txt').then(res => {
+                if (!res.ok) throw new Error('Gagal mendapatkan versi terbaru.');
+                return res.text();
+            });
+
+            return currentVersion.trim() === latestVersion.trim();
+        } catch (error) {
+            console.error('Error:', error);
+            return null; // Terjadi kesalahan
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateLoader();
+    });
     </script>
 </body>
 </html>
