@@ -84,7 +84,11 @@
                         statusText.textContent = 'Saat ini anda telah di versi terbaru';
                     } else {
                         statusText.textContent = 'Berhasil mendapatkan info versi terbaru';
-                        if (progress > 80) statusText.textContent = 'Mencoba mengarahkan ke tautan unduhan versi terbaru';
+                        if (progress > 80) statusText.textContent = 'Berhasil mendapatkan info versi terbaru';
+                        if (progress > 90) statusText.textContent = 'Mencoba mengarahkan ke tautan unduhan versi terbaru';
+                        setTimeout(() => {
+                            window.location.href = example.com;
+                        }, 3000); // Tunggu 3 detik sebelum mengarahkan
                     }
                 });
             }
