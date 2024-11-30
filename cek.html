@@ -96,7 +96,7 @@
     let statusText = document.getElementById('status-text');
     let progress = 0;
 
-    const downloadLink = "https://example.com"; // Ganti dengan tautan unduhan
+    const downloadLink = "https://drive.google.com/file/d/1SeOd1cfeJamI89fWKU3GBY1GPLyrHcZ0/view?usp=drivesdk"; // Ganti dengan tautan unduhan
 
     function updateLoader() {
         progress++;
@@ -129,7 +129,7 @@
         }
 
         if (progress < 100) {
-            setTimeout(updateLoader, 1200);
+            setTimeout(updateLoader, 100);
         }
     }
 
