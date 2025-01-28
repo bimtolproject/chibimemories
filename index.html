@@ -16,6 +16,16 @@
             align-items: center;
             min-height: 100vh;
         }
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
         .p {
             width: 30px;
             height: 30px;
@@ -23,7 +33,7 @@
         .container {
             max-width: 900px;
             width: 100%;
-            background: #fff;
+            background: rgba(255, 255, 255, 0); /* Transparansi */
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -53,7 +63,7 @@
             gap: 20px;
         }
         .menu-item {
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.7);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -128,7 +138,7 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(255, 255, 255, 0); /* Transparansi */
     justify-content: center;
     align-items: center;
 }
@@ -278,7 +288,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #f9f9f9;
+      background-color: rgba(255, 255, 255, 0.7);
       display: flex;
       justify-content: space-around;
       padding: 10px;
@@ -290,6 +300,112 @@
       border: none;
       background-color: transparent;
     }
+    .menu-item1 {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Transparansi */
+            width: 300px; /* Lebar tetap */
+            height: 450px; /* Tinggi tetap */
+        }
+
+        .menu-item1 h3 {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .menu-item1 label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .menu-item1 input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .menu-item1 input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .toggle-switch {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-switch span {
+            margin-left: 10px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .toggle-switch .slider {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch .slider:before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 14px;
+            height: 14px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch input:checked + .slider {
+            background-color: #5c6bc0;
+        }
+
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .link-item {
+            display: inline-block;
+            margin: 10px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .link-item::after {
+            content: ' | Background Applied';
+            font-size: 12px;
+            color: #777;
+        }
+
+        #saveSettingsBtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #saveSettingsBtn:hover {
+            background-color: #45a049;
+        }
 @font-face {
     font-family: 'georgia';
     src: url('resource/georgia.ttf') format('ttf'),
@@ -299,7 +415,11 @@
     </style>
 </head>
 <body>
-
+    <!-- Video Background -->
+    <video class="video-bg" autoplay loop muted id="backgroundVideo">
+        <source src="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7316380007977340161.mp4" type="video/mp4">
+    </video>
+    
 <div class="container">
     <div class="header">
         <a href="#" class="logo">Our Memories</a>
@@ -321,7 +441,7 @@
             <i class="fas fa-music"></i>
             <h3>Musik</h3>
             <p>Putar musik favorit kita secara gratis</p>
-            <button class="btn music-btn">Buka</button>
+            <button class="btn music-btn" id="openMusicModal">Buka</button>
         </div>
         <div class="menu-item">
             <i class="fas fa-birthday-cake"></i>
@@ -335,35 +455,82 @@
             <p>Unduh Resource yang ada di web</p>
             <a href="downloadr.html" class="btn">Unduh</a>
         </div>
+        <div class="menu-item1">
+            <h3>Pengaturan</h3>
+            <div style="margin-top: 10px;"><p>Latar Belakang :</p></div>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7316380007977340161.mp4" checked> Kazuha (Ringan)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7295711297902038274.mp4"> Nahida (Ringan)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7220948739215625498.mp4"> Hutao 1 (Ringan)
+                </label>
+                <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/lv_0_20250129062455.mp4"> Hutao 2 (Sangat Berat)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7300904185367743745.mp4"> Yae Miko (Ringan)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7340239101913861383.mp4"> Ayaka (Ringan)
+            </label>
+            <div style="margin-top: 10px;"><p>Pengaturan Live Wallpaper :</p></div>
+            <div style="margin-top: 15px;">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="freezeVideo">
+                    <span class="slider"></span>
+                    <span>Buat video menjadi tidak bergerak</span>
+                </label>
+            </div>
+            <div style="margin-top: 10px;">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoChangeBg">
+                    <span class="slider"></span>
+                    <span>Ubah secara otomatis setiap 30s</span>
+                </label>
+            </div>
+            <div style="margin-top: 10px;">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="applyToAll">
+                    <span class="slider"></span>
+                    <span>Terapkan ke semua halaman</span>
+                </label>
+            </div>
+
+            <!-- Tombol Simpan -->
+            <button id="saveSettingsBtn">Simpan</button>
+        </div>
     </div>
     <div class="bottom-nav">
-  <button onclick="location.href='fav.html'">
-    <i class="fas fa-user-circle" alt="Home"></i>
-  </button>
-  <button onclick="location.href='index.html'">
-    <i class="fas fa-arrow-rotate-backward" alt="User"></i>
-  </button>
-  <button onclick="location.href='info.html'">
-    <i class="fas fa-info-circle" alt="Profile"></i>
-  </button>
-</div>
-<audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
-<audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
-<audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
-
+        <button onclick="location.href='fav.html'">
+            <i class="fas fa-user-circle" alt="Home"></i>
+        </button>
+        <button onclick="location.href='index.html'">
+            <i class="fas fa-arrow-rotate-backward" alt="User"></i>
+        </button>
+        <button onclick="location.href='info.html'">
+            <i class="fas fa-info-circle" alt="Profile"></i>
+        </button>
+    </div>
+    <audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
+    <audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
+    <audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
 </div>
 
 <!-- Modal untuk Setel Musik -->
-<div id="musicModal" class="modal">
+<div id="musicModal" class="modal" style="display: none;">
     <div class="modal-content">
-    <h3>Setel Musik</h3>
-    <div class="search-container">
-        <input type="text" id="searchMusic" placeholder="ini kolom buat nyari musik ya cilll...">
-        <button class="search-btn"><i class="fa fa-search"></i></button>
-    </div>
+        <h3>Setel Musik</h3>
+        <div class="search-container">
+            <input type="text" id="searchMusic" placeholder="ini kolom buat nyari musik ya cilll...">
+            <button class="search-btn"><i class="fa fa-search"></i></button>
+        </div>
         <select id="musicSelect">
             <option value="https://example.com/0.mp3">Pilih Musik</option>
             <option value="resource/sekarang.mp3">Dimas M - Sekarang hingga Nanti Kita Tua</option>
+            <option value="resource/Nightchanges.mp3">One Direction - Night Changes</option>
             <option value="resource/Nightchanges.mp3">One Direction - Night Changes</option>
             <option value="https://bimtolproject.github.io/chibimemories/resource/Perfectes.mp3">Ed Sheeran - Perfect</option>
             <option value="resource/thousandyears.mp3">James Arthur - A thousand year</option>
@@ -379,12 +546,13 @@
             <option value="resource/Do_I_Wanna_Know.mp3">Arctic Monkeys - Do I Wanna Know</option>
             <option value="resource/watch.mp3">Billie Elish - Watch</option>
             <option value="resource/fix_you.mp3">Cold Play - Fix You</option>
+            <!-- Add more options here -->
         </select>
         <div class="audio-player">
             <audio id="musicPlayer" controls style="display: none;">
-    <!-- Source akan diatur melalui JavaScript -->
-    Your browser does not support the audio element.
-</audio>
+                <!-- Source akan diatur melalui JavaScript -->
+                Your browser does not support the audio element.
+            </audio>
             <div class="player-controls">
                 <button id="prevBtn" title="Previous"><i class="fas fa-backward"></i></button>
                 <button id="playBtn" title="Play"><i class="fas fa-play"></i></button>
@@ -397,17 +565,127 @@
                 <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
             </div>
             <div class="lyrics">
-    <h4>Lirik Lagu</h4>
-    <div id="lyricsContainer"></div>
-</div>
+                <h4>Lirik Lagu</h4>
+                <div id="lyricsContainer"></div>
             </div>
-    <div class="modal-buttons">
-        <a href="#lagu" class="btn cancel">Tutup</a>
+        </div>
+        <div class="modal-buttons">
+            <a href="#lagu" class="btn cancel" id="closeMusicModal">Tutup</a>
+        </div>
     </div>
-</div>
 </div>
 
 <script>
+const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const backgroundVideo = document.getElementById('backgroundVideo');
+        const bgRadios = document.querySelectorAll('input[name="bg"]');
+        const freezeVideo = document.getElementById('freezeVideo');
+        const autoChangeBg = document.getElementById('autoChangeBg');
+        const applyToAll = document.getElementById('applyToAll');
+
+        let autoChangeInterval;
+
+        // Ganti video background saat radio dipilih
+        bgRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                backgroundVideo.src = radio.value;
+                if (applyToAll.checked) {
+                    localStorage.setItem('background', radio.value);
+                }
+            });
+        });
+
+        // Hentikan video
+        freezeVideo.addEventListener('change', () => {
+            if (freezeVideo.checked) {
+                backgroundVideo.pause();
+            } else {
+                backgroundVideo.play();
+            }
+        });
+
+        // Ganti background otomatis
+        autoChangeBg.addEventListener('change', () => {
+            if (autoChangeBg.checked) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            } else {
+                clearInterval(autoChangeInterval);
+            }
+        });
+
+        // Terapkan background di semua halaman jika diinginkan
+        applyToAll.addEventListener('change', () => {
+            if (applyToAll.checked) {
+                localStorage.setItem('background', backgroundVideo.src);
+            } else {
+                localStorage.removeItem('background');
+            }
+        });
+
+        // Simpan pengaturan ke localStorage
+        saveSettingsBtn.addEventListener('click', () => {
+            const selectedBackground = document.querySelector('input[name="bg"]:checked').value;
+            const isFreezeVideo = freezeVideo.checked;
+            const isAutoChangeBg = autoChangeBg.checked;
+            const isApplyToAll = applyToAll.checked;
+
+            // Simpan pengaturan ke localStorage
+            localStorage.setItem('background', selectedBackground);
+            localStorage.setItem('freezeVideo', isFreezeVideo);
+            localStorage.setItem('autoChangeBg', isAutoChangeBg);
+            localStorage.setItem('applyToAll', isApplyToAll);
+
+            alert('Pengaturan berhasil disimpan!');
+        });
+
+        // Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
+        window.onload = () => {
+            const savedBackground = localStorage.getItem('background');
+            const savedFreezeVideo = localStorage.getItem('freezeVideo') === 'true';
+            const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
+            const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
+
+            // Terapkan background yang disimpan
+            if (savedBackground) {
+                backgroundVideo.src = savedBackground;
+                bgRadios.forEach(radio => {
+                    if (radio.value === savedBackground) {
+                        radio.checked = true;
+                    }
+                });
+            }
+
+            // Terapkan status "Video Jangan Bergerak"
+            freezeVideo.checked = savedFreezeVideo;
+            if (savedFreezeVideo) {
+                backgroundVideo.pause();
+            } else {
+                backgroundVideo.play();
+            }
+
+            // Terapkan status "Ganti Background Otomatis"
+            autoChangeBg.checked = savedAutoChangeBg;
+            if (savedAutoChangeBg) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            }
+
+            // Terapkan status "Tetapkan Background ke Semua Halaman"
+            applyToAll.checked = savedApplyToAll;
+        };
+
 // Fungsi untuk memainkan suara switch task
 function playSwitchSound() {
     switchSound.currentTime = 0;
