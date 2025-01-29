@@ -218,7 +218,9 @@
     background-color: #5c6bc0;
     color: white;
     border: none;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 10px 10px 0;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
 }
 
@@ -436,7 +438,7 @@
 <body>
     <!-- Video Background -->
     <video class="video-bg" autoplay loop muted id="backgroundVideo">
-        <source src="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7316380007977340161.mp4" type="video/mp4">
+        <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4" type="video/mp4">
     </video>
     
 <div class="container">
@@ -478,7 +480,13 @@
             <h3>Pengaturan</h3>
             <div style="margin-top: 10px;"><p>Pilih Latar Belakang :</p></div>
             <label>
-                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7316380007977340161.mp4" checked> Kazuha (Ringan)
+            <input type="radio" name="bg" value="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4" checked> Default
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7316380007977340161.mp4" checked> Kazuha 1 (Ringan)
+            </label>
+            <label>
+            <input type="radio" name="bg" value="https://bimtolproject.github.io/chibimemories/resource/Snaptik.app_7248062879868488966.mp4" checked> Kazuha 2 (Ringan)
             </label>
             <label>
                 <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7295711297902038274.mp4"> Nahida (Ringan)
@@ -496,13 +504,6 @@
                 <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7340239101913861383.mp4"> Ayaka (Ringan)
             </label>
             <div style="margin-top: 10px;"><p>Pengaturan Live Wallpaper :</p></div>
-            <div style="margin-top: 15px;">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="freezeVideo">
-                    <span class="slider"></span>
-                    <span>Buat video menjadi tidak bergerak</span>
-                </label>
-            </div>
             <div style="margin-top: 10px;">
                 <label class="toggle-switch">
                     <input type="checkbox" id="autoChangeBg">
@@ -554,7 +555,7 @@
     <div class="modal-content">
         <h3>Setel Musik</h3>
         <div class="search-container">
-            <input type="text" id="searchMusic" placeholder="ini kolom buat nyari musik ya cilll...">
+            <input type="text" id="searchMusic" placeholder="klik disini untuk mencari musik ya cil!">
             <button class="search-btn"><i class="fa fa-search"></i></button>
         </div>
         <select id="musicSelect">
@@ -609,7 +610,6 @@
 const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         const backgroundVideo = document.getElementById('backgroundVideo');
         const bgRadios = document.querySelectorAll('input[name="bg"]');
-        const freezeVideo = document.getElementById('freezeVideo');
         const autoChangeBg = document.getElementById('autoChangeBg');
         const applyToAll = document.getElementById('applyToAll');
 
@@ -623,15 +623,6 @@ const saveSettingsBtn = document.getElementById('saveSettingsBtn');
                     localStorage.setItem('background', radio.value);
                 }
             });
-        });
-
-        // Hentikan video
-        freezeVideo.addEventListener('change', () => {
-            if (freezeVideo.checked) {
-                backgroundVideo.pause();
-            } else {
-                backgroundVideo.play();
-            }
         });
 
         // Ganti background otomatis
@@ -665,13 +656,11 @@ const closeSettingsModalBtn = document.getElementById('closeSettingsModal');
 // Tampilkan modol setelah pengaturan disimpan
 saveSettingsBtn.addEventListener('click', () => {
     const selectedBackground = document.querySelector('input[name="bg"]:checked').value;
-    const isFreezeVideo = freezeVideo.checked;
     const isAutoChangeBg = autoChangeBg.checked;
     const isApplyToAll = applyToAll.checked;
 
     // Simpan pengaturan ke localStorage
     localStorage.setItem('background', selectedBackground);
-    localStorage.setItem('freezeVideo', isFreezeVideo);
     localStorage.setItem('autoChangeBg', isAutoChangeBg);
     localStorage.setItem('applyToAll', isApplyToAll);
 
@@ -694,7 +683,6 @@ window.onclick = function(event) {
         // Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
         window.onload = () => {
             const savedBackground = localStorage.getItem('background');
-            const savedFreezeVideo = localStorage.getItem('freezeVideo') === 'true';
             const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
             const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
 
@@ -706,14 +694,6 @@ window.onclick = function(event) {
                         radio.checked = true;
                     }
                 });
-            }
-
-            // Terapkan status "Video Jangan Bergerak"
-            freezeVideo.checked = savedFreezeVideo;
-            if (savedFreezeVideo) {
-                backgroundVideo.pause();
-            } else {
-                backgroundVideo.play();
             }
 
             // Terapkan status "Ganti Background Otomatis"

@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'georgia', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #74ebd5;
+            background-color: rgba(255, 255, 255, 0.7); /* Transparansi */
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,10 +16,20 @@
             align-items: center;
             min-height: 100vh;
         }
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }   
         .container {
             max-width: 900px;
             width: 100%;
-            background: #fff;
+            background: rgba(255, 255, 255, 0); /* Transparansi */
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -41,7 +51,7 @@
             cursor: pointer;
         }
         .profile-info {
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.7); /* Transparansi */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -118,7 +128,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: #f9f9f9;
+      background-color: rgba(255, 255, 255, 0.7); /* Transparansi */
       display: flex;
       justify-content: space-around;
       padding: 10px;
@@ -152,7 +162,10 @@
     </style>
 </head>
 <body>
-
+<!-- Video Background -->
+    <video class="video-bg" autoplay loop muted id="backgroundVideo">
+        <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4"></iframe>" type="video/mp4">
+    </video>
 <div class="container">
     <div class="header">
     <i text-align="center" class="fas fa-question-circle">   Tutorial dan Pertanyaan</i></p>
@@ -186,6 +199,46 @@
 </div>
 
 <script>
+// Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
+        window.onload = () => {
+            const savedBackground = localStorage.getItem('background');
+            const savedFreezeVideo = localStorage.getItem('freezeVideo') === 'true';
+            const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
+            const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
+
+            // Terapkan background yang disimpan
+            if (savedBackground) {
+                backgroundVideo.src = savedBackground;
+                bgRadios.forEach(radio => {
+                    if (radio.value === savedBackground) {
+                        radio.checked = true;
+                    }
+                });
+            }
+
+            // Terapkan status "Video Jangan Bergerak"
+            freezeVideo.checked = savedFreezeVideo;
+            if (savedFreezeVideo) {
+                backgroundVideo.pause();
+            } else {
+                backgroundVideo.play();
+            }
+
+            // Terapkan status "Ganti Background Otomatis"
+            autoChangeBg.checked = savedAutoChangeBg;
+            if (savedAutoChangeBg) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            }
+
+            // Terapkan status "Tetapkan Background ke Semua Halaman"
+            applyToAll.checked = savedApplyToAll;
+        };
 // Fungsi untuk memainkan suara switch task
 function playSwitchSound() {
     switchSound.currentTime = 0;
