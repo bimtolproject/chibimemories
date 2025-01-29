@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error Page</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
@@ -17,15 +17,27 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
+        }
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
         }
         .error-container {
             text-align: center;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.7); /* Transparansi */
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 500px;
-            width: 100%;
+            width: 250px;
+            height: 250px;
         }
         .error-code {
             font-size: 70px;
@@ -43,6 +55,19 @@
             color: #7f8c8d;
             margin-bottom: 30px;
         }
+        .countdown {
+            font-size: 20px;
+            font-weight: 500;
+            color: #2c3e50;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 20px;
+            width: 250px;
+            height: 165px;
+        }
         .error-actions a {
             display: inline-flex;
             align-items: center;
@@ -58,47 +83,118 @@
             background: #2980b9;
             color: #ffffff;
         }
-        .error-actions a img {
-            margin-right: 10px;
-            height: 24px;
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.7); /* Transparansi */
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            height: 35px;
+            border-radius: 10%;
         }
-        /* Gaya untuk tombol navigasi */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: #f9f9f9;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px;
-      height: 35px;
-      border-radius: 10%;
-    }
-
-    .bottom-nav button {
-      border: none;
-      background-color: transparent;
-    }
-        @font-face {
-    font-family: 'georgia';
-    src: url('resource/georgia.ttf') format('ttf'),
-    font-weight: normal;
-    font-style: normal;
+        .bottom-nav button {
+            border: none;
+            background-color: transparent;
         }
     </style>
 </head>
 <body>
+<!-- Video Background -->
+    <video class="video-bg" autoplay loop muted id="backgroundVideo">
+        <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4"></iframe>" type="video/mp4">
+    </video>
     <div class="error-container">
         <h1 class="error-code">404</h1>
         <p class="error-message">Halaman terkunci</p>
         <p class="error-description">Maaf, sepertinya chian belum bisa membuka dan melihat halaman ini. Mohon tunggu sampai waktu terjadi</p>
     </div>
-            <div class="bottom-nav">
-  </button>
-  <button onclick="location.href='index.html'">
-    <i class="fas fa-home" alt="User"></i>
-  </button>
-</div>
+
+    <!-- Tempat Menampilkan Hitung Mundur -->
+    <div class="countdown" id="countdown"></div>
+
+    <div class="bottom-nav">
+        <button onclick="location.href='index.html'">
+            <i class="fas fa-home"></i>
+        </button>
+    </div>
+
+    <script>
+    // Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
+        window.onload = () => {
+            const savedBackground = localStorage.getItem('background');
+            const savedFreezeVideo = localStorage.getItem('freezeVideo') === 'true';
+            const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
+            const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
+
+            // Terapkan background yang disimpan
+            if (savedBackground) {
+                backgroundVideo.src = savedBackground;
+                bgRadios.forEach(radio => {
+                    if (radio.value === savedBackground) {
+                        radio.checked = true;
+                    }
+                });
+            }
+
+            // Terapkan status "Video Jangan Bergerak"
+            freezeVideo.checked = savedFreezeVideo;
+            if (savedFreezeVideo) {
+                backgroundVideo.pause();
+            } else {
+                backgroundVideo.play();
+            }
+
+            // Terapkan status "Ganti Background Otomatis"
+            autoChangeBg.checked = savedAutoChangeBg;
+            if (savedAutoChangeBg) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            }
+
+            // Terapkan status "Tetapkan Background ke Semua Halaman"
+            applyToAll.checked = savedApplyToAll;
+        };
+        function updateCountdown() {
+            const targetDate = new Date("2025-05-31T00:00:00").getTime();
+            const now = new Date().getTime();
+            const timeRemaining = targetDate - now;
+
+            if (timeRemaining <= 0) {
+                window.location.href = "hbd/index.html"; // Redirect jika waktu habis
+                return;
+            }
+
+            const oneDay = 1000 * 60 * 60 * 24;
+            const oneHour = 1000 * 60 * 60;
+            const oneMinute = 1000 * 60;
+            const oneSecond = 1000;
+
+            const days = Math.floor(timeRemaining / oneDay);
+            const hours = Math.floor((timeRemaining % oneDay) / oneHour);
+            const minutes = Math.floor((timeRemaining % oneHour) / oneMinute);
+            const seconds = Math.floor((timeRemaining % oneMinute) / oneSecond);
+            const milliseconds = timeRemaining % 1000;
+
+            document.getElementById("countdown").innerHTML = 
+                `Sisa Waktu Untuk Dapat Terbuka: <br><br>
+                <strong>${days}</strong> Hari, 
+                <strong>${hours}</strong> Jam, <br>
+                <strong>${minutes}</strong> Menit, 
+                <strong>${seconds}</strong> Detik, <br>
+                <strong>${milliseconds}</strong> Milidetik`;
+        }
+
+        setInterval(updateCountdown, 1); // Perbarui setiap 1 milidetik
+        updateCountdown();
+    </script>
+
 </body>
 </html>
