@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'georgia', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #74ebd5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0); /* Transparansi */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .header .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .profile-info {
+            background: rgba(255, 255, 255, 0.7); /* Transparansi */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: left;
+            position: relative;
+        }
+        .profile-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #5c6bc0;
+        }
+        .profile-info p {
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+        .profile-info .password-field {
+            display: flex;
+            align-items: center;
+        }
+        .profile-info .password-field input {
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #666;
+            margin-left: 10px;
+            flex: 1;
+        }
+        .profile-info .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background: #5c6bc0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .profile-info .btn:hover {
+            background: #3949ab;
+        }
+        .customer-service {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #5c6bc0;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        .customer-service:hover {
+            background: #3949ab;
+        }
+        .show-password {
+            cursor: pointer;
+            color: #5c6bc0;
+            margin-left: 10px;
+        }
+        .show-password:hover {
+            color: #3949ab;
+        }
+        /* Gaya untuk tombol navigasi */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.7); /* Transparansi */
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      height: 35px;
+      border-radius: 10%;
+    }
+
+    .bottom-nav button {
+      border: none;
+      background-color: transparent;
+    }
+
+        /* Media query untuk layar kecil */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 20px;
+            }
+            .profile-info {
+                padding: 15px;
+            }
+            .gambarb {
+                display: block;
+                margin: 0 auto;
+                border-radius: 50%;
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                margin-top: 10px;
+            }
+            .iy {
+                text-align: center;
+            }
+            .menu-item1 {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Transparansi */
+            width: 320px; /* Lebar tetap */
+            height: 500px; /* Tinggi tetap */
+        }
+
+        .menu-item1 h3 {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .menu-item1 label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .menu-item1 input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .menu-item1 input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .link-item {
+            display: inline-block;
+            margin: 10px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .link-item::after {
+            content: ' | Background Applied';
+            font-size: 12px;
+            color: #777;
+        }
+
+        #saveSettingsBtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #saveSettingsBtn:hover {
+            background-color: #45a049;
+        }
+        /* Modol untuk Pengaturan Disimpan */
+.modol {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Menyelaraskan modol ke tengah */
+    width: 300px; /* Atur lebar modol sesuai kebutuhan */
+    height: 300px; /* Atur tinggi modol sesuai kebutuhan */
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px; /* Tambahkan border-radius untuk tampilan yang lebih baik */
+}
+
+.modol-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    text-align: center;
+}
+
+.modol-content h3 {
+    margin-top: 0;
+}
+
+.modol-content p {
+    color: #666;
+    font-size: 16px;
+}
+
+.modol-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.modol-content .btn {
+    padding: 10px 20px;
+    color: #fff;
+    background: #5c6bc0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.modol-content .btn:hover {
+    background: #3949ab;
+}
+
+.modol-content .btn.cancel {
+    background: #f44336;
+}
+
+.modol-content .btn.cancel:hover {
+    background: #d32f2f;
+}
+            @font-face {
+    font-family: 'georgia';
+    src: url('resource/georgia.ttf') format('ttf'),
+    font-weight: normal;
+    font-style: normal;
+}
+        }
+    </style>
+</head>
+<body>
+<!-- Video Background -->
+    <video class="video-bg" autoplay loop muted id="backgroundVideo">
+        <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4"></iframe>" type="video/mp4">
+    </video>
+    <div class="menu-item1">
+            <h3>Pengaturan</h3>
+            <div style="margin-top: 10px;"><p>Pilih Latar Belakang :</p></div>
+            <label>
+            <input type="radio" name="bg" value="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4" checked> Default
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7316380007977340161.mp4" checked> Kazuha 1 (Ringan)
+            </label>
+            <label>
+            <input type="radio" name="bg" value="https://bimtolproject.github.io/chibimemories/resource/Snaptik.app_7248062879868488966.mp4" checked> Kazuha 2 (Ringan)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7295711297902038274.mp4"> Nahida (Ringan)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7220948739215625498.mp4"> Hutao 1 (Ringan)
+                </label>
+                <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/lv_0_20250129062455.mp4"> Hutao 2 (Sangat Berat)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7300904185367743745.mp4"> Yae Miko (Ringan)
+            </label>
+            <label>
+                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7340239101913861383.mp4"> Ayaka (Ringan)
+            </label>
+            <div style="margin-top: 10px;"><p>Pengaturan Live Wallpaper :</p></div>
+            <div style="margin-top: 10px;">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoChangeBg">
+                    <span class="slider"></span>
+                    <span>Ubah secara otomatis setiap 30s</span>
+                </label>
+            </div>
+            <div style="margin-top: 10px;">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="applyToAll">
+                    <span class="slider"></span>
+                    <span>Terapkan ke semua halaman</span>
+                </label>
+            </div>
+            <!-- Modal untuk Pengaturan Disimpan -->
+<div id="settingsModal" class="modol" style="display: none;">
+    <div class="modol-content">
+        <h3><i class="fas fa-check-circle"></i> Berhasil!</h3>
+        <p>Pengaturan yang chian ubah telah berhasil disimpan.</p>
+        <div class="modol-buttons">
+            <button class="btn cancel" id="closeSettingsModal"> Oke</button>
+        </div>
+    </div>
+</div>
+
+            <!-- Tombol Simpan -->
+            <button id="saveSettingsBtn">Simpan</button>
+        </div>
+        <audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
+<audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
+<audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
+            <div class="bottom-nav">
+  <button onclick="location.href='info.html'">
+    <i class="fas fa-arrow-rotate-backward" alt="Home"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-home" alt="User"></i>
+  </button>
+  <button onclick="location.href='index.html'">
+    <i class="fas fa-arrow-left" alt="Profile"></i>
+  </button>
+</div>
+<script>
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const backgroundVideo = document.getElementById('backgroundVideo');
+        const bgRadios = document.querySelectorAll('input[name="bg"]');
+        const autoChangeBg = document.getElementById('autoChangeBg');
+        const applyToAll = document.getElementById('applyToAll');
+
+        let autoChangeInterval;
+
+        // Ganti video background saat radio dipilih
+        bgRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                backgroundVideo.src = radio.value;
+                if (applyToAll.checked) {
+                    localStorage.setItem('background', radio.value);
+                }
+            });
+        });
+
+        // Ganti background otomatis
+        autoChangeBg.addEventListener('change', () => {
+            if (autoChangeBg.checked) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            } else {
+                clearInterval(autoChangeInterval);
+            }
+        });
+
+        // Terapkan background di semua halaman jika diinginkan
+        applyToAll.addEventListener('change', () => {
+            if (applyToAll.checked) {
+                localStorage.setItem('background', backgroundVideo.src);
+            } else {
+                localStorage.removeItem('background');
+            }
+        });
+// Ambil elemen modol
+const settingsModal = document.getElementById('settingsModal');
+const closeSettingsModalBtn = document.getElementById('closeSettingsModal');
+
+// Tampilkan modol setelah pengaturan disimpan
+saveSettingsBtn.addEventListener('click', () => {
+    const selectedBackground = document.querySelector('input[name="bg"]:checked').value;
+    const isAutoChangeBg = autoChangeBg.checked;
+    const isApplyToAll = applyToAll.checked;
+
+    // Simpan pengaturan ke localStorage
+    localStorage.setItem('background', selectedBackground);
+    localStorage.setItem('autoChangeBg', isAutoChangeBg);
+    localStorage.setItem('applyToAll', isApplyToAll);
+
+    // Tampilkan modol
+    settingsModal.style.display = "flex";
+});
+
+// Tutup modol
+closeSettingsModalBtn.onclick = function() {
+    settingsModal.style.display = "none";
+}
+
+// Tutup modol jika klik di luar modol
+window.onclick = function(event) {
+    if (event.target == settingsModal) {
+        settingsModal.style.display = "none";
+    }
+}
+
+        // Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
+        window.onload = () => {
+            const savedBackground = localStorage.getItem('background');
+            const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
+            const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
+
+            // Terapkan background yang disimpan
+            if (savedBackground) {
+                backgroundVideo.src = savedBackground;
+                bgRadios.forEach(radio => {
+                    if (radio.value === savedBackground) {
+                        radio.checked = true;
+                    }
+                });
+            }
+
+            // Terapkan status "Ganti Background Otomatis"
+            autoChangeBg.checked = savedAutoChangeBg;
+            if (savedAutoChangeBg) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            }
+
+            // Terapkan status "Tetapkan Background ke Semua Halaman"
+            applyToAll.checked = savedApplyToAll;
+        };
+        
+// Fungsi untuk memainkan suara switch task
+function playSwitchSound() {
+    switchSound.currentTime = 0;
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window
+function playOpenWinSound() {
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window
+function playCloseWinSound() {
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+// Fungsi untuk memainkan suara switch task saat klik di luar button
+function playSwitchSound() {
+    var switchSound = document.getElementById('switchSound');
+    switchSound.currentTime = 0; // Kembali ke awal file audio jika sedang diputar
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window saat klik button
+function playOpenWinSound() {
+    var openWinSound = document.getElementById('openWinSound');
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window saat klik button di bottom nav
+function playCloseWinSound() {
+    var closeWinSound = document.getElementById('closeWinSound');
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+
+// Event listener untuk menangani klik di luar button (misalnya di dalam container)
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('button')) {
+        playSwitchSound(); // Memainkan suara saat klik di luar button
+    }
+});
+
+// Event listener untuk tombol-tombol yang ada di halaman Anda
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', function() {
+        playOpenWinSound(); // Memainkan suara saat klik button
+    });
+});
+
+// Event listener khusus untuk tombol di bottom nav
+document.querySelectorAll('.bottom-nav button').forEach(button => {
+    button.addEventListener('click', function() {
+        playCloseWinSound(); // Memainkan suara saat klik button di bottom nav
+    });
+});
+    const menuToggle = document.querySelector('.menu-toggle');
+    const container = document.querySelector('.container');
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const lastLogin = document.getElementById('lastLogin');
+
+    menuToggle.addEventListener('click', () => {
+        container.classList.toggle('show-menu');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!container.contains(e.target) && !menuToggle.contains(e.target)) {
+            container.classList.remove('show-menu');
+        }
+    });
+
+    togglePassword.addEventListener('click', () => {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
+
+    // Fungsi untuk memperbarui waktu terakhir login
+    function updateLastLogin() {
+        const now = new Date();
+        const dateFormatted = `${now.getDate()} ${getMonthName(now.getMonth())} ${now.getFullYear()}`;
+        const timeFormatted = `${padZero(now.getHours())}:${padZero(now.getMinutes())}`;
+        lastLogin.textContent = `Terakhir Masuk: ${dateFormatted} ${timeFormatted}`;
+    }
+
+    // Fungsi untuk mendapatkan nama bulan berdasarkan indeks bulan
+    function getMonthName(monthIndex) {
+        const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        return monthNames[monthIndex];
+    }
+
+    // Fungsi untuk menambah nol pada angka satu digit (untuk menampilkan waktu dalam format dua digit)
+    function padZero(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    updateLastLogin(); // Panggil fungsi untuk menetapkan waktu saat halaman dimuat
+</script>
+
+</body>
+</html>

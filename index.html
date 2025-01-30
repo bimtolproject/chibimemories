@@ -474,55 +474,15 @@
             <i class="fas fa-file-download"></i>
             <h3>Unduh</h3>
             <p>Unduh Resource yang ada di web</p>
-            <a href="downloadr.html" class="btn">Unduh</a>
+            <a href="downloadr.html" class="btn">Buka</a>
         </div>
-        <div class="menu-item1">
+        <div class="menu-item">
+            <i class="fas fa-cog"></i>
             <h3>Pengaturan</h3>
-            <div style="margin-top: 10px;"><p>Pilih Latar Belakang :</p></div>
-            <label>
-            <input type="radio" name="bg" value="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4" checked> Default
-            </label>
-            <label>
-                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7316380007977340161.mp4" checked> Kazuha 1 (Ringan)
-            </label>
-            <label>
-            <input type="radio" name="bg" value="https://bimtolproject.github.io/chibimemories/resource/Snaptik.app_7248062879868488966.mp4" checked> Kazuha 2 (Ringan)
-            </label>
-            <label>
-                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7295711297902038274.mp4"> Nahida (Ringan)
-            </label>
-            <label>
-                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7220948739215625498.mp4"> Hutao 1 (Ringan)
-                </label>
-                <label>
-                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/lv_0_20250129062455.mp4"> Hutao 2 (Sangat Berat)
-            </label>
-            <label>
-                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7300904185367743745.mp4"> Yae Miko (Ringan)
-            </label>
-            <label>
-                <input type="radio" name="bg" value="https://ik.imagekit.io/gx6hlpliy/Snaptik.app_7340239101913861383.mp4"> Ayaka (Ringan)
-            </label>
-            <div style="margin-top: 10px;"><p>Pengaturan Live Wallpaper :</p></div>
-            <div style="margin-top: 10px;">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="autoChangeBg">
-                    <span class="slider"></span>
-                    <span>Ubah secara otomatis setiap 30s</span>
-                </label>
-            </div>
-            <div style="margin-top: 10px;">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="applyToAll">
-                    <span class="slider"></span>
-                    <span>Terapkan ke semua halaman</span>
-                </label>
-            </div>
-
-            <!-- Tombol Simpan -->
-            <button id="saveSettingsBtn">Simpan</button>
+            <p>Mengatur latar belakang</p>
+            <a href="setting.html" class="btn">Buka</a>
         </div>
-    </div>
+        </div>
     <div class="bottom-nav">
         <button onclick="location.href='fav.html'">
             <i class="fas fa-user-circle" alt="Home"></i>
@@ -607,82 +567,10 @@
 </div>
 
 <script>
-const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        const backgroundVideo = document.getElementById('backgroundVideo');
-        const bgRadios = document.querySelectorAll('input[name="bg"]');
-        const autoChangeBg = document.getElementById('autoChangeBg');
-        const applyToAll = document.getElementById('applyToAll');
-
-        let autoChangeInterval;
-
-        // Ganti video background saat radio dipilih
-        bgRadios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                backgroundVideo.src = radio.value;
-                if (applyToAll.checked) {
-                    localStorage.setItem('background', radio.value);
-                }
-            });
-        });
-
-        // Ganti background otomatis
-        autoChangeBg.addEventListener('change', () => {
-            if (autoChangeBg.checked) {
-                let index = 0;
-                const videos = Array.from(bgRadios).map(radio => radio.value);
-
-                autoChangeInterval = setInterval(() => {
-                    index = (index + 1) % videos.length;
-                    backgroundVideo.src = videos[index];
-                    bgRadios[index].checked = true;
-                }, 30000);
-            } else {
-                clearInterval(autoChangeInterval);
-            }
-        });
-
-        // Terapkan background di semua halaman jika diinginkan
-        applyToAll.addEventListener('change', () => {
-            if (applyToAll.checked) {
-                localStorage.setItem('background', backgroundVideo.src);
-            } else {
-                localStorage.removeItem('background');
-            }
-        });
-// Ambil elemen modol
-const settingsModal = document.getElementById('settingsModal');
-const closeSettingsModalBtn = document.getElementById('closeSettingsModal');
-
-// Tampilkan modol setelah pengaturan disimpan
-saveSettingsBtn.addEventListener('click', () => {
-    const selectedBackground = document.querySelector('input[name="bg"]:checked').value;
-    const isAutoChangeBg = autoChangeBg.checked;
-    const isApplyToAll = applyToAll.checked;
-
-    // Simpan pengaturan ke localStorage
-    localStorage.setItem('background', selectedBackground);
-    localStorage.setItem('autoChangeBg', isAutoChangeBg);
-    localStorage.setItem('applyToAll', isApplyToAll);
-
-    // Tampilkan modol
-    settingsModal.style.display = "flex";
-});
-
-// Tutup modol
-closeSettingsModalBtn.onclick = function() {
-    settingsModal.style.display = "none";
-}
-
-// Tutup modol jika klik di luar modol
-window.onclick = function(event) {
-    if (event.target == settingsModal) {
-        settingsModal.style.display = "none";
-    }
-}
-
-        // Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
+// Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
         window.onload = () => {
             const savedBackground = localStorage.getItem('background');
+            const savedFreezeVideo = localStorage.getItem('freezeVideo') === 'true';
             const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
             const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
 
@@ -694,6 +582,14 @@ window.onclick = function(event) {
                         radio.checked = true;
                     }
                 });
+            }
+
+            // Terapkan status "Video Jangan Bergerak"
+            freezeVideo.checked = savedFreezeVideo;
+            if (savedFreezeVideo) {
+                backgroundVideo.pause();
+            } else {
+                backgroundVideo.play();
             }
 
             // Terapkan status "Ganti Background Otomatis"
