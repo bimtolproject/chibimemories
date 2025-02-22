@@ -284,24 +284,6 @@
 .lyrics p.highlight {
     opacity: 2; /* Atur opasitas penuh untuk lirik yang disorot */
 }
-/* Gaya untuk tombol navigasi */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.7);
-      display: flex;
-      justify-content: space-around;
-      padding: 10px;
-      height: 35px;
-      border-radius: 10%;
-    }
-
-    .bottom-nav button {
-      border: none;
-      background-color: transparent;
-    }
     .menu-item1 {
             text-align: left;
             padding: 20px;
@@ -427,6 +409,80 @@
 .modol-content .btn.cancel:hover {
     background: #d32f2f;
 }
+/* Tombol Info */
+        .info-btn3 {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #007bff;
+            z-index: 1000;
+        }
+
+        /* Modal */
+        .modal3 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Konten Modal */
+        .modal-content3 {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Ikon Info (Diperbesar) */
+        .icon-info {
+            font-size: 60px; /* Ikon diperbesar */
+            color: #007bff;
+        }
+
+        /* Tombol dalam modal */
+        .modal-content3 button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-content3 button:hover {
+            background: #0056b3;
+        }
+
+        .modal-content3 button i {
+            margin-right: 10px; /* Memberi jarak antara ikon dan teks */
+            font-size: 20px; /* Ukuran ikon tombol */
+        }
+
+        /* Tombol Tutup di bawah */
+        .close-btn3 {
+            margin-top: 20px;
+            background-color: #f44336; /* Warna merah untuk tombol tutup */
+            color: white;
+            font-size: 18px;
+        }
 @font-face {
     font-family: 'georgia';
     src: url('resource/georgia.ttf') format('ttf'),
@@ -440,12 +496,60 @@
     <video class="video-bg" autoplay loop muted id="backgroundVideo">
         <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4" type="video/mp4">
     </video>
-    
+    <!-- Tombol info di pojok kanan bawah -->
+    <button class="info-btn3" onclick="toggleModal3()">
+        <i class="fas fa-info-circle"></i> <!-- Ikon info -->
+    </button>
+
+    <!-- Modal -->
+    <div id="modal3" class="modal3">
+        <div class="modal-content3">
+            
+            <!-- Ikon Info APK yang lebih besar -->
+            <i class="fas fa-mobile-alt icon-info"></i>
+            <h2>Info Aplikasi</h2>
+
+            <!-- Rincian Aplikasi -->
+            <p><strong>Nama Aplikasi:</strong> Chrisbi</cp>
+            <p><strong>Versi Web:</strong> 6.0 BETA</p>
+            <p><strong>Versi AI:</strong> Gemini 2.0 Flash</p>
+            <p><strong>Pembuat:</strong> Bim Project</p>
+
+            <!-- Deskripsi Aplikasi -->
+            <p>Aplikasi ini dirancang untuk menyimpan dan menayangkan kenangan chian dan bimtol.</p>
+
+            <!-- Tombol Butuh Bantuan -->
+            <button onclick="butuhBantuan()">
+                <i class="fas fa-question-circle"></i> Butuh Bantuan
+            </button>
+            
+            <!-- Tombol Syarat & Ketentuan -->
+            <button onclick="syaratKetentuan()">
+                <i class="fas fa-file-contract"></i> Syarat & Ketentuan
+            </button>
+
+            <!-- Tombol Refresh Web -->
+            <button onclick="refreshWeb()">
+                <i class="fas fa-sync-alt"></i> Refresh Web
+            </button>
+
+            <!-- Tombol Tutup -->
+            <button class="close-btn3" onclick="toggleModal3()">
+                <i class="fas fa-times"></i> Tutup
+            </button>
+        </div>
+    </div>
 <div class="container">
     <div class="header">
         <a href="#" class="logo">Our Memories</a>
     </div>
     <div class="menu">
+        <div class="menu-item">
+            <i class="fas fa-robot"></i>
+            <h3>BiSTao AI</h3>
+            <p>Dibekali Gemini 2.0 Flash</p>
+            <a href="ai.html" class="btn">Buka</a>
+        </div>
         <div class="menu-item">
             <i class="fas fa-photo-video"></i>
             <h3>Video Kenangan</h3>
@@ -457,6 +561,12 @@
             <h3>Riwayat Chat</h3>
             <p>Chat tentang kita</p>
             <a href="1.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-user-circle"></i>
+            <h3>Profile</h3>
+            <p>Biodata Kita</p>
+            <a href="fav.html" class="btn">Buka</a>
         </div>
         <div class="menu-item" id="lagu">
             <i class="fas fa-music"></i>
@@ -483,17 +593,6 @@
             <a href="setting.html" class="btn">Buka</a>
         </div>
         </div>
-    <div class="bottom-nav">
-        <button onclick="location.href='fav.html'">
-            <i class="fas fa-user-circle" alt="Home"></i>
-        </button>
-        <button onclick="location.href='index.html'">
-            <i class="fas fa-arrow-rotate-backward" alt="User"></i>
-        </button>
-        <button onclick="location.href='info.html'">
-            <i class="fas fa-info-circle" alt="Profile"></i>
-        </button>
-    </div>
     <audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
     <audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
     <audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
@@ -567,6 +666,30 @@
 </div>
 
 <script>
+function toggleModal3() {
+            const modal = document.getElementById("modal3");
+            modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
+        }
+
+        function butuhBantuan() {
+            window.location.href = "tutor.html"; // Ganti dengan link halaman bantuan
+        }
+
+        function syaratKetentuan() {
+            window.location.href = "sk.html"; // Ganti dengan link S&K
+        }
+
+        function refreshWeb() {
+            location.reload();
+        }
+
+        // Menutup modal jika klik di luar konten
+        window.onclick = function(event) {
+            const modal = document.getElementById("modal3");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
 // Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
         window.onload = () => {
             const savedBackground = localStorage.getItem('background');

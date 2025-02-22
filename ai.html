@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>BiSTao AI Chatbot</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+    
+    <style>
+        /* Styling umum */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            touch-action: manipulation;
+        }
+
+        body, html {
+            font-family: Arial, sans-serif;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: black;
+        }
+
+        body.dark-mode {
+            background-color: #1e1e1e;
+            color: white;
+        }
+
+        .chat-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-theme {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .chat-box {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #eef2f7;
+            display: flex;
+            flex-direction: column;
+            scrollbar-width: none;
+            height: calc(100vh - 120px);
+            padding-bottom: 150px;
+        }
+
+        body.dark-mode .chat-box {
+            background: #252525;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px;
+            margin: 5px;
+            border-radius: 10px;
+            font-size: 16px;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background: #007bff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-message {
+            background: #ddd;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        body.dark-mode .bot-message {
+            background: #444;
+            color: white;
+        }
+
+        .typing {
+            align-self: flex-start;
+            background: #ddd;
+            padding: 10px;
+            border-radius: 10px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+        }
+
+        .typing span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            margin: 0 2px;
+            background: gray;
+            border-radius: 50%;
+            animation: typing 1.5s infinite;
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes typing {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        body.dark-mode .chat-input {
+            background: #333;
+            border-top: 1px solid #444;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            touch-action: manipulation;
+        }
+
+        body.dark-mode .chat-input input {
+            background: #222;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        .chat-input button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .chat-input button i {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body onload="loadChatHistory()">
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <i class="fas fa-robot"></i> BiSTao AI
+            <button class="toggle-theme" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        
+        <div class="chat-box" id="chatbox"></div>
+
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Ketik disini ya cil..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let apiKey = "AIzaSyBQcvD8p0jPi-Pju1pIyKs-baEVqG5nxeo";
+        let botName = "BiSTao";
+        let userName = "Chian";
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        function saveChatHistory() {
+            localStorage.setItem("chatHistory", document.getElementById("chatbox").innerHTML);
+        }
+
+        function loadChatHistory() {
+            let chatbox = document.getElementById("chatbox");
+            let history = localStorage.getItem("chatHistory");
+            if (history) {
+                chatbox.innerHTML = history;
+            } else {
+                chatbox.innerHTML = `<p class="bot-message message"><i class="fas fa-robot"></i> <b>${botName}:</b> Halo Chian! Apa yang bisa Bima bantu?</p>`;
+            }
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            let userInput = document.getElementById("userInput").value;
+            let chatbox = document.getElementById("chatbox");
+
+            if (userInput.trim() === "") return;
+
+            chatbox.innerHTML += `<p class="user-message message"><b>${userName}:</b> ${userInput}</p>`;
+            document.getElementById("userInput").value = "";
+            saveChatHistory();
+
+            let typingIndicator = document.createElement("p");
+            typingIndicator.classList.add("typing", "message");
+            typingIndicator.innerHTML = `<i class="fas fa-robot"></i> <b>${botName}:</b> <span></span><span></span><span></span>`;
+            chatbox.appendChild(typingIndicator);
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: userInput }] }] })
+            });
+
+            let data = await response.json();
+            chatbox.removeChild(typingIndicator);
+
+            let botResponse = data.candidates[0].content.parts[0].text.replace(/Gemini/g, "BiSTao").replace(/\b(Anda|Kamu)\b/g, "Chian");
+
+            chatbox.innerHTML += `<p class="bot-message message"><b>${botName}:</b> ${botResponse}</p>`;
+            saveChatHistory();
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
+
+</body>
+</html>
