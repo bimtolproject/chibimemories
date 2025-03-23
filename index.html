@@ -483,54 +483,7 @@
             color: white;
             font-size: 18px;
         }
-        /* midal Update */
-        .midal {
-            display: flex;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
 
-        .midal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .midal-content h2 {
-            color: #007bff;
-        }
-
-        .midal-content p {
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        .midal-content button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .midal-content button:hover {
-            background: #0056b3;
-        }
 @font-face {
     font-family: 'georgia';
     src: url('resource/georgia.ttf') format('ttf'),
@@ -545,15 +498,6 @@
         <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4" type="video/mp4">
     </video>
 
-<!-- midal Update -->
-<div id="updatemidal" class="midal">
-    <div class="midal-content">
-        <h2>🚀 Pembaruan Tersedia!</h2>
-        <p>Versi terbaru (v5.1) telah tersedia. Silahkan Chian perbarui untuk mendapatkan fitur terbaru dan peningkatan keamanan.</p>
-        <button onclick="updateNow()">Perbarui Sekarang</button>
-        <button onclick="hideUpdatemidal()">Chian sudah update ke 5.1</button>
-    </div>
-</div>
     <!-- Tombol info di pojok kanan bawah -->
     <button class="info-btn3" onclick="toggleModal3()">
         <i class="fas fa-info-circle"></i> <!-- Ikon info -->
@@ -728,19 +672,6 @@ function updateNow() {
         window.location.href = "https://www.mediafire.com/file/vkvhustzt46bgez/ChrisbiM_5.1.apk/file"; // Ganti dengan link update
     }
 
-    function hideUpdatemidal() {
-        localStorage.setItem("updateDismissed", "true");
-        document.getElementById("updatemidal").style.display = "none";
-    }
-
-    function checkUpdate() {
-        let updateDismissed = localStorage.getItem("updateDismissed");
-        if (!updateDismissed) {
-            document.getElementById("updatemidal").style.display = "flex";
-        } else {
-            document.getElementById("updatemidal").style.display = "none";
-        }
-    }
 
 function toggleModal3() {
             const modal = document.getElementById("modal3");
