@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>BiSTao AI Chatbot</title>
+    <title>BiSTaoAIAI Chatbot</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
     
@@ -183,9 +183,8 @@
         .chat-input button i {
             font-size: 18px;
         }
-        
-                /* Modal Maintenance */
-        .modal {
+        /* midal Maintenance */
+        .midal {
             display: flex;
             position: fixed;
             z-index: 1000;
@@ -198,7 +197,7 @@
             align-items: center;
         }
 
-        .modal-content {
+        .midal-content {
             background-color: white;
             padding: 20px;
             border-radius: 10px;
@@ -208,16 +207,16 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .modal-content h2 {
+        .midal-content h2 {
             color: #d9534f;
         }
 
-        .modal-content p {
+        .midal-content p {
             font-size: 16px;
             margin-bottom: 15px;
         }
 
-        .modal-content button {
+        .midal-content button {
             background: #007bff;
             color: white;
             border: none;
@@ -228,16 +227,25 @@
             width: 100%;
         }
 
-        .modal-content button:hover {
+        .midal-content button:hover {
             background: #0056b3;
         }
     </style>
 </head>
 <body onload="loadChatHistory()">
 
+<!-- midal Maintenance -->
+    <div id="maintenancemidal" class="midal">
+        <div class="midal-content">
+            <h2>📢 Perhatian!</h2><br>
+            <p>Terimakasih karna telah mengikuti dan menggunakan BiSTaoAI uji coba versi beta, Mohon Maaf Saat ini Bima telah menutup server BiSTaoAI versi BETA silahkan tunggu Versi Stabilnya rilis!<b></p>
+            <button onclick="contactCustomerService()">Hubungi BIMTOL</button>
+        </div>
+    </div>
+
     <div class="chat-container">
         <div class="chat-header">
-            <i class="fas fa-robot"></i> BiSTao AI
+            <i class="fas fa-robot"></i> BiSTaoAI
             <button class="toggle-theme" onclick="toggleTheme()">
                 <i class="fas fa-moon"></i>
             </button>
@@ -246,15 +254,37 @@
         <div class="chat-box" id="chatbox"></div>
 
         <div class="chat-input">
-            <input type="text" id="userInput" placeholder="Ketik disini ya cil..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="userInput" placeholder="Ketik disini ya bro!..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
     <script>
+        function showMaintenancemidal() {
+            document.getElementById("maintenancemidal").style.display = "flex";
+        }
+
+        function contactCustomerService() {
+            window.location.href = "https://wa.me/6289508984455"; // Ganti dengan nomor WhatsApp CS
+        }
+        
+        function checkMaintenance() {
+    const maintenanceEndDate = new Date("2027-02-27T08:00:00").getTime();
+    const now = new Date().getTime();
+
+    if (now >= maintenanceEndDate) {
+        document.getElementById("maintenancemidal").style.display = "none";
+    } else {
+        document.getElementById("maintenancemidal").style.display = "flex";
+    }
+}
+
+// Panggil fungsi saat halaman dimuat
+window.onload = checkMaintenance;
+        
         let apiKey = "AIzaSyBQcvD8p0jPi-Pju1pIyKs-baEVqG5nxeo";
-        let botName = "BiSTao";
-        let userName = "Chian";
+        let botName = "BiSTaoAI";
+        let userName = "Saya";
 
         function handleKeyPress(event) {
             if (event.key === "Enter") {
@@ -272,7 +302,7 @@
             if (history) {
                 chatbox.innerHTML = history;
             } else {
-                chatbox.innerHTML = `<p class="bot-message message"><i class="fas fa-robot"></i> <b>${botName}:</b> Halo Chian! Apa yang bisa Bima bantu?</p>`;
+                chatbox.innerHTML = `<p class="bot-message message"><i class="fas fa-robot"></i> <b>${botName}:</b> Halo Bro! Apa yang bisa BiSTaoAI bantu?</p>`;
             }
             chatbox.scrollTop = chatbox.scrollHeight;
         }
@@ -302,7 +332,7 @@
             let data = await response.json();
             chatbox.removeChild(typingIndicator);
 
-            let botResponse = data.candidates[0].content.parts[0].text.replace(/Gemini/g, "BiSTao").replace(/\b(Anda|Kamu)\b/g, "Chian");
+            let botResponse = data.candidates[0].content.parts[0].text.replace(/Gemini/g, "bistaoai").replace(/\b(Anda|Kamu)\b/g, "Anda");
 
             chatbox.innerHTML += `<p class="bot-message message"><b>${botName}:</b> ${botResponse}</p>`;
             saveChatHistory();
