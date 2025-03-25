@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Bot</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'georgia', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e2e;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            color: #333;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #5c6bc0;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .btn i {
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        .btn-random {
+            background: #5c6bc0;
+        }
+
+        .btn-random:hover {
+            background: #1e87e6;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        @font-face {
+    font-family: 'georgia';
+    src: url('resource/georgia.ttf') format('ttf'),
+    font-weight: normal;
+    font-style: normal;
+            }
+    </style>
+</head>
+<body>
+<!-- Video Background -->
+    <video class="video-bg" autoplay loop muted id="backgroundVideo">
+        <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4"></iframe>" type="video/mp4">
+    </video>
+    <audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
+<audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
+<audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
+    <div class="container">
+        <h2><i class="fas fa-robot"></i> Tools Chian</h2>
+        <div class="input-group">
+            <label for="jumlah">Jumlah Pengiriman:</label>
+            <select id="jumlah">
+                <option value="1">1x</option>
+                <option value="5">5x</option>
+                <option value="10">10x</option>
+                <option value="25">25x</option>
+                <option value="50">50x</option>
+                <option value="100">100x</option>
+                <option value="500">500x (Tidak Rekomendasi)</option>
+            </select>
+        </div>
+
+      <button class="btn btn-random" onclick="mabarML()"><i class="fas fa-random"></i> AJAK MABAR ML</button>
+        <button class="btn btn-random" onclick="mabarGenshin()"><i class="fas fa-random"></i> AJAK COOP GENSHIN</button>
+        <button class="btn btn-random" onclick="spamRandom()"><i class="fas fa-random"></i> Senggol Bimtol!</button>
+        <button class="btn btn-random" onclick="streakRandom()"><i class="fas fa-random"></i> Ingatkan Streak Tiktok!</button>
+        <i>"Jika menggunakan tools ini pesan akan otomatis terkirim ke telegram bima dan tools ini diperuntukkan/digunakan oleh chian"</i><br>
+    </div>
+    <br><br>
+    <div class="container">
+        <h2><i class="fas fa-robot"></i> Tools Bimtol</h2>
+        <div class="input-group">
+            <label for="jumlah">Jumlah Pengiriman:</label>
+            <select id="jumlah">
+                <option value="1">1x</option>
+                <option value="10">10x</option>
+                <option value="50">50x</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+
+        <button class="btn btn-random" onclick="mabarMLC()"><i class="fas fa-random"></i> AJAK MABAR ML</button>
+        <button class="btn btn-random" onclick="mabarGenshinC()"><i class="fas fa-random"></i> AJAK COOP GENSHIN</button>
+        <button class="btn btn-random" onclick="spamRandomC()"><i class="fas fa-random"></i> Senggol Chian Sampe Mampus!</button>
+        <button class="btn btn-random" onclick="streakRandomC()"><i class="fas fa-random"></i> Ingatkan Streak Tiktok!</button>
+        <i>"Tools ini diperuntukkan/digunakan oleh Bimtol"</i><br>
+    </div>
+
+    <footer>Mohon gunakan Tools ini dengan bijak yaa, jangan digunakan secara berlebihan ya cill.</footer>
+    <footer>© 2023-2025 Bimtolproject - All Rights Reserved</footer>
+    <script>
+    // Fungsi untuk memainkan suara switch task
+function playSwitchSound() {
+    switchSound.currentTime = 0;
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window
+function playOpenWinSound() {
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window
+function playCloseWinSound() {
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+// Fungsi untuk memainkan suara switch task saat klik di luar button
+function playSwitchSound() {
+    var switchSound = document.getElementById('switchSound');
+    switchSound.currentTime = 0; // Kembali ke awal file audio jika sedang diputar
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window saat klik button
+function playOpenWinSound() {
+    var openWinSound = document.getElementById('openWinSound');
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window saat klik button di bottom nav
+function playCloseWinSound() {
+    var closeWinSound = document.getElementById('closeWinSound');
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+
+// Event listener untuk menangani klik di luar button (misalnya di dalam container)
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('button')) {
+        playSwitchSound(); // Memainkan suara saat klik di luar button
+    }
+});
+
+// Event listener untuk tombol-tombol yang ada di halaman Anda
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', function() {
+        playOpenWinSound(); // Memainkan suara saat klik button
+    });
+});
+
+// Event listener khusus untuk tombol di bottom nav
+document.querySelectorAll('.bottom-nav button').forEach(button => {
+    button.addEventListener('click', function() {
+        playCloseWinSound(); // Memainkan suara saat klik button di bottom nav
+    });
+});
+
+    // Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
+        window.onload = () => {
+            const savedBackground = localStorage.getItem('background');
+            const savedFreezeVideo = localStorage.getItem('freezeVideo') === 'true';
+            const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
+            const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
+
+            // Terapkan background yang disimpan
+            if (savedBackground) {
+                backgroundVideo.src = savedBackground;
+                bgRadios.forEach(radio => {
+                    if (radio.value === savedBackground) {
+                        radio.checked = true;
+                    }
+                });
+            }
+
+            // Terapkan status "Video Jangan Bergerak"
+            freezeVideo.checked = savedFreezeVideo;
+            if (savedFreezeVideo) {
+                backgroundVideo.pause();
+            } else {
+                backgroundVideo.play();
+            }
+
+            // Terapkan status "Ganti Background Otomatis"
+            autoChangeBg.checked = savedAutoChangeBg;
+            if (savedAutoChangeBg) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            }
+
+            // Terapkan status "Tetapkan Background ke Semua Halaman"
+            applyToAll.checked = savedApplyToAll;
+        };
+    
+        const tokenB = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0";
+        const chat_idB = "1917708915";
+        const tokenC = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0";
+        const chat_idC = "6708247690";
+
+        function kirimPesan(pesan) {
+            fetch(`https://api.telegram.org/bot${tokenC}/sendMessage?chat_id=${chat_idB}&text=${encodeURIComponent(pesan)}`)
+                .then(response => response.json())
+                .then(data => console.log("Berhasil:", data))
+                .catch(error => console.error("Error:", error));
+        }
+        
+        function kirimPesan1(pesan) {
+            fetch(`https://api.telegram.org/bot${tokenB}/sendMessage?chat_id=${chat_idC}&text=${encodeURIComponent(pesan)}`)
+                .then(response => response.json())
+                .then(data => console.log("Berhasil:", data))
+                .catch(error => console.error("Error:", error));
+        }
+
+        function mabarML() {
+            const pesanAcak = [
+                "Ayooo Login ML",
+                "Login Login ML!!"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan(pesan);
+            }
+        }
+        
+        function mabarGenshin() {
+            const pesanAcak = [
+                "Ayooo Login Genshin",
+                "Login Login Genshin!!"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan(pesan);
+            }
+        }
+
+        function spamRandom() {
+            const pesanAcak = [
+                "Haloo!!! Chian telah menyenggol Bima!",
+                "Halooo Bimaaaaaa"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan(pesan);
+            }
+        }
+        
+        function streakRandom() {
+            const pesanAcak = [
+                "Woyy Api Woyyyyy🔥",
+                "Apinya belum nyalaaa",
+                "NYALAIN APINYA!"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan(pesan);
+            }
+        }
+        
+        function mabarMLC() {
+            const pesanAcak = [
+                "Ayooo Login ML",
+                "Login Login ML!!"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan1(pesan);
+            }
+        }
+        
+        function mabarGenshinC() {
+            const pesanAcak = [
+                "Ayooo Login Genshin",
+                "Login Login Genshin!!"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan1(pesan);
+            }
+        }
+
+        function spamRandomC() {
+            const pesanAcak = [
+                "Haloo!!! Bima telah menyenggol Chian!",
+                "Halooo Chiannnnnnn"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan1(pesan);
+            }
+        }
+        
+        function streakRandomC() {
+            const pesanAcak = [
+                "Woyy Api Woyyyyy🔥",
+                "Apinya belum nyalaaa",
+                "NYALAIN APINYA!"
+            ];
+            
+            let jumlah = parseInt(document.getElementById("jumlah").value);
+
+            for (let i = 0; i < jumlah; i++) {
+                let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+                kirimPesan1(pesan);
+            }
+        }
+    </script>
+</body>
+</html>
