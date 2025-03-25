@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Bot</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'georgia', Tahoma, Geneva, Verdana, sans-serif;
@@ -98,6 +99,70 @@
             opacity: 0.7;
         }
         
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Menyelaraskan modal ke tengah */
+    width: 300px; /* Atur lebar modal sesuai kebutuhan */
+    height: 300px; /* Atur tinggi modal sesuai kebutuhan */
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px; /* Tambahkan border-radius untuk tampilan yang lebih baik */
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+}
+
+.modal-content p {
+    color: #666;
+    font-size: 16px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.modal-content .btn {
+    padding: 10px 20px;
+    color: #fff;
+    background: #5c6bc0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.modal-content .btn:hover {
+    background: #3949ab;
+}
+
+.modal-content .btn.cancel {
+    background: #f44336;
+}
+
+.modal-content .btn.cancel:hover {
+    background: #d32f2f;
+}
+        
         @font-face {
     font-family: 'georgia';
     src: url('resource/georgia.ttf') format('ttf'),
@@ -129,10 +194,10 @@
             </select>
         </div>
 
-      <button class="btn btn-random" onclick="mabarML()"><i class="fas fa-random"></i> AJAK MABAR ML</button>
-        <button class="btn btn-random" onclick="mabarGenshin()"><i class="fas fa-random"></i> AJAK COOP GENSHIN</button>
-        <button class="btn btn-random" onclick="spamRandom()"><i class="fas fa-random"></i> Senggol Bimtol!</button>
-        <button class="btn btn-random" onclick="streakRandom()"><i class="fas fa-random"></i> Ingatkan Streak Tiktok!</button>
+      <button class="btn btn-random" onclick="mabarML()"><i class="fas fa-gamepad"></i> AJAK MABAR ML</button>
+        <button class="btn btn-random" onclick="mabarGenshin()"><i class="fas fa-gamepad"></i> AJAK COOP GENSHIN</button>
+        <button class="btn btn-random" onclick="spamRandom()"><i class="fas fa-fist-raised"></i> Senggol Bimtol!</button>
+        <button class="btn btn-random" onclick="streakRandom()"><i class="fas fa-bell"></i> Ingatkan Streak Tiktok!</button>
         <i>"Jika menggunakan tools ini pesan akan otomatis terkirim ke telegram bima dan tools ini diperuntukkan/digunakan oleh chian"</i><br>
     </div>
     <br><br>
@@ -142,21 +207,35 @@
             <label for="jumlah">Jumlah Pengiriman:</label>
             <select id="jumlah">
                 <option value="1">1x</option>
+                <option value="5">5x</option>=
                 <option value="10">10x</option>
+                <option value="25">25x</option>
                 <option value="50">50x</option>
-                <option value="100">100</option>
+                <option value="100">100x</option>
             </select>
         </div>
 
-        <button class="btn btn-random" onclick="mabarMLC()"><i class="fas fa-random"></i> AJAK MABAR ML</button>
-        <button class="btn btn-random" onclick="mabarGenshinC()"><i class="fas fa-random"></i> AJAK COOP GENSHIN</button>
-        <button class="btn btn-random" onclick="spamRandomC()"><i class="fas fa-random"></i> Senggol Chian Sampe Mampus!</button>
-        <button class="btn btn-random" onclick="streakRandomC()"><i class="fas fa-random"></i> Ingatkan Streak Tiktok!</button>
+        <button class="btn btn-random" onclick="mabarMLC()"><i class="fas fa-gamepad"></i> AJAK MABAR ML</button>
+        <button class="btn btn-random" onclick="mabarGenshinC()"><i class="fas fa-gamepad"></i> AJAK COOP GENSHIN</button>
+        <button class="btn btn-random" onclick="spamRandomC()"><i class="fas fa-fist-raised"></i> Senggol Chian Sampe Mampus!</button>
+        <button class="btn btn-random" onclick="streakRandomC()"><i class="fas fa-bell"></i> Ingatkan Streak Tiktok!</button>
         <i>"Tools ini diperuntukkan/digunakan oleh Bimtol"</i><br>
     </div>
 
     <footer>Mohon gunakan Tools ini dengan bijak yaa, jangan digunakan secara berlebihan ya cill.</footer>
     <footer>© 2023-2025 Bimtolproject - All Rights Reserved</footer>
+    
+    <!-- Modal untuk Pengaturan Disimpan -->
+<div id="successModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3><i class="fas fa-check-circle"></i> Berhasil!</h3>
+        <p>Horeee!! Pesan telah berhasil terkirim oleh bot sesuai dengan perintah!</p>
+        <div class="modal-buttons">
+            <button class="btn cancel" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+</div>
+
     <script>
     // Fungsi untuk memainkan suara switch task
 function playSwitchSound() {
@@ -257,6 +336,14 @@ document.querySelectorAll('.bottom-nav button').forEach(button => {
             // Terapkan status "Tetapkan Background ke Semua Halaman"
             applyToAll.checked = savedApplyToAll;
         };
+        
+        function showModal() {
+    document.getElementById("successModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("successModal").style.display = "none";
+}
     
         const tokenB = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0";
         const chat_idB = "1917708915";
@@ -264,18 +351,24 @@ document.querySelectorAll('.bottom-nav button').forEach(button => {
         const chat_idC = "6708247690";
 
         function kirimPesan(pesan) {
-            fetch(`https://api.telegram.org/bot${tokenC}/sendMessage?chat_id=${chat_idB}&text=${encodeURIComponent(pesan)}`)
-                .then(response => response.json())
-                .then(data => console.log("Berhasil:", data))
-                .catch(error => console.error("Error:", error));
-        }
-        
-        function kirimPesan1(pesan) {
-            fetch(`https://api.telegram.org/bot${tokenB}/sendMessage?chat_id=${chat_idC}&text=${encodeURIComponent(pesan)}`)
-                .then(response => response.json())
-                .then(data => console.log("Berhasil:", data))
-                .catch(error => console.error("Error:", error));
-        }
+    fetch(`https://api.telegram.org/bot${tokenC}/sendMessage?chat_id=${chat_idB}&text=${encodeURIComponent(pesan)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Berhasil:", data);
+            showModal(); // Menampilkan modal sukses
+        })
+        .catch(error => console.error("Error:", error));
+}
+
+function kirimPesan1(pesan) {
+    fetch(`https://api.telegram.org/bot${tokenB}/sendMessage?chat_id=${chat_idC}&text=${encodeURIComponent(pesan)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Berhasil:", data);
+            showModal(); // Menampilkan modal sukses
+        })
+        .catch(error => console.error("Error:", error));
+}
 
         function mabarML() {
             const pesanAcak = [
