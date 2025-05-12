@@ -673,7 +673,19 @@
     </div>
 </div>
 
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "800486b8-6405-4fa9-9627-f69e7af4735d",
+      safari_web_id: "web.onesignal.auto.1947bcbb-3df5-45a5-b464-0be0e15f4a2c",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+    
 function updateNow() {
         window.location.href = "https://www.mediafire.com/file/vkvhustzt46bgez/ChrisbiM_5.1.apk/file"; // Ganti dengan link update
     }
