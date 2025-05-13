@@ -7,7 +7,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; }
-    body, html { font-family: Arial, sans-serif; width: 100vw; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    body, html { font-family: Helvetica, sans-serif; width: 100vw; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
     body { background-color: #f4f4f4; color: black; }
     body.dark-mode { background-color: #1e1e1e; color: white; }
 
@@ -30,6 +30,7 @@
     .message {
       max-width: 80%; padding: 12px; margin: 5px;
       border-radius: 10px; font-size: 16px; word-wrap: break-word;
+      line-height: 1.6; margin-top: 8px; margin-bottom: 8px;
     }
 
     .user-message {
@@ -97,6 +98,14 @@
       border-radius: 5px; width: 100%;
     }
     .midal-content button:hover { background: #0056b3; }
+    
+    blockquote {
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+  color: #888;
+  margin: 10px 0;
+  font-style: italic;
+}
   </style>
 </head>
 <body>
@@ -182,8 +191,14 @@
           let botText = data.candidates[0].content.parts[0].text
             .replace(/Gemini/g, "BiST")
             .replace(/\b(Google)\b/g, "Bima")
-            .replace(/\b(Anda|Kamu)\b/g, "Chian");
-
+            .replace(/\b(Anda|Kamu)\b/g, "Chian")
+            .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+            .replace(/(^|\n)\*(?!\*)(.*)/g, "$1<br>•$2")
+            .replace(/(^|\n)\d+[\.\)]\s*(.*)/g, "$1<br>$&")
+            .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>')
+            .replace(/\n/g, "<br>")
+            .replace(/^> (.*)/gm, '<blockquote>$1</blockquote>');
+            
           if (/halo/i.test(userInput)) {
             botText = "Halo juga Chian, apakah Chian sedang memerlukan sesuatu?";
           }
