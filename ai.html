@@ -1,348 +1,219 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>BiSTaoAIAI Chatbot</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>BiSTaoAI Chatbot</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; }
+    body, html { font-family: Arial, sans-serif; width: 100vw; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    body { background-color: #f4f4f4; color: black; }
+    body.dark-mode { background-color: #1e1e1e; color: white; }
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
-    
-    <style>
-        /* Styling umum */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            touch-action: manipulation;
-        }
+    .chat-container { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
 
-        body, html {
-            font-family: Arial, sans-serif;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        body {
-            background-color: #f4f4f4;
-            color: black;
-        }
-
-        body.dark-mode {
-            background-color: #1e1e1e;
-            color: white;
-        }
-
-        .chat-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            background: #007bff;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .toggle-theme {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .chat-box {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 15px;
-            background: #eef2f7;
-            display: flex;
-            flex-direction: column;
-            scrollbar-width: none;
-            height: calc(100vh - 120px);
-            padding-bottom: 150px;
-        }
-
-        body.dark-mode .chat-box {
-            background: #252525;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px;
-            margin: 5px;
-            border-radius: 10px;
-            font-size: 16px;
-            word-wrap: break-word;
-        }
-
-        .user-message {
-            background: #007bff;
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 0;
-        }
-
-        .bot-message {
-            background: #ddd;
-            align-self: flex-start;
-            border-bottom-left-radius: 0;
-        }
-
-        body.dark-mode .bot-message {
-            background: #444;
-            color: white;
-        }
-
-        .typing {
-            align-self: flex-start;
-            background: #ddd;
-            padding: 10px;
-            border-radius: 10px;
-            font-style: italic;
-            display: flex;
-            align-items: center;
-        }
-
-        .typing span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            margin: 0 2px;
-            background: gray;
-            border-radius: 50%;
-            animation: typing 1.5s infinite;
-        }
-
-        .typing span:nth-child(2) {
-            animation-delay: 0.3s;
-        }
-
-        .typing span:nth-child(3) {
-            animation-delay: 0.6s;
-        }
-
-        @keyframes typing {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
-        }
-
-        .chat-input {
-            display: flex;
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            background: white;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        body.dark-mode .chat-input {
-            background: #333;
-            border-top: 1px solid #444;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            touch-action: manipulation;
-        }
-
-        body.dark-mode .chat-input input {
-            background: #222;
-            color: white;
-            border: 1px solid #555;
-        }
-
-        .chat-input button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 15px;
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .chat-input button i {
-            font-size: 18px;
-        }
-        /* midal Maintenance */
-        .midal {
-            display: flex;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .midal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .midal-content h2 {
-            color: #d9534f;
-        }
-
-        .midal-content p {
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        .midal-content button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
-        }
-
-        .midal-content button:hover {
-            background: #0056b3;
-        }
-    </style>
-</head>
-<body onload="loadChatHistory()">
-
-<!-- midal Maintenance -->
-    <div id="maintenancemidal" class="midal">
-        <div class="midal-content">
-            <h2>📢 Perhatian!</h2><br>
-            <p>Terimakasih karna telah mengikuti dan menggunakan BiSTaoAI uji coba versi beta, Mohon Maaf Saat ini Bima telah menutup server BiSTaoAI versi BETA silahkan tunggu Versi Stabilnya rilis!<b></p>
-            <button onclick="contactCustomerService()">Hubungi BIMTOL</button>
-        </div>
-    </div>
-
-    <div class="chat-container">
-        <div class="chat-header">
-            <i class="fas fa-robot"></i> BiSTaoAI
-            <button class="toggle-theme" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i>
-            </button>
-        </div>
-        
-        <div class="chat-box" id="chatbox"></div>
-
-        <div class="chat-input">
-            <input type="text" id="userInput" placeholder="Ketik disini ya bro!..." onkeypress="handleKeyPress(event)">
-            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-
-    <script>
-        function showMaintenancemidal() {
-            document.getElementById("maintenancemidal").style.display = "flex";
-        }
-
-        function contactCustomerService() {
-            window.location.href = "https://wa.me/6289508984455"; // Ganti dengan nomor WhatsApp CS
-        }
-        
-        function checkMaintenance() {
-    const maintenanceEndDate = new Date("2027-02-27T08:00:00").getTime();
-    const now = new Date().getTime();
-
-    if (now >= maintenanceEndDate) {
-        document.getElementById("maintenancemidal").style.display = "none";
-    } else {
-        document.getElementById("maintenancemidal").style.display = "flex";
+    .chat-header {
+      background: #007bff; color: white; padding: 15px; text-align: center;
+      font-size: 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;
     }
-}
 
-// Panggil fungsi saat halaman dimuat
-window.onload = checkMaintenance;
-        
-        let apiKey = "AIzaSyBQcvD8p0jPi-Pju1pIyKs-baEVqG5nxeo";
-        let botName = "BiSTaoAI";
-        let userName = "Saya";
+    .toggle-theme { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
 
-        function handleKeyPress(event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
+    .chat-box {
+      flex-grow: 1; overflow-y: auto; padding: 15px; background: #eef2f7;
+      display: flex; flex-direction: column; scrollbar-width: none;
+      height: calc(100vh - 120px); padding-bottom: 150px;
+    }
+    body.dark-mode .chat-box { background: #252525; }
+
+    .message {
+      max-width: 80%; padding: 12px; margin: 5px;
+      border-radius: 10px; font-size: 16px; word-wrap: break-word;
+    }
+
+    .user-message {
+      background: #007bff; color: white; align-self: flex-end; border-bottom-right-radius: 0;
+    }
+
+    .bot-message {
+      background: #ddd; align-self: flex-start; border-bottom-left-radius: 0;
+    }
+    body.dark-mode .bot-message { background: #444; color: white; }
+
+    .typing {
+      align-self: flex-start; background: #ddd; padding: 10px;
+      border-radius: 10px; font-style: italic; display: flex; align-items: center;
+    }
+    .typing span {
+      display: inline-block; width: 6px; height: 6px; margin: 0 2px;
+      background: gray; border-radius: 50%; animation: typing 1.5s infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.3s; }
+    .typing span:nth-child(3) { animation-delay: 0.6s; }
+    @keyframes typing {
+      0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; }
+    }
+
+    .chat-input {
+      display: flex; padding: 10px; border-top: 1px solid #ddd;
+      background: white; position: fixed; bottom: 0; width: 100%;
+    }
+    body.dark-mode .chat-input {
+      background: #333; border-top: 1px solid #444;
+    }
+    .chat-input input {
+      flex: 1; padding: 12px; border: 1px solid #ddd;
+      border-radius: 5px; font-size: 16px; touch-action: manipulation;
+    }
+    body.dark-mode .chat-input input {
+      background: #222; color: white; border: 1px solid #555;
+    }
+    .chat-input button {
+      background: #007bff; color: white; border: none;
+      padding: 12px 15px; margin-left: 10px; cursor: pointer;
+      border-radius: 5px; font-size: 16px;
+    }
+
+    .chat-input button i { font-size: 18px; }
+
+    .midal {
+      display: flex; position: fixed; z-index: 1000;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;
+    }
+
+    .midal-content {
+      background-color: white; padding: 20px; border-radius: 10px;
+      width: 80%; max-width: 400px; text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .midal-content h2 { color: #d9534f; }
+    .midal-content p { font-size: 16px; margin-bottom: 15px; }
+    .midal-content button {
+      background: #007bff; color: white; border: none;
+      padding: 10px 15px; font-size: 16px; cursor: pointer;
+      border-radius: 5px; width: 100%;
+    }
+    .midal-content button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <i class="fas fa-robot"></i> BiSTaoAI
+      <button class="toggle-theme" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+
+    <div class="chat-box" id="chatbox"></div>
+
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Ketik disini ya cilll!..." onkeypress="handleKeyPress(event)" />
+      <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = "AIzaSyD_AE0i6XYFhSbfRS_fY3WxGxrxB-5qwik"; 
+    const botName = "BiSTaoAI";
+    const userName = "Chian";
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function contactCustomerService() {
+      window.location.href = "https://wa.me/6289508984455";
+    }
+
+    window.onload = () => {
+      loadChatHistory();
+    };
+
+    function saveChatHistory() {
+      localStorage.setItem("chatHistory", document.getElementById("chatbox").innerHTML);
+    }
+
+    function loadChatHistory() {
+      const chatbox = document.getElementById("chatbox");
+      const history = localStorage.getItem("chatHistory");
+      chatbox.innerHTML = history || `<p class="bot-message message"><i class="fas fa-robot"></i> <b>${botName}:</b> Halo Chian! Apa yang bisa BiSTaoAI bantu?</p>`;
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const chatbox = document.getElementById("chatbox");
+      const userInput = input.value.trim();
+      if (!userInput) return;
+
+      chatbox.innerHTML += `<p class="user-message message"><b>${userName}:</b> ${userInput}</p>`;
+      input.value = "";
+      saveChatHistory();
+
+      const typing = document.createElement("p");
+      typing.classList.add("typing", "message");
+      typing.innerHTML = `<i class="fas fa-robot"></i> <b>${botName}:</b> <span></span><span></span><span></span>`;
+      chatbox.appendChild(typing);
+      chatbox.scrollTop = chatbox.scrollHeight;
+
+      try {
+        const response = await fetch(`
+        https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: userInput }] }] }),
+        });
+
+        const data = await response.json();
+        chatbox.removeChild(typing);
+
+        if (data.candidates && data.candidates.length > 0) {
+          let botText = data.candidates[0].content.parts[0].text
+            .replace(/Gemini/g, "BiST")
+            .replace(/\b(Google)\b/g, "Bima")
+            .replace(/\b(Anda|Kamu)\b/g, "Chian");
+
+          if (/halo/i.test(userInput)) {
+            botText = "Halo juga Chian, apakah Chian sedang memerlukan sesuatu?";
+          }
+          
+          if (/Selamat Pagi/i.test(userInput)) {
+            botText = "Ohayouu juga chiann, ternyata ketua sudah bangun dari mimpi indahnya?👉👈😝";
+          }
+          
+          if (/Selamat Siang/i.test(userInput)) {
+            botText = "Siang juga chiann, apakah chian sudah makan hari ini?";
+          }
+          
+          if (/Selamat Malam/i.test(userInput)) {
+            botText = "Malam juga chiann, selamat tidur, semoga mimpi indah yah😼";
+          }
+
+          chatbox.innerHTML += `<p class="bot-message message"><b>${botName}:</b> ${botText}</p>`;
+        } else {
+          chatbox.innerHTML += `<p class="bot-message message"><b>${botName}:</b> Maaf Chian, aku tidak bisa memahami respons dari server.</p>`;
         }
 
-        function saveChatHistory() {
-            localStorage.setItem("chatHistory", document.getElementById("chatbox").innerHTML);
-        }
+      } catch (error) {
+        chatbox.removeChild(typing);
+        chatbox.innerHTML += `<p class="bot-message message"><b>${botName}:</b> Terjadi kesalahan teknis. Coba lagi ya Chian.</p>`;
+      }
 
-        function loadChatHistory() {
-            let chatbox = document.getElementById("chatbox");
-            let history = localStorage.getItem("chatHistory");
-            if (history) {
-                chatbox.innerHTML = history;
-            } else {
-                chatbox.innerHTML = `<p class="bot-message message"><i class="fas fa-robot"></i> <b>${botName}:</b> Halo Bro! Apa yang bisa BiSTaoAI bantu?</p>`;
-            }
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
-
-        async function sendMessage() {
-            let userInput = document.getElementById("userInput").value;
-            let chatbox = document.getElementById("chatbox");
-
-            if (userInput.trim() === "") return;
-
-            chatbox.innerHTML += `<p class="user-message message"><b>${userName}:</b> ${userInput}</p>`;
-            document.getElementById("userInput").value = "";
-            saveChatHistory();
-
-            let typingIndicator = document.createElement("p");
-            typingIndicator.classList.add("typing", "message");
-            typingIndicator.innerHTML = `<i class="fas fa-robot"></i> <b>${botName}:</b> <span></span><span></span><span></span>`;
-            chatbox.appendChild(typingIndicator);
-            chatbox.scrollTop = chatbox.scrollHeight;
-
-            let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ contents: [{ parts: [{ text: userInput }] }] })
-            });
-
-            let data = await response.json();
-            chatbox.removeChild(typingIndicator);
-
-            let botResponse = data.candidates[0].content.parts[0].text.replace(/Gemini/g, "bistaoai").replace(/\b(Anda|Kamu)\b/g, "Anda");
-
-            chatbox.innerHTML += `<p class="bot-message message"><b>${botName}:</b> ${botResponse}</p>`;
-            saveChatHistory();
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle("dark-mode");
-        }
-    </script>
+      saveChatHistory();
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+  </script>
 
 </body>
 </html>
