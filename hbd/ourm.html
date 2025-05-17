@@ -473,6 +473,9 @@
 }
     </style>
 </head>
+    <audio id="bgmusic" autoplay loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
 <body class="bg-light-pink font-quicksand">
     <!-- Heart Decorations -->
     <div class="heart-decoration" style="top: 10%; left: 8%; color: #C76F85;">❤</div>
@@ -480,6 +483,7 @@
     <div class="heart-decoration" style="top: 70%; left: 12%; animation-delay: 1s; color: #C76F85;">❤</div>
     <div class="heart-decoration" style="top: 80%; right: 15%; animation-delay: 1.5s; color: #C76F85;">❤</div>
     <div class="heart-decoration" style="top: 40%; left: 90%; animation-delay: 2s; color: #C76F85;">❤</div>
+    
 
     <!-- Photo Popup Overlay -->
     <div class="popup-overlay" id="photoPopup">
@@ -689,7 +693,7 @@ Harapanku untukmu yaitu Semoga kamu selalu dalam jalan yang benar dan lurus kepa
                         <span>Tayangkan sekarang!</span>
                         <i class="fas fa-video"></i>
                     </button>
-                    <
+                    
                 </div>
                 <!-- Modal for Video -->
 <div id="videoModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 hidden">
@@ -734,57 +738,76 @@ Harapanku untukmu yaitu Semoga kamu selalu dalam jalan yang benar dan lurus kepa
         </div>
     </div>
     
-
     <script>
-    const videos = document.querySelectorAll(".memory-video");
+    const bgMusic = document.getElementById('bgmusic');
+const videos = document.querySelectorAll(".memory-video");
+const modalVideo = document.getElementById('hbdVideo');
+const openBtn = document.getElementById('createButton')?.querySelector('button');
+const videoModal = document.getElementById('videoModal');
+const closeModal = document.getElementById('closeModal');
+const toFormButton = document.getElementById('toFormButton');
 
-    videos.forEach((video) => {
-        video.addEventListener("click", function () {
-            // Kalau video ini sedang mute, mute semua lalu unmute dia
-            if (video.muted) {
-                videos.forEach(v => {
-                    v.muted = true;
-                });
-                video.muted = false;
-                video.play();
-            } else {
-                // Kalau video ini tidak mute, mute dia sendiri
-                video.muted = true;
-            }
-        });
-    });
-    
-    const openBtn = document.getElementById('createButton').querySelector('button');
-    const videoModal = document.getElementById('videoModal');
-    const closeModal = document.getElementById('closeModal');
-    const toFormButton = document.getElementById('toFormButton');
-    const thankYouForm = document.getElementById('thankYouForm');
-    const closeForm = document.getElementById('closeForm');
+// Fungsi untuk kontrol musik
+function toggleBgMusic() {
+  if (!bgMusic) return;
 
-    openBtn.addEventListener('click', () => {
-        videoModal.classList.remove('hidden');
-    });
+  const anyMemoryPlaying = Array.from(videos).some(video => !video.paused && !video.muted);
+  const modalPlaying = modalVideo && !modalVideo.paused;
 
-    closeModal.addEventListener('click', () => {
-        videoModal.classList.add('hidden');
-        document.getElementById('hbdVideo').pause();
-    });
-    
-    toFormButton.addEventListener('click', () => {
-    window.location.href = "send.html";
+  if (anyMemoryPlaying || modalPlaying) {
+    bgMusic.pause();
+  } else {
+    bgMusic.play().catch(() => {});
+  }
+}
+
+// Interaksi video kenangan
+videos.forEach((video) => {
+  video.addEventListener("click", () => {
+    if (video.muted) {
+      videos.forEach(v => v.muted = true);
+      video.muted = false;
+      video.play();
+    } else {
+      video.muted = true;
+    }
+    toggleBgMusic();
+  });
+
+  video.addEventListener("play", toggleBgMusic);
+  video.addEventListener("pause", toggleBgMusic);
+  video.addEventListener("ended", toggleBgMusic);
 });
 
-    closeForm.addEventListener('click', () => {
-        thankYouForm.classList.add('hidden');
-    });
+// Interaksi video modal
+if (modalVideo) {
+  modalVideo.addEventListener("play", toggleBgMusic);
+  modalVideo.addEventListener("pause", toggleBgMusic);
+  modalVideo.addEventListener("ended", toggleBgMusic);
+}
 
-    // Optional: Handle form submit
-    document.getElementById('formUcapan').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert("Terimakasih, ucapanmu sudah dikirim!");
-        thankYouForm.classList.add('hidden');
-        this.reset();
-    });
+// Modal buka
+if (openBtn && videoModal) {
+  openBtn.addEventListener("click", () => {
+    videoModal.classList.remove("hidden");
+  });
+}
+
+// Modal tutup
+if (closeModal && modalVideo && videoModal) {
+  closeModal.addEventListener("click", () => {
+    videoModal.classList.add("hidden");
+    modalVideo.pause();
+    toggleBgMusic();
+  });
+}
+
+// Tombol ke halaman ucapan
+if (toFormButton) {
+  toFormButton.addEventListener("click", () => {
+    window.location.href = "send.html";
+  });
+}
     
         document.addEventListener('DOMContentLoaded', function() {
             // Animation for photo cards with staggered delay

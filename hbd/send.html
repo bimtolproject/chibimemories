@@ -6,15 +6,25 @@
   <title>Send Bima</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-  html {
+  :root {
+  --primary-color: #03a9f4;
+  --secondary-color: #0288d1;
+  --bg-light: #ffffff;
+  --bg-dark: #1f1f1f;
+  --text-dark: #000;
+  --text-light: #fff;
+  --input-bg: #e0f7fa;
+}
+
+html {
   scroll-behavior: smooth;
 }
 
-  body {
+body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #000000;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
   line-height: 1.6;
 }
 
@@ -22,7 +32,7 @@ header {
   text-align: center;
   padding: 4rem 2rem;
   background: url('https://bimtolproject.github.io/chibimemories/resource/bimtol.png') center/cover no-repeat;
-  color: white;
+  color: var(--text-light);
   position: relative;
 }
 
@@ -41,8 +51,8 @@ header p {
 }
 
 nav {
-  background: #e0e0e0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  background: #fafafa;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -51,108 +61,34 @@ nav {
 nav ul {
   display: flex;
   justify-content: center;
-  margin: 0;
-  padding: 0;
+  padding: 0.5rem;
   list-style: none;
+  margin: 0;
 }
 
 nav li {
-  margin: 0 1rem;
+  margin: 0 0.5rem;
 }
 
 nav a {
   display: block;
-  padding: 1rem 1.5rem;
-  color: #000;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-dark);
   text-decoration: none;
   font-weight: bold;
   border-radius: 8px;
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 nav a:hover {
-  background: #03a9f4;
+  background: var(--primary-color);
+  color: var(--text-light);
   transform: translateY(-2px);
-}
-
-.nav-container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 0.5rem 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #03a9f4;
-}
-
-.menu-toggle {
-  display: none;
-  font-size: 1.5rem;
-  color: #fff;
-  cursor: pointer;
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 1rem;
-}
-
-.nav-links li a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 0.6rem 0.9rem;
-  border-radius: 8px;
-  transition: background 0.3s, transform 0.2s;
-}
-
-
-.nav-links li a:hover {
-  background: #03a9f4;
-  transform: translateY(-2px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .nav-links {
-  display: none;
-  flex-direction: column;
-  background: #1c1c1c;
-  position: absolute;
-  top: 60px;
-  right: 0;
-  width: 200px;
-  padding: 1rem;
-  border-radius: 8px 0 0 8px;
-  transform: scale(0);
-  transform-origin: top right;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0;
-}
-.nav-links.show {
-  display: flex;
-  transform: scale(1);
-  opacity: 1;
-}
-
-  .nav-links li {
-    margin: 0.5rem 0;
-  }
 }
 
 section {
   padding: 2rem;
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
 }
 
@@ -163,17 +99,23 @@ section {
 }
 
 .card {
-  background: #f5f5f5;
-  color: #000;
+  background: #f0f0f0;
+  color: var(--text-dark);
   padding: 1rem;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .card img {
   width: 100%;
-  max-height: 480px; /* atau sesuaikan tinggi maksimal */
+  max-height: 400px;
   object-fit: contain;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 form {
@@ -183,36 +125,41 @@ form {
 }
 
 input, textarea {
-  background: #00FFFF;
-  color: #000;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 5px;
+  background: var(--input-bg);
+  color: var(--text-dark);
+  padding: 0.9rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
 }
 
 button {
-  background: #03a9f4;
-  color: white;
-  padding: 0.8rem;
+  background: var(--primary-color);
+  color: var(--text-light);
+  padding: 0.9rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background: #0288d1;
+  background: var(--secondary-color);
 }
 
 footer {
   text-align: center;
-  padding: 1rem;
-  background: #1f1f1f;
-}
-
-#skill {
-  padding: 2rem;
-  max-width: 800px;
-  margin: auto;
+  padding: 1.5rem;
+  background: var(--bg-dark);
+  color: var(--text-light);
+  margin-top: 3rem;
 }
 
 .skill-bar p {
@@ -223,7 +170,7 @@ footer {
 }
 
 .bar {
-  background: #333;
+  background: #ccc;
   border-radius: 20px;
   overflow: hidden;
   height: 15px;
@@ -232,21 +179,21 @@ footer {
 
 .progress {
   height: 100%;
-  background: #03a9f4;
-  width: 0; /* Start from 0 for animation */
+  background: var(--primary-color);
+  width: 0;
   transition: width 1s ease-in-out;
 }
 
 #sosial {
   padding: 2rem;
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
   text-align: center;
 }
 
 #sosial h2 {
   margin-bottom: 1rem;
-  color: #03a9f4;
+  color: var(--primary-color);
 }
 
 .sosial-link {
@@ -254,7 +201,7 @@ footer {
   align-items: center;
   margin: 0 1rem;
   font-size: 1.5rem;
-  color: #03a9f4;
+  color: var(--primary-color);
   text-decoration: none;
   transition: transform 0.3s ease, color 0.3s ease;
 }
@@ -266,6 +213,66 @@ footer {
 .sosial-link:hover {
   transform: translateY(-5px) scale(1.1);
   color: #00e5ff;
+}
+
+/* Responsive menu */
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+
+.nav-links li a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.nav-links li a:hover {
+  background: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #1c1c1c;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    padding: 1rem;
+    border-radius: 8px 0 0 8px;
+    transform: scale(0);
+    transform-origin: top right;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  .nav-links li {
+    margin: 0.5rem 0;
+  }
 }
 </style>
 </head>
