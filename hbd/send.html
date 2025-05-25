@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Send Bima</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="cfb66ee8-432f-494d-8219-2078fed8c375"></script>
   <style>
   :root {
   --primary-color: #03a9f4;
@@ -23,7 +22,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   background-color: var(--bg-light);
   color: var(--text-dark);
   line-height: 1.6;
@@ -280,14 +279,18 @@ footer {
 <body>
 
   <section id="kontak">
-  <h2>Kirim pesan ke Bimtol!</h2>
+  <h2 style="text-align:center;">🚀 Jet Pribadi Bima 🚀</h2><hr style="border:none;border-top:3px solid #ccc; margin:10px 0;">
+  <i><p style="font-size:12px; text-align:center;">"Bisa berupa ucapan terima kasih, permintaan maaf, harapan-harapan Chian untuk Bima, atau hal-hal yang Chian tidak suka dari Bima. Agar dikoreksi oleh Bima dan diperbaiki untuk kedepannya"</p></i><hr style="border:none;border-top:3px solid #ccc; margin:10px 0;"><br>
   <form id="contact-form">
     <input type="text" id="name" name="name" placeholder="Judul Pesan" required />
     <textarea id="message" name="message" placeholder="Pesan Chian untuk Bima" rows="5" required></textarea>
     <button type="submit">Kirim</button>
-    <div id="status"></div>
+    <div id="status" style="margin-top:10px; font-size:14px; padding:8px; border-radius:5px;"></div>
   </form>
 </section>
+<footer style="position:fixed; bottom:0; left:0; width:100%; text-align:center; font-size:10px; color:#888; background:#f8f8f8; padding:5px;">
+  &copy; 2025 Bima | All rights reserved.
+</footer>
 
 <script>
   document.getElementById("contact-form").addEventListener("submit", function (e) {
@@ -299,7 +302,7 @@ footer {
 
     const token = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0";
     const chat_id = "1917708915";
-    const text = `Pesan Baru dari Website:\n\nJudul: ${nama}\nPesan:\n${pesan}`;
+    const text = `Pesan Baru dari Menu HBD:\n\nJudul: ${nama}\nPesan: ${pesan}`;
 
     statusDiv.textContent = "Sedang mengirim pesan ke Bima...";
 
@@ -311,14 +314,21 @@ footer {
       .then(res => res.json())
       .then(data => {
         if (data.ok) {
-          statusDiv.textContent = "Pesan telah berhasil dikirim!";
+          statusDiv.textContent = "Pesan telah berhasil dikirim ke Bima!";
+          statusDiv.style.display = "block";
+          statusDiv.style.backgroundColor = "#d4edda";
+          statusDiv.style.color = "#155724";
+          statusDiv.style.border = "1px solid #c3e6cb";
           document.getElementById("contact-form").reset();
         } else {
           statusDiv.textContent = "Gagal mengirim: " + data.description;
         }
       })
       .catch(err => {
-        statusDiv.textContent = "Terjadi kesalahan saat mengirim.";
+        statusDiv.textContent = "Terjadi kesalahan saat mengirim, Silahkan cek koneksi internet chian dan coba lagi";
+        statusDiv.style.backgroundColor = "#f8d7da";
+        statusDiv.style.color = "#721c24";
+        statusDiv.style.border = "1px solid #f5c6cb";
         console.error(err);
       });
   });
