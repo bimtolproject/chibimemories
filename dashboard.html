@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="cfb66ee8-432f-494d-8219-2078fed8c375"></script>
+    <style>
+        body {
+            font-family: 'georgia', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* Video Background */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .p {
+            width: 30px;
+            height: 30px;
+       }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0); /* Transparansi */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            user-select: none; /* Disable text selection */
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5c6bc0;
+            text-decoration: none;
+        }
+        .header .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .menu-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            width: 200px; /* Lebar tetap */
+            height: 200px; /* Tinggi tetap */
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        }
+        .menu-item i {
+            font-size: 48px;
+            color: #5c6bc0;
+        }
+        .menu-item h3 {
+            margin: 10px 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .menu-item p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .menu-item .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background: #5c6bc0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .menu-item .btn:hover {
+            background: #3949ab;
+        }
+        .customer-service {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #5c6bc0;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        .customer-service:hover {
+            background: #3949ab;
+        }
+        /* Modal styles */
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0); /* Transparansi */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Atur lebar maksimum modal */
+    text-align: center;
+    max-height: calc(100% - 40px); /* Atur tinggi maksimum modal */
+    overflow-y: auto; /* Aktifkan scroll jika konten terlalu panjang */
+}
+        .modal-content h3 {
+            margin-top: 0;
+        }
+        .modal-content p {
+            color: #666;
+            font-size: 16px;
+        }
+        .modal-content .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-content .btn {
+            padding: 10px 20px;
+            color: #fff;
+            background: #5c6bc0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .modal-content .btn:hover {
+            background: #3949ab;
+        }
+        .modal-content .btn.cancel {
+            background: #f44336;
+        }
+        .modal-content .btn.cancel:hover {
+            background: #d32f2f;
+        }
+        /* Styles for Music Modal */
+        .modal-content select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        /* Prevent right-click on images */
+        img {
+            pointer-events: none;
+        }
+        .search-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.search-container input[type=text] {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-container .search-btn {
+    padding: 10px;
+    background-color: #5c6bc0;
+    color: white;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.search-container .search-btn:hover {
+    background-color: #3949ab;
+}
+        /* Audio Player Styles */
+        .audio-player {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .player-controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .player-controls button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #5c6bc0;
+            transition: color 0.3s;
+            margin: 0 10px;
+        }
+        .player-controls button:hover {
+            color: #3949ab;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ccc;
+            margin-top: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+        .progress-filled {
+            height: 100%;
+            background: #5c6bc0;
+            border-radius: 5px;
+            width: 0;
+        }
+        .time {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        .lyrics {
+    overflow-y: auto; /* Aktifkan scroll jika konten lirik terlalu panjang */
+    max-height: 200px; /* Atur tinggi maksimum lirik untuk scroll */
+}
+
+.lyrics p {
+    margin: 5px 0;
+    opacity: 0.2; /* Atur opasitas awal untuk lirik yang tidak disorot */
+    transition: opacity 0.2s ease-in-out; /* Efek transisi untuk perubahan opasitas */
+}
+
+.lyrics p.highlight {
+    opacity: 2; /* Atur opasitas penuh untuk lirik yang disorot */
+}
+    .menu-item1 {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Transparansi */
+            width: 220px; /* Lebar tetap */
+            height: 500px; /* Tinggi tetap */
+        }
+
+        .menu-item1 h3 {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .menu-item1 label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .menu-item1 input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .menu-item1 input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .link-item {
+            display: inline-block;
+            margin: 10px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .link-item::after {
+            content: ' | Background Applied';
+            font-size: 12px;
+            color: #777;
+        }
+
+        #saveSettingsBtn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #saveSettingsBtn:hover {
+            background-color: #45a049;
+        }
+        /* Modol untuk Pengaturan Disimpan */
+.modol {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Menyelaraskan modol ke tengah */
+    width: 300px; /* Atur lebar modol sesuai kebutuhan */
+    height: 300px; /* Atur tinggi modol sesuai kebutuhan */
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px; /* Tambahkan border-radius untuk tampilan yang lebih baik */
+}
+
+.modol-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    text-align: center;
+}
+
+.modol-content h3 {
+    margin-top: 0;
+}
+
+.modol-content p {
+    color: #666;
+    font-size: 16px;
+}
+
+.modol-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.modol-content .btn {
+    padding: 10px 20px;
+    color: #fff;
+    background: #5c6bc0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.modol-content .btn:hover {
+    background: #3949ab;
+}
+
+.modol-content .btn.cancel {
+    background: #f44336;
+}
+
+.modol-content .btn.cancel:hover {
+    background: #d32f2f;
+}
+/* Tombol Info */
+        .info-btn3 {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            color: #007bff;
+            z-index: 1000;
+        }
+
+        /* Modal */
+        .modal3 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Konten Modal */
+        .modal-content3 {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Ikon Info (Diperbesar) */
+        .icon-info {
+            font-size: 60px; /* Ikon diperbesar */
+            color: #007bff;
+        }
+
+        /* Tombol dalam modal */
+        .modal-content3 button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modal-content3 button:hover {
+            background: #0056b3;
+        }
+
+        .modal-content3 button i {
+            margin-right: 10px; /* Memberi jarak antara ikon dan teks */
+            font-size: 20px; /* Ukuran ikon tombol */
+        }
+
+        /* Tombol Tutup di bawah */
+        .close-btn3 {
+            margin-top: 20px;
+            background-color: #f44336; /* Warna merah untuk tombol tutup */
+            color: white;
+            font-size: 18px;
+        }
+
+@font-face {
+    font-family: 'georgia';
+    src: url('resource/georgia.ttf') format('ttf'),
+    font-weight: normal;
+    font-style: normal;
+}
+    </style>
+</head>
+<body onload="checkUpdate()">
+    <!-- Video Background -->
+    <video class="video-bg" autoplay loop muted id="backgroundVideo">
+        <source src="https://bimtolproject.github.io/chibimemories/resource/Proyek%20Baru%20112%20%5B586515F%5D.mp4" type="video/mp4">
+    </video>
+
+    <!-- Tombol info di pojok kanan bawah -->
+    <button class="info-btn3" onclick="toggleModal3()">
+        <i class="fas fa-info-circle"></i> <!-- Ikon info -->
+    </button>
+
+    <!-- Modal -->
+    <div id="modal3" class="modal3">
+        <div class="modal-content3">
+            
+            <!-- Ikon Info APK yang lebih besar -->
+            <i class="fas fa-mobile-alt icon-info"></i>
+            <h2>Info Aplikasi</h2>
+
+            <!-- Rincian Aplikasi -->
+            <p><strong>Nama Aplikasi:</strong> Chrisbi</cp>
+            <p><strong>Versi Web:</strong> 6.0 BETA</p>
+            <p><strong>Versi AI:</strong> Gemini 2.0 Flash</p>
+            <p><strong>Pembuat:</strong> Bim Project</p>
+
+            <!-- Deskripsi Aplikasi -->
+            <p>Aplikasi ini dirancang untuk menyimpan dan menayangkan kenangan chian dan bimtol.</p>
+
+            <!-- Tombol Butuh Bantuan -->
+            <button onclick="butuhBantuan()">
+                <i class="fas fa-question-circle"></i> Butuh Bantuan
+            </button>
+            
+            <!-- Tombol Syarat & Ketentuan -->
+            <button onclick="syaratKetentuan()">
+                <i class="fas fa-file-contract"></i> Syarat & Ketentuan
+            </button>
+
+            <!-- Tombol Refresh Web -->
+            <button onclick="refreshWeb()">
+                <i class="fas fa-sync-alt"></i> Refresh Web
+            </button>
+
+            <!-- Tombol Tutup -->
+            <button class="close-btn3" onclick="toggleModal3()">
+                <i class="fas fa-times"></i> Tutup
+            </button>
+        </div>
+    </div>
+<div class="container">
+    <div class="header">
+        <a href="#" class="logo">Our Memories</a>
+    </div>
+    <div class="menu">
+        <div class="menu-item">
+            <i class="fas fa-robot"></i>
+            <h3>BiSTao AI</h3>
+            <p>Dibekali Gemini 2.0 Flash</p>
+            <a href="ai.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-photo-video"></i>
+            <h3>Video Kenangan</h3>
+            <p>Media tentang kita</p>
+            <a href="memo.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-history"></i>
+            <h3>Riwayat Chat</h3>
+            <p>Chat tentang kita</p>
+            <a href="1.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-user-circle"></i>
+            <h3>Profile</h3>
+            <p>Biodata Kita</p>
+            <a href="fav.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item" id="lagu">
+            <i class="fas fa-music"></i>
+            <h3>Musik</h3>
+            <p>Putar musik favorit kita secara gratis</p>
+            <button class="btn music-btn" id="openMusicModal">Buka</button>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-tools"></i>
+            <h3>Spam</h3>
+            <p>Pengingat dan Spam</p>
+            <a href="spam.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-birthday-cake"></i>
+            <h3>Birthday</h3>
+            <p>Ada sesuatu untuk chian diwaktu yang tepat</p>
+            <a href="errorpage.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-file-download"></i>
+            <h3>Unduh</h3>
+            <p>Unduh Resource yang ada di web</p>
+            <a href="downloadr.html" class="btn">Buka</a>
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-cog"></i>
+            <h3>Pengaturan</h3>
+            <p>Mengatur latar belakang</p>
+            <a href="setting.html" class="btn">Buka</a>
+        </div>
+        </div>
+    <audio id="switchSound" src="https://bimtolproject.github.io/chibimemories/audio/switch_task.mp3"></audio>
+    <audio id="openWinSound" src="https://bimtolproject.github.io/chibimemories/audio/open_win.mp3"></audio>
+    <audio id="closeWinSound" src="https://bimtolproject.github.io/chibimemories/audio/close_win.mp3"></audio>
+</div>
+
+<!-- Modal untuk Pengaturan Disimpan -->
+<div id="settingsModal" class="modol" style="display: none;">
+    <div class="modol-content">
+        <h3><i class="fas fa-check-circle"></i> Berhasil!</h3>
+        <p>Pengaturan yang chian ubah telah berhasil disimpan.</p>
+        <div class="modol-buttons">
+            <button class="btn cancel" id="closeSettingsModal"> Oke</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal untuk Setel Musik -->
+<div id="musicModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Setel Musik</h3>
+        <div class="search-container">
+            <input type="text" id="searchMusic" placeholder="klik disini untuk mencari musik ya cil!">
+            <button class="search-btn"><i class="fa fa-search"></i></button>
+        </div>
+        <select id="musicSelect">
+            <option value="https://example.com/0.mp3">Pilih Musik</option>
+            <option value="resource/sekarang.mp3">Dimas M - Sekarang hingga Nanti Kita Tua</option>
+            <option value="resource/Nightchanges.mp3">One Direction - Night Changes</option>
+            <option value="resource/Nightchanges.mp3">One Direction - Night Changes</option>
+            <option value="https://bimtolproject.github.io/chibimemories/resource/Perfectes.mp3">Ed Sheeran - Perfect</option>
+            <option value="resource/thousandyears.mp3">James Arthur - A thousand year</option>
+            <option value="resource/line.mp3">Ricky M - Line Without a hook</option>
+            <option value="resource/diarydepresiku.mp3">Last Child - Diary Depresiku</option>
+            <option value="resource/rahasiahati.mp3">Nidji - Rahasia Hati</option>
+            <option value="resource/tothebone.mp3">Pamungkas - To The Bone</option>
+            <option value="resource/cry.mp3">Cigarettes After Sex - Cry</option>
+            <option value="resource/apocalypse.mp3">Cigarettes After Sex - Apocalypse</option>
+            <option value="resource/enchanted.mp3">Taylor Swift - Enchanted</option>
+            <option value="resource/cardigan.mp3">Taylor Swift - Cardigan</option>
+            <option value="resource/cincin.mp3">Hindia - Cincin</option>
+            <option value="resource/Do_I_Wanna_Know.mp3">Arctic Monkeys - Do I Wanna Know</option>
+            <option value="resource/watch.mp3">Billie Elish - Watch</option>
+            <option value="resource/fix_you.mp3">Cold Play - Fix You</option>
+            <!-- Add more options here -->
+        </select>
+        <div class="audio-player">
+            <audio id="musicPlayer" controls style="display: none;">
+                <!-- Source akan diatur melalui JavaScript -->
+                Your browser does not support the audio element.
+            </audio>
+            <div class="player-controls">
+                <button id="prevBtn" title="Previous"><i class="fas fa-backward"></i></button>
+                <button id="playBtn" title="Play"><i class="fas fa-play"></i></button>
+                <button id="nextBtn" title="Next"><i class="fas fa-forward"></i></button>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-filled"></div>
+            </div>
+            <div class="time">
+                <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
+            </div>
+            <div class="lyrics">
+                <h4>Lirik Lagu</h4>
+                <div id="lyricsContainer"></div>
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <a class="btn cancel" id="closeMusicModal">Tutup</a>
+        </div>
+    </div>
+</div>
+
+    
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "800486b8-6405-4fa9-9627-f69e7af4735d",
+      safari_web_id: "web.onesignal.auto.1947bcbb-3df5-45a5-b464-0be0e15f4a2c",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+    
+function updateNow() {
+        window.location.href = "https://www.mediafire.com/file/vkvhustzt46bgez/ChrisbiM_5.1.apk/file"; // Ganti dengan link update
+    }
+
+
+function toggleModal3() {
+            const modal = document.getElementById("modal3");
+            modal.style.display = (modal.style.display === "flex") ? "none" : "flex";
+        }
+
+        function butuhBantuan() {
+            window.location.href = "tutor.html"; // Ganti dengan link halaman bantuan
+        }
+
+        function syaratKetentuan() {
+            window.location.href = "sk.html"; // Ganti dengan link S&K
+        }
+
+        function refreshWeb() {
+            location.reload();
+        }
+
+        // Menutup modal jika klik di luar konten
+        window.onclick = function(event) {
+            const modal = document.getElementById("modal3");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+// Terapkan pengaturan yang disimpan dari localStorage saat memuat halaman
+        window.onload = () => {
+            const savedBackground = localStorage.getItem('background');
+            const savedFreezeVideo = localStorage.getItem('freezeVideo') === 'true';
+            const savedAutoChangeBg = localStorage.getItem('autoChangeBg') === 'true';
+            const savedApplyToAll = localStorage.getItem('applyToAll') === 'true';
+
+            // Terapkan background yang disimpan
+            if (savedBackground) {
+                backgroundVideo.src = savedBackground;
+                bgRadios.forEach(radio => {
+                    if (radio.value === savedBackground) {
+                        radio.checked = true;
+                    }
+                });
+            }
+
+            // Terapkan status "Video Jangan Bergerak"
+            freezeVideo.checked = savedFreezeVideo;
+            if (savedFreezeVideo) {
+                backgroundVideo.pause();
+            } else {
+                backgroundVideo.play();
+            }
+
+            // Terapkan status "Ganti Background Otomatis"
+            autoChangeBg.checked = savedAutoChangeBg;
+            if (savedAutoChangeBg) {
+                let index = 0;
+                const videos = Array.from(bgRadios).map(radio => radio.value);
+                autoChangeInterval = setInterval(() => {
+                    index = (index + 1) % videos.length;
+                    backgroundVideo.src = videos[index];
+                    bgRadios[index].checked = true;
+                }, 30000);
+            }
+
+            // Terapkan status "Tetapkan Background ke Semua Halaman"
+            applyToAll.checked = savedApplyToAll;
+        };
+
+// Fungsi untuk memainkan suara switch task
+function playSwitchSound() {
+    switchSound.currentTime = 0;
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window
+function playOpenWinSound() {
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window
+function playCloseWinSound() {
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+// Fungsi untuk memainkan suara switch task saat klik di luar button
+function playSwitchSound() {
+    var switchSound = document.getElementById('switchSound');
+    switchSound.currentTime = 0; // Kembali ke awal file audio jika sedang diputar
+    switchSound.play();
+}
+
+// Fungsi untuk memainkan suara open window saat klik button
+function playOpenWinSound() {
+    var openWinSound = document.getElementById('openWinSound');
+    openWinSound.currentTime = 0;
+    openWinSound.play();
+}
+
+// Fungsi untuk memainkan suara close window saat klik button di bottom nav
+function playCloseWinSound() {
+    var closeWinSound = document.getElementById('closeWinSound');
+    closeWinSound.currentTime = 0;
+    closeWinSound.play();
+}
+
+// Event listener untuk menangani klik di luar button (misalnya di dalam container)
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('button')) {
+        playSwitchSound(); // Memainkan suara saat klik di luar button
+    }
+});
+
+// Event listener untuk tombol-tombol yang ada di halaman Anda
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', function() {
+        playOpenWinSound(); // Memainkan suara saat klik button
+    });
+});
+
+// Event listener khusus untuk tombol di bottom nav
+document.querySelectorAll('.bottom-nav button').forEach(button => {
+    button.addEventListener('click', function() {
+        playCloseWinSound(); // Memainkan suara saat klik button di bottom nav
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const musicSelect = document.getElementById('musicSelect');
+    const lyricsContainer = document.getElementById('lyricsContainer');
+    const musicPlayer = document.getElementById('musicPlayer');
+
+    let lyricsData = {};
+    let currentLyricIndex = 0;
+    let isPlaying = false;
+    let lyricHighlightInterval;
+
+    function loadLyrics(songTitle) {
+        lyricsData = {
+            "Dimas M - Sekarang hingga Nanti Kita Tua": `
+                <p data-start="0" data-end="27">🎵🎵🎵</p>
+                <p data-start="27" data-end="32">Di saat ku sedang hancur-hancurnya</p>
+                <p data-start="32" data-end="36">Kau datang dengan bahagia menyapa</p>
+                <p data-start="36" data-end="40">Ku terjebak, tak bisa merasa</p>
+                <p data-start="40" data-end="45">Kau mengenalkanku pada cinta</p>
+                <p data-start="45" data-end="50">Apakah kita akan selamanya?</p>
+                <p data-start="50" data-end="55">Ataukah kita akan saling lupa?</p>
+                <p data-start="55" data-end="59">Ku senang saat kita bersama</p>
+                <p data-start="59" data-end="64">Namun, ku ragu 'tuk percaya</p>
+                <p data-start="64" data-end="68">Ingin ku menemanimu s'lamanya</p>
+                <p data-start="68" data-end="73">Bisakah ku berharap pada cinta?</p>
+                <p data-start="73" data-end="77">Dulu dia pernah memberiku luka</p>
+                <p data-start="77" data-end="82">Sampai ku takut untuk jatuh cinta</p>
+                <p data-start="82" data-end="86">Namun, jika kau buatku bahagia</p>
+                <p data-start="86" data-end="91">Akan kucoba percaya pada cinta</p>
+                <p data-start="91" data-end="96">Berjanjilah, kita selalu bersama</p>
+                <p data-start="96" data-end="104">Sekarang hingga nanti kita tua</p>
+                <p data-start="104" data-end="119">🎵🎵🎵</p>
+                <p data-start="119" data-end="123">Ingatkah pertama kita bertemu?</p>
+                <p data-start="123" data-end="128">Ku terpikat kar'na kau sangat lucu</p>
+                <p data-start="128" data-end="132">Bahagia ku bisa bertemu kamu</p>
+                <p data-start="132" data-end="137">Kau menata kembali hatiku</p>
+                <p data-start="137" data-end="141">Banyak orang yang datang padaku</p>
+                <p data-start="141" data-end="146">Namun, belum ada yang sepertimu</p>
+                <p data-start="146" data-end="150">Kauberi rasa nyaman diriku</p>
+                <p data-start="150" data-end="155">Sungguh, ku suka bersamamu</p>
+                <p data-start="155" data-end="160">Ingin ku menemanimu s'lamanya</p>
+                <p data-start="160" data-end="164">Bisakah ku berharap pada cinta?</p>
+                <p data-start="164" data-end="169">Dulu dia pernah memberiku luka</p>
+                <p data-start="169" data-end="174">Sampai ku takut untuk jatuh cinta</p>
+                <p data-start="174" data-end="177">Namun, jika kau buatku bahagia</p>
+                <p data-start="177" data-end="182">Akan kucoba percaya pada cinta</p>
+                <p data-start="182" data-end="186">Berjanjilah, kita selalu bersama</p>
+                <p data-start="186" data-end="191">Sekarang hingga nanti kita tua</p>
+                <p data-start="191" data-end="202">🎵🎵🎵</p>
+            `,
+            "One Direction - Night Changes": `
+                <p data-start="0" data-end="5">Error Lirik tidak ditemukan</p>
+            `,
+            "Ed Sheeran - Perfect": `
+                <p data-start="0" data-end="3">🎵🎵🎵</p>
+                <p data-start="3" data-end="10">I found a love for me</p>
+                <p data-start="10" data-end="18">Oh, darling, just dive right in and follow my lead</p>
+                <p data-start="18" data-end="25">Well, I found a girl, beautiful and sweet</p>
+                <p data-start="25" data-end="32">Oh, I never knew you were the someone waitin' for me</p>
+                <p data-start="32" data-end="40">'Cause we were just kids when we fell in love, not knowin' what it was</p>
+                <p data-start="40" data-end="48">I will not give you up this time</p>
+                <p data-start="48" data-end="55">Oh, darling, just kiss me slow, your heart is all I own</p>
+                <p data-start="55" data-end="62">And in your eyes, you're holding mine</p>
+                <p data-start="62" data-end="74">Baby, I'm dancin' in the dark with you between my arms</p>
+                <p data-start="74" data-end="80">Barefoot on the grass while listenin' to our favourite song</p>
+                <p data-start="80" data-end="88">When you said you looked a mess, I whispered underneath my breath</p>
+                <p data-start="88" data-end="95">But you heard it, "Darling, you look perfect tonight"</p>
+                <p data-start="95" data-end="101">🎵🎵🎵</p>
+                <p data-start="101" data-end="108">Well, I found a woman, stronger than anyone I know</p>
+                <p data-start="108" data-end="116">She shares my dreams, I hope that someday, I'll share her home</p>
+                <p data-start="116" data-end="125">I found a love to carry more than just my secrets</p>
+                <p data-start="125" data-end="130">To carry love, to carry children of our own</p>
+                <p data-start="130" data-end="138">We are still kids, but we're so in love, fightin' against all odds</p>
+                <p data-start="138" data-end="146">I know we'll be alright this time</p>
+                <p data-start="146" data-end="154">Darling, just hold my hand, be my girl, I'll be your man</p>
+                <p data-start="154" data-end="158">I see my future in your eyes</p>
+                <p data-start="158" data-end="171">Oh, baby, I'm dancin' in the dark with you between my arms</p>
+                <p data-start="171" data-end="178">Barefoot on the grass while listenin' to our favourite song</p>
+            `,
+            // Tambahkan lirik untuk lagu-lagu lain di sini
+        };
+
+        const selectedLyrics = lyricsData[songTitle];
+        if (selectedLyrics) {
+            lyricsContainer.innerHTML = selectedLyrics;
+        } else {
+            lyricsContainer.innerHTML = '<p>Lirik tidak tersedia.</p>';
+        }
+    }
+
+    function startLyricsHighlight() {
+        clearInterval(lyricHighlightInterval);
+        lyricHighlightInterval = setInterval(function() {
+            const currentTime = musicPlayer.currentTime;
+            highlightCurrentLyric(currentTime);
+        }, 100);
+    }
+
+    function pauseLyricsHighlight() {
+        clearInterval(lyricHighlightInterval);
+    }
+
+    function highlightCurrentLyric(currentTime) {
+        const lyrics = lyricsContainer.querySelectorAll('p');
+
+        for (let i = 0; i < lyrics.length; i++) {
+            const start = parseFloat(lyrics[i].getAttribute('data-start'));
+            const end = parseFloat(lyrics[i].getAttribute('data-end'));
+
+            if (!isNaN(start) && !isNaN(end) && currentTime >= start && currentTime < end) {
+                lyrics[i].classList.add('highlight');
+            } else {
+                lyrics[i].classList.remove('highlight');
+            }
+        }
+    }
+
+    musicPlayer.addEventListener('play', function() {
+        isPlaying = true;
+        startLyricsHighlight();
+    });
+
+    musicPlayer.addEventListener('pause', function() {
+        isPlaying = false;
+        pauseLyricsHighlight();
+    });
+
+    musicSelect.addEventListener('change', function() {
+        const selectedSong = musicSelect.options[musicSelect.selectedIndex].textContent;
+        loadLyrics(selectedSong);
+    });
+
+    const initialSong = musicSelect.options[musicSelect.selectedIndex].textContent;
+    loadLyrics(initialSong);
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const musicSelect = document.getElementById('musicSelect');
+    const searchInput = document.getElementById('searchMusic');
+    const musicOptions = Array.from(musicSelect.options);
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredOptions = musicOptions.filter(option => 
+            option.textContent.toLowerCase().includes(searchTerm)
+        );
+
+        musicSelect.innerHTML = '';
+        filteredOptions.forEach(option => {
+            musicSelect.appendChild(option);
+        });
+
+        // Perbarui ukuran modal setelah konten diubah
+        updateModalSize();
+    });
+
+    function updateModalSize() {
+        const modal = document.querySelector('.modal');
+        const modalContent = document.querySelector('.modal-content');
+
+        // Periksa tinggi konten modal
+        const contentHeight = modalContent.scrollHeight;
+        const maxHeight = window.innerHeight - 40; // Atur maksimum tinggi modal sesuai kebutuhan
+
+        // Atur tinggi modal berdasarkan konten
+        if (contentHeight > maxHeight) {
+            modalContent.style.maxHeight = maxHeight + 'px';
+        } else {
+            modalContent.style.maxHeight = 'auto';
+        }
+    }
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const musicModal = document.getElementById('musicModal');
+    const musicBtn = document.querySelector('.music-btn');
+    const musicCancelBtn = document.querySelector('#musicModal .btn.cancel');
+    const musicSelect = document.getElementById('musicSelect');
+    const musicPlayer = document.getElementById('musicPlayer');
+    const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressFilled = document.querySelector('.progress-filled');
+    const currentTime = document.getElementById('currentTime');
+    const duration = document.getElementById('duration');
+
+    let currentMusicIndex = 0;
+    let isPlaying = false;
+    let progressInterval;
+
+    function loadMusic(index) {
+        const selectedMusicUrl = musicSelect.options[index].value;
+        musicPlayer.src = selectedMusicUrl;
+        musicPlayer.load();
+        updateDuration();
+        localStorage.setItem('savedMusicUrl', selectedMusicUrl); // Simpan URL musik yang dipilih ke localStorage
+    }
+
+    function updateDuration() {
+        musicPlayer.addEventListener('loadedmetadata', () => {
+            const durationMinutes = Math.floor(musicPlayer.duration / 60);
+            const durationSeconds = Math.floor(musicPlayer.duration % 60);
+            duration.textContent = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+        });
+    }
+
+    // Cek apakah ada pemutaran musik yang disimpan di localStorage saat halaman dimuat
+    const savedMusicUrl = localStorage.getItem('savedMusicUrl');
+    if (savedMusicUrl) {
+        musicPlayer.src = savedMusicUrl;
+        musicPlayer.load();
+        playMusic(); // Mulai memutar musik yang disimpan
+    }
+
+    musicBtn.addEventListener('click', () => {
+        musicModal.style.display = 'flex';
+        // Load musik hanya jika tidak sedang diputar
+        if (!isPlaying) {
+            loadMusic(currentMusicIndex);
+        }
+    });
+
+    musicCancelBtn.addEventListener('click', () => {
+        musicModal.style.display = 'none';
+        // Tidak perlu pauseMusic() di sini karena musik harus tetap berlanjut
+    });
+
+    playBtn.addEventListener('click', () => {
+        if (isPlaying) {
+            pauseMusic();
+        } else {
+            playMusic();
+        }
+    });
+
+function playMusic() {
+    musicPlayer.play();
+    isPlaying = true;
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    startProgress();
+    document.title = musicSelect.options[currentMusicIndex].text; // Mengubah judul tab sesuai judul lagu
+}
+
+    function pauseMusic() {
+    musicPlayer.pause();
+    isPlaying = false;
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    clearInterval(progressInterval);
+    document.title = "Our Memories"; // Mengembalikan judul tab ke judul halaman utama
+}
+
+    nextBtn.addEventListener('click', () => {
+        currentMusicIndex = (currentMusicIndex + 1) % musicSelect.options.length;
+        loadMusic(currentMusicIndex);
+        if (isPlaying) playMusic();
+        updateSelectOption();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        currentMusicIndex = (currentMusicIndex - 1 + musicSelect.options.length) % musicSelect.options.length;
+        loadMusic(currentMusicIndex);
+        if (isPlaying) playMusic();
+        updateSelectOption();
+    });
+
+    musicSelect.addEventListener('change', () => {
+        currentMusicIndex = musicSelect.selectedIndex;
+        loadMusic(currentMusicIndex);
+        if (isPlaying) playMusic();
+    });
+
+    function updateSelectOption() {
+        musicSelect.selectedIndex = currentMusicIndex;
+    }
+
+    function startProgress() {
+        progressInterval = setInterval(() => {
+            const progressPercent = (musicPlayer.currentTime / musicPlayer.duration) * 100;
+            progressFilled.style.width = `${progressPercent}%`;
+            const currentMinutes = Math.floor(musicPlayer.currentTime / 60);
+            const currentSeconds = Math.floor(musicPlayer.currentTime % 60);
+            currentTime.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+        }, 1000);
+    }
+
+    musicPlayer.addEventListener('ended', () => {
+        clearInterval(progressInterval);
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        isPlaying = false;
+    });
+
+    // Menangani penutupan modal secara tepat
+    musicModal.addEventListener('click', (event) => {
+        if (event.target === musicModal) {
+            musicModal.style.display = 'none';
+            // Tidak perlu pauseMusic() di sini karena musik harus tetap berlanjut
+        }
+    });
+});
+</script>
+</body>
+</html>
