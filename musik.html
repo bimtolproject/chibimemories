@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playlist BIMTOL</title>
+  <style>
+      * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background: #fff;
+  color: #000;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.track img {
+  width: 60px;
+  height: 60px;
+  margin-right: 12px;
+}
+
+.track-info {
+  flex: 1;
+}
+
+.track-title {
+  font-size: 16px;
+  color: #000;
+}
+
+.track-artist {
+  font-size: 14px;
+  color: #666;
+}
+
+.track.active {
+  background: #e0f7fa;
+  color: #00796b;
+}
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .icons img {
+      width: 24px;
+      margin-left: 16px;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      padding: 0 16px 16px;
+      gap: 10px;
+    }
+    .profile img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+    .section {
+      padding: 0 16px;
+      margin-top: 10px;
+    }
+    .section h3 {
+      margin-bottom: 10px;
+    }
+    .game-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+    }
+    .game-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .game-card {
+      min-width: 160px;
+      flex-shrink: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+    .game-card img {
+      width: 100%;
+      border-radius: 12px;
+    }
+    .game-card p {
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .rating {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .game-grid2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .game-item2 {
+      background: #f9f9f9;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+    }
+    .game-item2 img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .game-info2 {
+      padding: 10px;
+    }
+    .game-title2 {
+      font-weight: bold;
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .game-rating2 {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-around;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      padding: 6px 0;
+      z-index: 10;
+    }
+    footer a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 12px;
+      color: #000;
+      text-decoration: none;
+    }
+    footer img {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 2px;
+    }
+    audio::-webkit-media-controls,
+    video::-webkit-media-controls {
+    display: none !important;
+    }
+  </style>
+</head>
+<body>
+<header>
+    <div>Playlist Kita</div>
+    <div class="icons">
+    <a href="https://bimtolproject.github.io/chibimemories/notif">
+      <img src="https://img.icons8.com/ios-glyphs/30/appointment-reminders--v1.png"/></a>
+    </div>
+  </header>
+<div id="section">
+<div id="playlist">
+  <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/line.mp3">
+    <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+    <div class="track-info">
+      <div class="track-title">A Line Without A hook</div>
+      <div class="track-artist">Ricky Montgomery</div>
+    </div>
+  </div>
+
+  <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/Perfectes.mp3">
+    <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+    <div class="track-info">
+      <div class="track-title">Night Changes</div>
+      <div class="track-artist">One Direction</div>
+    </div>
+  </div>
+  
+  <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/thousandyears.mp3">
+    <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+    <div class="track-info">
+      <div class="track-title">A thousand years</div>
+      <div class="track-artist">James Arthur</div>
+    </div>
+  </div>
+
+  <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/rahasiahati.mp3">
+    <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+    <div class="track-info">
+      <div class="track-title">Rahasia Hati</div>
+      <div class="track-artist">Nidji</div>
+    </div>
+  </div>
+
+  <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/tothebone.mp3">
+    <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+    <div class="track-info">
+      <div class="track-title">To The Bone</div>
+      <div class="track-artist">Pamungkas</div>
+    </div>
+  </div>
+
+  <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/cry.mp3">
+    <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+    <div class="track-info">
+      <div class="track-title">Cry</div>
+      <div class="track-artist">Cigarettes After Sex</div>
+    </div>
+  </div>
+  
+  <footer>
+    <a href="https://bimtolproject.github.io/chibimemories/dashboard">
+      <img src="https://img.icons8.com/ios-filled/50/000000/home.png"/>
+      <span>Beranda</span>
+    </a>
+    <a href="https://bimtolproject.github.io/chibimemories/musik">
+      <img src="https://img.icons8.com/ios-filled/50/FF0000/spotify.png"/>
+      <span style="color: red;">Musik</span>
+    </a>
+    <a href="https://bimtolproject.github.io/chibimemories/chat">
+      <img src="https://img.icons8.com/ios-filled/50/000000/send.png"/>
+      <span>Pesan</span>
+    </a>
+    <a href="https://bimtolproject.github.io/chibimemories/setting">
+      <img src="https://img.icons8.com/ios-filled/50/000000/settings--v1.png"/>
+      <span>Pengaturan</span>
+    </a>
+  </footer>
+
+  <!-- Tambah lagu lain di sini dengan format sama -->
+</div>
+
+<audio id="audio" controls style="width: 100%; margin-top: 20px;"></audio>
+
+<script>
+  const audio = document.getElementById('audio');
+  const tracks = document.querySelectorAll('.track');
+  let currentTrack = null; // Menyimpan lagu yang sedang aktif
+
+  tracks.forEach(track => {
+    track.addEventListener('click', () => {
+      const src = track.getAttribute('data-src');
+
+      // Jika lagu yang sama diklik
+      if (currentTrack === track) {
+        if (audio.paused) {
+          audio.play();
+          track.classList.add('active');
+        } else {
+          audio.pause();
+          track.classList.remove('active');
+        }
+      } else {
+        // Ganti lagu dan mainkan
+        tracks.forEach(t => t.classList.remove('active'));
+        track.classList.add('active');
+        audio.src = src;
+        audio.play();
+        currentTrack = track;
+      }
+    });
+  });
+
+  // Tambahan: reset active jika lagu selesai
+  audio.addEventListener('ended', () => {
+    if (currentTrack) currentTrack.classList.remove('active');
+    currentTrack = null;
+  });
+</script>
+
+</body>
+</html>
