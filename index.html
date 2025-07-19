@@ -92,6 +92,10 @@
       text-shadow: 0 0 8px rgba(233, 69, 96, 0.5);
       transition: color 0.3s ease, text-shadow 0.3s ease;
     }
+
+    body.light-mode .header-logo {
+        text-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+    }
     
     .menu-toggle-btn {
   background: none;
@@ -100,10 +104,6 @@
   margin: 0;
   cursor: pointer;
 }
-
-    body.light-mode .header-logo {
-        text-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
-    }
 
     .icons .menu-toggle-btn img {
       width: 28px;
@@ -458,7 +458,12 @@
     #send-message-modal,
     #report-issue-modal,
     #profile-modal,
-    #profile-selection-modal {
+    #profile-selection-modal,
+    #video-memories-modal,
+    #chat-memories-modal,
+    #favorite-modal, /* New Modal */
+    #spam-modal, /* New Modal */
+    #countdown-modal { /* New Modal */
       position: fixed;
       top: 0;
       left: 0;
@@ -469,8 +474,8 @@
       box-shadow: 0 0 20px var(--card-shadow);
       z-index: 102;
       opacity: 0;
-      display: none; /* Changed for better control with transitions */
-      transform: translateY(-100%); /* Start off-screen above for slide-down effect */
+      display: none;
+      transform: translateY(-100%);
       transition: transform 0.5s ease-in-out, opacity 0.5s ease, background-color 0.3s ease, box-shadow 0.3s ease;
       flex-direction: column;
       padding: 0 20px;
@@ -480,9 +485,14 @@
     #send-message-modal.expanded,
     #report-issue-modal.expanded,
     #profile-modal.expanded,
-    #profile-selection-modal.expanded {
+    #profile-selection-modal.expanded,
+    #video-memories-modal.expanded,
+    #chat-memories-modal.expanded,
+    #favorite-modal.expanded, /* New Modal */
+    #spam-modal.expanded, /* New Modal */
+    #countdown-modal.expanded { /* New Modal */
       opacity: 1;
-      transform: translateY(0); /* Slide down to full screen */
+      transform: translateY(0);
       padding-bottom: 80px; /* Space for footer if needed by content */
     }
 
@@ -521,7 +531,12 @@
     #message-form-container,
     #report-form-container,
     #profile-content-container,
-    #profile-selection-container {
+    #profile-selection-container,
+    #video-content-container,
+    #chat-content-container,
+    #favorite-content-container, /* New Modal */
+    #spam-content-container, /* New Modal */
+    #countdown-content-container { /* New Modal */
       flex-grow: 1;
       overflow-y: auto;
       padding: 20px 0;
@@ -532,14 +547,24 @@
     #message-form-container::-webkit-scrollbar,
     #report-form-container::-webkit-scrollbar,
     #profile-content-container::-webkit-scrollbar,
-    #profile-selection-container::-webkit-scrollbar {
+    #profile-selection-container::-webkit-scrollbar,
+    #video-content-container::-webkit-scrollbar,
+    #chat-content-container::-webkit-scrollbar,
+    #favorite-content-container::-webkit-scrollbar, /* New Modal */
+    #spam-content-container::-webkit-scrollbar, /* New Modal */
+    #countdown-content-container::-webkit-scrollbar { /* New Modal */
       width: 8px;
     }
     #playlist-container::-webkit-scrollbar-track,
     #message-form-container::-webkit-scrollbar-track,
     #report-form-container::-webkit-scrollbar-track,
     #profile-content-container::-webkit-scrollbar-track,
-    #profile-selection-container::-webkit-scrollbar-track {
+    #profile-selection-container::-webkit-scrollbar-track,
+    #video-content-container::-webkit-scrollbar-track,
+    #chat-content-container::-webkit-scrollbar-track,
+    #favorite-content-container::-webkit-scrollbar-track, /* New Modal */
+    #spam-content-container::-webkit-scrollbar-track, /* New Modal */
+    #countdown-content-container::-webkit-scrollbar-track { /* New Modal */
       background: var(--primary-bg);
       border-radius: 10px;
     }
@@ -547,7 +572,12 @@
     #message-form-container::-webkit-scrollbar-thumb,
     #report-form-container::-webkit-scrollbar-thumb,
     #profile-content-container::-webkit-scrollbar-thumb,
-    #profile-selection-container::-webkit-scrollbar-thumb {
+    #profile-selection-container::-webkit-scrollbar-thumb,
+    #video-content-container::-webkit-scrollbar-thumb,
+    #chat-content-container::-webkit-scrollbar-thumb,
+    #favorite-content-container::-webkit-scrollbar-thumb, /* New Modal */
+    #spam-content-container::-webkit-scrollbar-thumb, /* New Modal */
+    #countdown-content-container::-webkit-scrollbar-thumb { /* New Modal */
       background-color: var(--accent-color);
       border-radius: 10px;
       border: 2px solid var(--primary-bg);
@@ -972,6 +1002,212 @@
         color: var(--primary-bg);
     }
 
+    /* Video Memories Specific Styles */
+    .video-memory-card, .chat-memory-card { /* Combined with chat-memory-card */
+        background: var(--profile-card-bg);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        margin-bottom: 20px;
+        text-align: center;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .video-memory-card h2, .chat-memory-card h2 { /* Combined */
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        color: var(--accent-color);
+        text-align: center;
+    }
+    .video-memory-card video {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .video-memory-card p, .chat-memory-card p { /* Combined */
+        font-size: 0.95rem;
+        color: var(--text-color);
+        margin: 5px 0;
+        line-height: 1.4;
+    }
+    .chat-memory-card iframe { /* Styles for iframe */
+        width: 100%;
+        height: 650px; /* Adjust height as needed */
+        border: none;
+        border-radius: 8px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Styles for Favorite and Remember! modals (from provided HTML) */
+    #favorite-modal .profile-info {
+        background: rgba(255, 255, 255, 0.7); /* Transparansi */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin: 20px auto; /* Centering for modal content */
+        text-align: left;
+        position: relative;
+        max-width: 500px; /* Limit width */
+    }
+    #favorite-modal .profile-info h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: var(--accent-color);
+        text-align: center;
+    }
+    #favorite-modal .profile-info p {
+        font-size: 16px;
+        color: var(--text-color); /* Adjusted for dark mode */
+        margin: 10px 0;
+    }
+    #favorite-modal .profile-info img.gambarb {
+        display: block;
+        margin: 0 auto;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        margin-top: 10px;
+    }
+
+    #spam-modal .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background: var(--secondary-bg); /* Adjusted for dark/light mode */
+        border-radius: 10px;
+        box-shadow: 0 0 10px var(--card-shadow);
+        color: var(--text-color);
+    }
+    #spam-modal .input-group {
+        margin: 15px 0;
+        text-align: left;
+    }
+    #spam-modal .input-group label {
+        font-size: 14px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: var(--text-color);
+    }
+    #spam-modal .input-group select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background: var(--input-bg-dark); /* Adjusted for dark/light mode */
+        color: var(--text-color);
+    }
+    #spam-modal .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent-color);
+        color: var(--text-color);
+        border: none;
+        padding: 12px;
+        margin: 10px auto; /* Centered */
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        width: calc(100% - 20px); /* Adjust width for padding */
+    }
+    #spam-modal .btn:hover {
+        background: #c73750; /* Darker accent */
+    }
+    body.light-mode #spam-modal .btn:hover {
+        background: #1976D2; /* Darker blue */
+    }
+
+    #spam-modal i {
+        margin-right: 10px;
+    }
+    #spam-modal footer {
+        position: relative; /* Not fixed for modal */
+        bottom: auto;
+        left: auto;
+        right: auto;
+        margin-top: 20px;
+        font-size: 14px;
+        opacity: 0.7;
+        box-shadow: none; /* Remove shadow */
+        border-top: none; /* Remove border */
+    }
+    #spam-modal .modal-status { /* Renamed from .modal for clarity within existing modal structure */
+        display: none;
+        background: var(--primary-bg); /* Adjusted */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px var(--card-shadow);
+        max-width: 300px;
+        text-align: center;
+        margin: 20px auto;
+        color: var(--text-color);
+    }
+    #spam-modal .modal-status h3 {
+        margin-top: 0;
+        color: var(--success-color);
+    }
+    #spam-modal .modal-status p {
+        color: var(--text-color);
+    }
+    #spam-modal .modal-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    #spam-modal .modal-status .btn {
+        padding: 10px 20px;
+        background: var(--accent-color);
+        color: var(--primary-bg);
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.3s;
+        width: auto;
+    }
+    #spam-modal .modal-status .btn.cancel {
+        background: var(--error-color);
+    }
+    #spam-modal .modal-status .btn.cancel:hover {
+        background: #d32f2f;
+    }
+    body.light-mode #spam-modal .modal-status .btn {
+        color: #fff;
+    }
+
+    /* Countdown Modal Styles */
+    #countdown-modal .countdown-content {
+        text-align: center;
+        padding: 20px;
+        color: var(--text-color);
+    }
+    #countdown-modal .countdown-content h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: var(--accent-color);
+    }
+    #countdown-modal #countdown-timer {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-bottom: 20px;
+    }
+    #countdown-modal .countdown-content p {
+        font-size: 1.1rem;
+        color: var(--light-text-color);
+    }
+
+
     /* Media Queries for Responsiveness */
     @media (max-width: 768px) {
       h2 {
@@ -1031,14 +1267,19 @@
         height: 120px;
       }
       .game-title2 {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
       /* Modals full height on mobile */
       #music-player-modal.expanded,
       #send-message-modal.expanded,
       #profile-modal.expanded,
       #report-issue-modal.expanded,
-      #profile-selection-modal.expanded {
+      #profile-selection-modal.expanded,
+      #video-memories-modal.expanded,
+      #chat-memories-modal.expanded,
+      #favorite-modal.expanded, /* New Modal */
+      #spam-modal.expanded, /* New Modal */
+      #countdown-modal.expanded { /* New Modal */
         padding-bottom: 60px; /* Adjust padding for mobile footer */
       }
       .track img {
@@ -1077,6 +1318,49 @@
           width: 80%;
           right: -80%;
       }
+      .video-memory-card, .chat-memory-card { /* Combined */
+        padding: 15px;
+      }
+      .video-memory-card h2, .chat-memory-card h2 { /* Combined */
+        font-size: 1.2rem;
+      }
+      .video-memory-card video, .chat-memory-card iframe { /* Combined */
+        width: 100%;
+        height: auto; /* Adjust iframe height responsiveness */
+      }
+      .chat-memory-card iframe {
+          height: 400px; /* Default height for mobile iframe */
+      }
+      #favorite-modal .profile-info {
+        padding: 15px;
+      }
+      #favorite-modal .profile-info h2 {
+        font-size: 1.2rem;
+      }
+      #favorite-modal .profile-info p {
+        font-size: 0.85rem;
+      }
+      #favorite-modal .profile-info img.gambarb {
+        width: 90px;
+        height: 90px;
+      }
+      #spam-modal .container {
+        padding: 15px;
+      }
+      #spam-modal .input-group select,
+      #spam-modal .btn {
+        font-size: 0.9rem;
+        padding: 10px;
+      }
+      #countdown-modal .countdown-content h2 {
+        font-size: 1.5rem;
+      }
+      #countdown-modal #countdown-timer {
+        font-size: 2rem;
+      }
+      #countdown-modal .countdown-content p {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -1109,13 +1393,11 @@
         <p>BiSTaoAi</p>
         <span class="rating">diperbarui pada 09/06/25</span>
       </a>
-      <a href="https://bimtolproject.github.io/chibimemories/hbd" class="game-card">
-        <img src="https://bimtolproject.github.io/chibimemories/resource/bhbd.png" alt="HBD BANNER">
+      <a href="#" class="game-card" id="hbd-link"> <img src="https://bimtolproject.github.io/chibimemories/resource/bhbd.png" alt="HBD BANNER">
         <p>Birthday</p>
         <span class="rating">diperbarui pada 05/06/25</span>
       </a>
-      <a href="https://bimtolproject.github.io/chibimemories/spam" class="game-card">
-        <img src="https://bimtolproject.github.io/chibimemories/resource/bspam.png" alt="SPAM BANNER">
+      <a href="#" class="game-card" id="spam-link"> <img src="https://bimtolproject.github.io/chibimemories/resource/bspam.png" alt="SPAM BANNER">
         <p>Ingat!</p>
         <span class="rating">diperbarui pada 09/06/25</span>
       </a>
@@ -1132,7 +1414,7 @@
   <div class="section">
     <h3>Memori Kita</h3>
     <div class="game-grid2">
-      <a href="https://bimtolproject.github.io/chibimemories/memo" class="game-item2">
+      <a href="#" class="game-item2" id="video-memories-link">
         <img src="https://bimtolproject.github.io/chibimemories/resource/bmemo.png" alt="MEMORI BANNER">
         <div class="game-info2">
           <div class="game-title2">Kenangan Video</div>
@@ -1148,7 +1430,7 @@
         </div>
       </a>
 
-      <a href="https://bimtolproject.github.io/chibimemories/1" class="game-item2">
+      <a href="#" class="game-item2" id="chat-memories-link">
         <img src="https://bimtolproject.github.io/chibimemories/resource/briwayat.png" alt="RIWAYAT CHAT BANNER">
         <div class="game-info2">
           <div class="game-title2">Riwayat Chat</div>
@@ -1156,8 +1438,7 @@
         </div>
       </a>
 
-      <a href="https://bimtolproject.github.io/chibimemories/fav" class="game-item2">
-        <img src="https://bimtolproject.github.io/chibimemories/resource/bfav.png" alt="FAVORIT BANNER">
+      <a href="#" class="game-item2" id="favorite-link"> <img src="https://bimtolproject.github.io/chibimemories/resource/bfav.png" alt="FAVORIT BANNER">
         <div class="game-info2">
           <div class="game-title2">Favorit</div>
           <div class="game-rating2">diperbarui pada 09/05/25</div>
@@ -1360,6 +1641,244 @@
       </div>
   </div>
 
+  <div id="video-memories-modal">
+    <div class="modal-header">
+      <h3>Video Kenangan</h3>
+      <button class="close-btn" id="close-video-memories-modal">&times;</button>
+    </div>
+    <div id="video-content-container">
+      <div class="video-memory-card">
+          <h2>30 Mei 2025</h2>
+          <video width="300" height="260" controls>
+              <source src="https://ik.imagekit.io/gx6hlpliy/hbd.mp4?updatedAt=1749294252091" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>Polaroid pertama untukmu<br>HBD For U - 2025</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>16 Mei 2025</h2>
+          <video width="300" height="260" controls>
+              <source src="https://ik.imagekit.io/gx6hlpliy/akuarium.mp4?updatedAt=1749292024843" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>ini indah bangettt<br>Akuarium Date - Genshin Impact</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>15 Mei 2025</h2>
+          <video width="300" height="260" controls>
+              <source src="https://ik.imagekit.io/gx6hlpliy/sunflower.mp4?updatedAt=1749292090080" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>ini lucu banget pliss<br>Sunflower - Genshin Impact</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>14 Mei 2025</h2>
+          <video width="260" height="540" controls>
+              <source src="https://ik.imagekit.io/gx6hlpliy/jalan.mp4?updatedAt=1749292087496" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>Gemoyy banget dua mage ini<br>Sunflower - MLBB</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>13 Mei 2025</h2>
+          <video width="300" height="260" controls>
+              <source src="https://ik.imagekit.io/gx6hlpliy/nanigasuki.mp4?updatedAt=1749292089049" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>Nasi ga suki!😡<br>AI SCREAM! - MLBB</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>27 Januari 2025</h2>
+          <video width="300" height="260" controls>
+              <source src="https://bimtolproject.github.io/chibimemories/resource/latern2.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>Latern Rite 5.3 - Genshin Impact</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>05 Desember 2024</h2>
+          <video width="300" height="300" controls>
+              <source src="https://bimtolproject.github.io/chibimemories/resource/mlbb.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>Ling Angela - MLBB</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>27 November 2024</h2>
+          <video width="300" height="300" controls>
+              <source src="https://bimtolproject.github.io/chibimemories/resource/sc.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>Showcase bareng Mualani - Genshin Impact</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>27 November 2024</h2>
+          <video width="300" height="300" controls>
+              <source src="https://bimtolproject.github.io/chibimemories/konten_natlan.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>Burung nya baru belajar terbang bjirr🗿<br>Natlan - Genshin Impact</p>
+      </div>
+       <div class="video-memory-card">
+          <h2>1 Juli 2024</h2>
+          <video width="300" height="300" controls>
+              <source src="https://bimtolproject.github.io/chibimemories/resource/adumvp.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>apa ya ini, gatau dah alay bet</p>
+      </div>
+      <div class="video-memory-card">
+          <h2>20 Februari 2024</h2>
+          <video width="330" height="210" controls>
+              <source src="https://bimtolproject.github.io/chibimemories/resource/ppcouple.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>apa lagi ini yak, pp couple tpi keliatan alay njir</p>
+      </div>
+       <div class="video-memory-card">
+          <h2>16 Februari 2024</h2>
+          <video width="260" height="540" controls>
+              <source src="https://bimtolproject.github.io/chibimemories/resource/latern.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <p>ini sih kita lucuu bingits plis<br>Latern Rite 4.4 - Genshin Impact</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="chat-memories-modal">
+    <div class="modal-header">
+      <h3>Riwayat Chat</h3>
+      <button class="close-btn" id="close-chat-memories-modal">&times;</button>
+    </div>
+    <div id="chat-content-container">
+      <div class="chat-memory-card">
+          <h2>Riwayat Chat Kita Dari 29/12/2023 s.d 28/10/2024</h2>
+          <iframe src="https://bimtolproject.github.io/chibimemories/1.txt"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div id="favorite-modal">
+    <div class="modal-header">
+      <h3>Profil Favorit</h3>
+      <button class="close-btn" id="close-favorite-modal">&times;</button>
+    </div>
+    <div id="favorite-content-container">
+        <div class="profile-card" id="chian-profile-card">
+            <h2 class="iy" text-align="center">TENTANG BIMTOL</h2>
+            <img src="https://bimtolproject.github.io/chibimemories/resource/bimtol.png" alt="FOTO BIMTOL" class="profile-pic">
+            <p><strong>Nama Lengkap:</strong> Bima Rachmat Priyanto</p>
+            <p><strong>Tanggal Lahir:</strong> 25/02/2009</p>
+            <p><strong>Kelahiran:</strong> Karawang</p>
+            <p><strong>Hobi:</strong> Makan</p>
+            <p><strong>Fav Game:</strong> Genshin Impact, Mobile Legends, PUBGM, Roblox</p>
+            <p><strong>5 Fav Hero ML:</strong> Lylia, Fanny, Franco, Brody, Ling</p>
+            <p><strong>5 Fav Karakter GI:</strong> Nahida, Hutao, Furina, Yelan, Raiden Shogun</p>
+            <p><strong>5 Fav Makanan Berat:</strong> Mie ayam, Ayam bumbu hitam, Opor ayam, Martabak Telur, Ayam Katsu</p>
+            <p><strong>5 Fav Makanan Ringan:</strong> Risol Mayo, Cireng ayam pedas, Pastel kentang, Gehu, Cakwe</p>
+            <p><strong>5 Fav Hidangan Manis:</strong> Martabak Manis cokju, Bakpia Pathok, Roti Bagelen, Smoothies, Sop buah</p>
+            <p><strong>5 Lagu terfav:</strong> Line Without a Hook, A thousand years - James Arthur, Night Changes, Perfect - Ed Sheeran, Diary Depresiku</p>
+            <p><strong>Sifat yg sadar ada di diri:</strong> Ceroboh, Sifat suka ke nahida</p>
+        </div>
+        <div class="profile-card" id="chian-profile-card">
+            <h2 class="iy" text-align="center">TENTANG CHIAN</h2>
+            <img src="https://bimtolproject.github.io/chibimemories/resource/chian.png" alt="FOTO CHIAN" class="profile-pic">
+            <p><strong>Nama Lengkap:</strong> Christianna Putri Simangunsong</p>
+            <p><strong>Tanggal Lahir:</strong> 30/05/2008</p>
+            <p><strong>Kelahiran:</strong> Medan</p>
+            <p><strong>Hobi:</strong> Berenang, Baca Novel, Makan</p>
+            <p><strong>Fav Game:</strong> Genshin Impact, Mobile Legends, Toca World</p>
+            <p><strong>5 Fav Hero ML:</strong> Angela, Floryn, Lylia, Kagura, Lunox</p>
+            <p><strong>5 Fav Karakter GI:</strong> Kazuha, Hu Tao, Neuvillette, Xiao, Kinich</p>
+            <p><strong>5 Fav Makanan Berat:</strong> Ayam geprek, Sate padang, Seblak, Mie gomak, Pasta carbonara</p>
+            <p><strong>5 Fav Makanan Ringan:</strong> Kentang goreng, Perkedel, Cireng, Crepes, Basreng</p>
+            <p><strong>5 Fav Hidangan Manis:</strong> Puding, Donat, Es krim mochi, Sop buah, Cheese roll</p>
+            <p><strong>5 Lagu terfav:</strong> Fix You, Watch - Billie Eilish, Cardigan, Apocalyspe, Do I Wanna Know</p>
+            <p><strong>Sifat yang sadar ada di diri:</strong> Pemalu, Pelupa</p>
+        </div>
+    </div>
+  </div>
+
+  <div id="spam-modal">
+    <div class="modal-header">
+      <h3>Ingat!</h3>
+      <button class="close-btn" id="close-spam-modal">&times;</button>
+    </div>
+    <div id="spam-content-container">
+        <div class="container">
+            <h2><i class="fas fa-robot"></i> Tools Chian</h2>
+            <div class="input-group">
+                <label for="jumlahChian">Jumlah Pengiriman:</label>
+                <select id="jumlahChian">
+                    <option value="1">1x</option>
+                    <option value="5">5x</option>
+                    <option value="10">10x</option>
+                    <option value="25">25x</option>
+                    <option value="50">50x</option>
+                    <option value="100">100x</option>
+                    <option value="500">500x (Tidak Rekomendasi)</option>
+                </select>
+            </div>
+
+            <button class="btn btn-random" onclick="mabarML()"><i class="fas fa-gamepad"></i> AJAK MABAR ML</button>
+            <button class="btn btn-random" onclick="mabarGenshin()"><i class="fas fa-gamepad"></i> AJAK COOP GENSHIN</button>
+            <button class="btn btn-random" onclick="spamRandom()"><i class="fas fa-fist-raised"></i> Senggol Bimtol!</button>
+            <button class="btn btn-random" onclick="streakRandom()"><i class="fas fa-bell"></i> Ingatkan Streak Tiktok!</button>
+            <i>"Jika menggunakan tools ini pesan akan otomatis terkirim ke telegram bima dan tools ini diperuntukkan/digunakan oleh chian"</i><br>
+        </div>
+        <br><br>
+        <div class="container">
+            <h2><i class="fas fa-robot"></i> Tools Bimtol</h2>
+            <div class="input-group">
+                <label for="jumlahBimtol">Jumlah Pengiriman:</label>
+                <select id="jumlahBimtol">
+                    <option value="1">1x</option>
+                    <option value="5">5x</option>
+                    <option value="10">10x</option>
+                    <option value="25">25x</option>
+                    <option value="50">50x</option>
+                    <option value="100">100x</option>
+                </select>
+            </div>
+
+            <button class="btn btn-random" onclick="mabarMLC()"><i class="fas fa-gamepad"></i> AJAK MABAR ML</button>
+            <button class="btn btn-random" onclick="mabarGenshinC()"><i class="fas fa-gamepad"></i> AJAK COOP GENSHIN</button>
+            <button class="btn btn-random" onclick="spamRandomC()"><i class="fas fa-fist-raised"></i> Senggol Chian Sampe Mampus!</button>
+            <button class="btn btn-random" onclick="streakRandomC()"><i class="fas fa-bell"></i> Ingatkan Streak Tiktok!</button>
+            <i>"Tools ini diperuntukkan/digunakan oleh Bimtol"</i><br>
+        </div>
+
+        <footer>Mohon gunakan Tools ini dengan bijak yaa, jangan digunakan secara berlebihan ya cill.</footer>
+        <footer>© 2023-2025 Bimtolproject - All Rights Reserved</footer>
+        
+        <div id="spamSuccessModal" class="modal-status" style="display: none;">
+            <div class="modal-content">
+                <h3><i class="fas fa-check-circle"></i> Berhasil!</h3>
+                <p>Horeee!! Pesan telah berhasil terkirim oleh bot sesuai dengan perintah!</p>
+                <div class="modal-buttons">
+                    <button class="btn cancel" onclick="closeSpamSuccessModal()">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div id="countdown-modal">
+    <div class="modal-header">
+      <h3>Ulang Tahun Akan Datang!</h3>
+      <button class="close-btn" id="close-countdown-modal">&times;</button>
+    </div>
+    <div id="countdown-content-container">
+        <div class="countdown-content">
+            <h2>Hitung Mundur Menuju Ulang Tahunmu!</h2>
+            <p>Ulang tahunmu selanjutnya akan tiba pada:</p>
+            <div id="countdown-timer"></div>
+            <p>Persiapkan dirimu untuk kejutan spesial!</p>
+        </div>
+    </div>
+  </div>
+
 
   <script>
     // Audio Player Elements
@@ -1381,7 +1900,7 @@
     let currentTrackElement = null; // Stores the currently playing track's div
 
     const sendMessageModal = document.getElementById('send-message-modal');
-    const sendLink = document.getElementById('send-link'); // Corrected typo
+    const sendLink = document.getElementById('send-link');
     const closeSendModalBtn = document.getElementById('close-send-modal');
     const contactForm = document.getElementById('contact-form');
     const statusDiv = document.getElementById('status');
@@ -1410,6 +1929,35 @@
     const profileSelectionModal = document.getElementById('profile-selection-modal');
     const closeProfileSelectionModalBtn = document.getElementById('close-profile-selection-modal');
     const profileSelectionOptions = document.querySelectorAll('.profile-selection-option');
+
+    // Video Memories Elements
+    const videoMemoriesLink = document.getElementById('video-memories-link');
+    const videoMemoriesModal = document.getElementById('video-memories-modal');
+    const closeVideoMemoriesModalBtn = document.getElementById('close-video-memories-modal');
+
+    // Chat Memories Elements
+    const chatMemoriesLink = document.getElementById('chat-memories-link');
+    const chatMemoriesModal = document.getElementById('chat-memories-modal');
+    const closeChatMemoriesModalBtn = document.getElementById('close-chat-memories-modal');
+
+    // New Modals
+    const hbdLink = document.getElementById('hbd-link');
+    const favoriteLink = document.getElementById('favorite-link');
+    const spamLink = document.getElementById('spam-link');
+
+    const favoriteModal = document.getElementById('favorite-modal');
+    const closeFavoriteModalBtn = document.getElementById('close-favorite-modal');
+
+    const spamModal = document.getElementById('spam-modal');
+    const closeSpamModalBtn = document.getElementById('close-spam-modal');
+    const spamSuccessModal = document.getElementById('spamSuccessModal');
+    const jumlahChian = document.getElementById('jumlahChian');
+    const jumlahBimtol = document.getElementById('jumlahBimtol');
+
+    const countdownModal = document.getElementById('countdown-modal');
+    const closeCountdownModalBtn = document.getElementById('close-countdown-modal');
+    const countdownTimer = document.getElementById('countdown-timer');
+    let countdownInterval;
 
     const footerLinks = document.querySelectorAll('footer a');
 
@@ -1476,7 +2024,7 @@
 
     // Function to close all modals with slide-down effect
     function closeAllModals() {
-        const modals = [musicPlayerModal, sendMessageModal, profileModal, reportIssueModal, profileSelectionModal];
+        const modals = [musicPlayerModal, sendMessageModal, profileModal, reportIssueModal, profileSelectionModal, videoMemoriesModal, chatMemoriesModal, favoriteModal, spamModal, countdownModal];
         modals.forEach(modal => {
             if (modal.classList.contains('expanded')) {
                 modal.classList.remove('expanded');
@@ -1487,13 +2035,26 @@
                 }, { once: true });
             }
         });
-      
+
         statusDiv.textContent = "";
         statusDiv.className = "";
         contactForm.reset();
         reportStatusDiv.textContent = "";
         reportStatusDiv.className = "";
         reportForm.reset();
+        spamSuccessModal.style.display = 'none'; // Hide spam success modal
+        clearInterval(countdownInterval); // Stop countdown when modal closes
+        // Pause all videos when closing modals to prevent background audio from video
+        document.querySelectorAll('#video-content-container video').forEach(video => {
+            video.pause();
+            video.currentTime = 0;
+        });
+        // Stop any iframe content that might be playing (less direct control)
+        document.querySelectorAll('#chat-content-container iframe').forEach(iframe => {
+            // This is a security feature; cannot directly pause iframe video/audio.
+            // Reloading or setting src to blank is an option, but might be jarring.
+            // For now, we rely on browser handling of iframes in display: none.
+        });
     }
 
     // Function to open a specific modal with slide-up effect
@@ -1501,7 +2062,7 @@
         closeAllModals(); // Close any other open modals first
         modalElement.style.display = 'flex'; // Make it visible (display: flex)
         // Force reflow to ensure display change takes effect before transition
-        modalElement.offsetWidth; 
+        modalElement.offsetWidth;
         modalElement.classList.add('expanded');
     }
 
@@ -1516,7 +2077,7 @@
 
         currentTrackIndex = index % tracks.length; // Loop back to start if end reached
         const trackToPlay = tracks[currentTrackIndex];
-        
+
         const src = trackToPlay.getAttribute('data-src');
         const title = trackToPlay.getAttribute('data-title');
         const artist = trackToPlay.getAttribute('data-artist');
@@ -1526,11 +2087,11 @@
         currentSongTitle.textContent = `${title} - ${artist}`;
         integratedMusicPlayer.classList.add('visible');
         vinylIcon.style.animationPlayState = 'running';
-        
+
         audio.play().catch(error => {
             console.log("Autoplay blocked or failed on playTrack:", error);
             // Indicate to user they might need to interact to start audio
-            alert("Untuk memutar musik, browser mungkin memerlukan interaksi pertama Anda.");
+            // alert("Untuk memutar musik, browser mungkin memerlukan interaksi pertama Anda."); // Avoid alert on every load
         });
 
         currentTrackElement = trackToPlay;
@@ -1540,6 +2101,41 @@
         localStorage.setItem('lastPlayedSongArtist', artist);
         localStorage.setItem('currentTrackIndex', currentTrackIndex);
     }
+
+    // Countdown function for HBD modal
+    function startCountdown() {
+        const targetDate = new Date();
+        targetDate.setMonth(5); // June (0-indexed)
+        targetDate.setDate(30);
+        targetDate.setHours(0);
+        targetDate.setMinutes(0);
+        targetDate.setSeconds(0);
+        targetDate.setMilliseconds(0);
+
+        // If target date has passed for the current year, set it to next year
+        if (targetDate.getTime() < new Date().getTime()) {
+            targetDate.setFullYear(targetDate.getFullYear() + 1);
+        }
+
+        countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate.getTime() - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownTimer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownTimer.innerHTML = "Selamat Ulang Tahun!";
+                // Optionally, redirect to the HBD page automatically here
+            }
+        }, 1000);
+    }
+
 
     // --- Initialization on page load ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -1589,26 +2185,25 @@
               audio.src = trackData.src;
               currentSongTitle.textContent = `${trackData.title} - ${trackData.artist}`;
               integratedMusicPlayer.classList.add('visible');
-              vinylIcon.style.animationPlayState = 'paused'; 
+              vinylIcon.style.animationPlayState = 'paused';
               currentTrackElement = tracks[currentTrackIndex];
-              currentTrackElement.classList.add('active'); 
+              currentTrackElement.classList.add('active');
               audio.load(); // Load the audio
-              // Attempt to play after a short delay to allow elements to render
-              setTimeout(() => {
-                audio.play().catch(error => {
-                    console.log("Autoplay blocked on page load:", error);
-                    // User might need to interact first. Keep player visible but paused.
-                    integratedMusicPlayer.classList.add('visible');
-                    vinylIcon.style.animationPlayState = 'paused';
-                });
-              }, 100);
+
+              // This promise catch handles if autoplay is blocked by browser policies
+              audio.play().catch(error => {
+                  console.log("Autoplay blocked on page load:", error);
+                  // User might need to interact first. Keep player visible but paused.
+                  integratedMusicPlayer.classList.add('visible');
+                  vinylIcon.style.animationPlayState = 'paused';
+              });
           } else {
               // Fallback if index is out of bounds
-              playTrack(0); 
+              playTrack(0);
           }
       } else if (tracks.length > 0) {
           // If no last played, start from the first song
-          playTrack(0); 
+          playTrack(0);
       }
     });
 
@@ -1828,6 +2423,200 @@
         });
     });
 
+    // --- Video Memories Modal Logic ---
+    videoMemoriesLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(videoMemoriesModal);
+    });
+
+    closeVideoMemoriesModalBtn.addEventListener('click', () => {
+        closeAllModals(); // This will handle the slide-down
+    });
+
+    // --- Chat Memories Modal Logic ---
+    chatMemoriesLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(chatMemoriesModal);
+    });
+
+    closeChatMemoriesModalBtn.addEventListener('click', () => {
+        closeAllModals(); // This will handle the slide-down
+    });
+
+    // --- New HBD Link Logic ---
+    hbdLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const now = new Date();
+        const targetDay = 30; // June 30th
+        const targetMonth = 5; // June (0-indexed)
+        const targetHour = 0;
+        const targetMinute = 0;
+
+        if (now.getDate() === targetDay && now.getMonth() === targetMonth && now.getHours() === targetHour && now.getMinutes() === targetMinute) {
+            window.location.href = "https://bimtolproject.github.io/chibimemories/hbd"; // Redirect if time is met
+        } else {
+            openModal(countdownModal);
+            startCountdown();
+        }
+    });
+
+    closeCountdownModalBtn.addEventListener('click', () => {
+        closeAllModals();
+    });
+
+    // --- New Favorite Link Logic ---
+    favoriteLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(favoriteModal);
+    });
+
+    closeFavoriteModalBtn.addEventListener('click', () => {
+        closeAllModals();
+    });
+
+    // --- New Spam Link Logic (Telegram Bot Tools) ---
+    spamLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(spamModal);
+    });
+
+    closeSpamModalBtn.addEventListener('click', () => {
+        closeAllModals();
+        spamSuccessModal.style.display = 'none'; // Ensure it's hidden when closing the main modal
+    });
+
+    // Telegram Bot Functions (moved from spam.html)
+    const tokenB = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0"; // Bima's bot token
+    const chat_idB = "1917708915"; // Bima's chat ID
+    const tokenC = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0"; // Chian's bot token (assuming same bot for now, but different chat_id)
+    const chat_idC = "6708247690"; // Chian's chat ID
+
+    function showSpamSuccessModal() {
+        spamSuccessModal.style.display = "block";
+    }
+
+    function closeSpamSuccessModal() {
+        spamSuccessModal.style.display = "none";
+    }
+
+    function kirimPesan(pesan, targetChatId) {
+        const token = (targetChatId === chat_idB) ? tokenB : tokenC; // Use appropriate token based on target
+        const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${targetChatId}&text=${encodeURIComponent(pesan)}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Berhasil:", data);
+                if (data.ok) {
+                    showSpamSuccessModal();
+                } else {
+                    alert("Gagal mengirim pesan: " + data.description);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Terjadi kesalahan saat mengirim. Silakan cek koneksi internet Anda dan coba lagi.");
+            });
+    }
+
+    function mabarML() {
+        const pesanAcak = [
+            "Ayooo Login ML",
+            "Login Login ML!!"
+        ];
+        let jumlah = parseInt(jumlahChian.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idB); // Send to Bima
+        }
+    }
+
+    function mabarGenshin() {
+        const pesanAcak = [
+            "Ayooo Login Genshin",
+            "Login Login Genshin!!"
+        ];
+        let jumlah = parseInt(jumlahChian.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idB); // Send to Bima
+        }
+    }
+
+    function spamRandom() {
+        const pesanAcak = [
+            "Haloo!!! Chian telah menyenggol Bima!",
+            "Halooo Bimaaaaaa"
+        ];
+        let jumlah = parseInt(jumlahChian.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idB); // Send to Bima
+        }
+    }
+
+    function streakRandom() {
+        const pesanAcak = [
+            "Woyy Api Woyyyyy🔥",
+            "Apinya belum nyalaaa",
+            "NYALAIN APINYA!"
+        ];
+        let jumlah = parseInt(jumlahChian.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idB); // Send to Bima
+        }
+    }
+
+    function mabarMLC() {
+        const pesanAcak = [
+            "Ayooo Login ML",
+            "Login Login ML!!"
+        ];
+        let jumlah = parseInt(jumlahBimtol.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idC); // Send to Chian
+        }
+    }
+
+    function mabarGenshinC() {
+        const pesanAcak = [
+            "Ayooo Login Genshin",
+            "Login Login Genshin!!"
+        ];
+        let jumlah = parseInt(jumlahBimtol.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idC); // Send to Chian
+        }
+    }
+
+    function spamRandomC() {
+        const pesanAcak = [
+            "Haloo!!! Bima telah menyenggol Chian!",
+            "Halooo Chiannnnnnn"
+        ];
+        let jumlah = parseInt(jumlahBimtol.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idC); // Send to Chian
+        }
+    }
+
+    function streakRandomC() {
+        const pesanAcak = [
+            "Woyy Api Woyyyyy🔥",
+            "Apinya belum nyalaaa",
+            "NYALAIN APINYA!"
+        ];
+        let jumlah = parseInt(jumlahBimtol.value);
+        for (let i = 0; i < jumlah; i++) {
+            let pesan = pesanAcak[Math.floor(Math.random() * pesanAcak.length)];
+            kirimPesan(pesan, chat_idC); // Send to Chian
+        }
+    }
+
     // Ensure home link still works and closes everything
     document.getElementById('home-link').addEventListener('click', (e) => {
       e.preventDefault();
@@ -1840,7 +2629,7 @@
     document.addEventListener('click', (e) => {
         const isClickInsideSideMenu = sideMenu.contains(e.target);
         const isClickOnMenuButton = openSideMenuBtn.contains(e.target);
-        const isClickInsideAnyModal = musicPlayerModal.contains(e.target) || sendMessageModal.contains(e.target) || profileModal.contains(e.target) || reportIssueModal.contains(e.target) || profileSelectionModal.contains(e.target);
+        const isClickInsideAnyModal = musicPlayerModal.contains(e.target) || sendMessageModal.contains(e.target) || profileModal.contains(e.target) || reportIssueModal.contains(e.target) || profileSelectionModal.contains(e.target) || videoMemoriesModal.contains(e.target) || chatMemoriesModal.contains(e.target) || favoriteModal.contains(e.target) || spamModal.contains(e.target) || countdownModal.contains(e.target);
         const isClickOnFooter = e.target.closest('footer');
 
         if (!isClickInsideSideMenu && !isClickOnMenuButton && sideMenu.classList.contains('open') && !isClickInsideAnyModal && !isClickOnFooter) {
