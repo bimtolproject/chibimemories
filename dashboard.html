@@ -4,116 +4,369 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ChrisbiM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    :root {
+      --primary-bg: #1a1a2e;
+      --secondary-bg: #16213e;
+      --accent-color: #e94560;
+      --text-color: #e0e0e0;
+      --light-text-color: #a0a0a0;
+      --border-color: #0f3460;
+      --card-shadow: rgba(0, 0, 0, 0.4);
+      --input-bg-dark: #2a3d5e;
+      --success-color: #4CAF50;
+      --error-color: #F44336;
+      --profile-card-bg: #22384a;
+      --icon-default-filter-dark: invert(1); /* White for dark mode */
+      --icon-active-filter-dark: invert(0) sepia(1) saturate(1000%) hue-rotate(330deg) brightness(1.2); /* Red for dark mode */
+    }
+
+    /* Light Mode Variables */
+    body.light-mode {
+      --primary-bg: #ffffff;
+      --secondary-bg: #f0f2f5;
+      --accent-color: #2196F3; /* A nice blue for light mode */
+      --text-color: #333333;
+      --light-text-color: #666666;
+      --border-color: #e0e0e0;
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --input-bg-dark: #e0f7fa;
+      --profile-card-bg: #e0f2f5;
+      --icon-default-filter-light: invert(0); /* Black for light mode */
+      --icon-active-filter-light: invert(0) sepia(1) saturate(1000%) hue-rotate(190deg) brightness(1.2); /* Blue for light mode */
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: 'Montserrat', sans-serif;
     }
+
     body {
-      background: #fff;
-      color: #000;
-      padding-bottom: 60px; 
+      background: var(--primary-bg);
+      color: var(--text-color);
+      padding-bottom: 80px; /* Space for fixed footer */
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     h2 {
-      font-size: 1.3rem;
-      margin-bottom: 16px;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: var(--accent-color);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
     }
+
     header {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      font-size: 20px;
-      font-weight: bold;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: 700;
+      background: var(--secondary-bg);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 4px 10px var(--card-shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
-    .icons img {
-      width: 24px;
-      margin-left: 16px;
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 10px;
     }
+
+    .header-logo {
+      color: var(--accent-color);
+      text-shadow: 0 0 8px rgba(233, 69, 96, 0.5);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+    
+    .menu-toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+    body.light-mode .header-logo {
+        text-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+    }
+
+    .icons .menu-toggle-btn img {
+      width: 28px;
+      margin-left: 20px;
+      filter: var(--icon-default-filter-dark);
+      transition: transform 0.2s ease-in-out, filter 0.3s ease;
+      cursor: pointer;
+    }
+    body.light-mode .icons .menu-toggle-btn img {
+        filter: var(--icon-default-filter-light);
+    }
+
+    .icons .menu-toggle-btn img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Integrated Music Player */
+    #integrated-music-player {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9rem;
+        color: var(--light-text-color);
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    #integrated-music-player.visible {
+        opacity: 1;
+    }
+
+    #integrated-music-player .vinyl-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #333;
+        border: 2px solid var(--accent-color);
+        position: relative;
+        overflow: hidden;
+        animation: spin 3s linear infinite;
+        transition: border-color 0.3s ease;
+    }
+    #integrated-music-player .vinyl-icon::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--light-text-color);
+        transition: background-color 0.3s ease;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    body.light-mode #integrated-music-player .vinyl-icon {
+        background-color: #ccc;
+        border: 2px solid var(--accent-color);
+    }
+    body.light-mode #integrated-music-player .vinyl-icon::before {
+        background-color: var(--text-color);
+    }
+
+
+    #integrated-music-player .current-song-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-grow: 1;
+        font-weight: 500;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+    }
+
+
+    /* Profile Info (dynamic) */
     .profile {
       display: flex;
       align-items: center;
-      padding: 0 16px 16px;
-      gap: 10px;
+      padding: 20px;
+      gap: 15px;
+      background: var(--secondary-bg);
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px var(--card-shadow);
+      max-width: 90%;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     }
-    .profile img {
-      width: 48px;
-      height: 48px;
+
+    .profile-img {
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
+      border: 3px solid var(--accent-color);
+      box-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      object-fit: cover;
     }
+
+    body.light-mode .profile-img {
+        box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+    }
+
+    .profile-greeting {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-color);
+      transition: color 0.3s ease;
+    }
+
     .section {
-      padding: 0 16px;
-      margin-top: 10px;
+      padding: 0 20px;
+      margin-top: 30px;
     }
+
     .section h3 {
-      margin-bottom: 10px;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-left: 4px solid var(--accent-color);
+      padding-left: 10px;
+      transition: color 0.3s ease, border-color 0.3s ease;
     }
+
     .game-scroll {
       display: flex;
       overflow-x: auto;
-      gap: 12px;
+      gap: 15px;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-color) var(--secondary-bg);
     }
+
+    body.light-mode .game-scroll::-webkit-scrollbar-thumb {
+        background-color: var(--accent-color);
+    }
+
     .game-scroll::-webkit-scrollbar {
-      display: none;
+      height: 8px;
     }
+
+    .game-scroll::-webkit-scrollbar-track {
+      background: var(--secondary-bg);
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .game-scroll::-webkit-scrollbar-thumb {
+      background-color: var(--accent-color);
+      border-radius: 10px;
+      border: 2px solid var(--secondary-bg);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
     .game-card {
-      min-width: 160px;
+      min-width: 180px;
       flex-shrink: 0;
       text-decoration: none;
       color: inherit;
+      background: var(--secondary-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px var(--card-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      position: relative;
+      padding-bottom: 10px;
     }
+
+    .game-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(233, 69, 96, 0.4);
+    }
+
+    body.light-mode .game-card:hover {
+        box-shadow: 0 10px 25px rgba(33, 150, 243, 0.4);
+    }
+
     .game-card img {
-  width: 100%;
-  height: 100px; 
-  object-fit: cover;
-  border-radius: 12px;
-}
-    .game-card p {
-      font-weight: bold;
-      font-size: 14px;
-      margin-top: 4px;
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
     }
+
+    .game-card p {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 8px;
+      padding: 0 10px;
+      color: var(--text-color);
+      transition: color 0.3s ease;
+    }
+
     .rating {
-      font-size: 13px;
-      color: #555;
+      font-size: 0.85rem;
+      color: var(--light-text-color);
+      padding: 0 10px;
+      margin-top: 4px;
+      transition: color 0.3s ease;
     }
 
     .game-grid2 {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
     }
+
     .game-item2 {
-      background: #f9f9f9;
-      border-radius: 12px;
+      background: var(--secondary-bg);
+      border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 15px var(--card-shadow);
       display: flex;
       flex-direction: column;
       text-decoration: none;
       color: inherit;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     }
+
+    .game-item2:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(233, 69, 96, 0.4);
+    }
+
+    body.light-mode .game-item2:hover {
+        box-shadow: 0 10px 25px rgba(33, 150, 243, 0.4);
+    }
+
     .game-item2 img {
       width: 100%;
-      height: auto;
+      height: 150px;
+      object-fit: cover;
       display: block;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
     }
+
     .game-info2 {
-      padding: 10px;
+      padding: 12px;
     }
+
     .game-title2 {
-      font-weight: bold;
-      font-size: 1rem;
+      font-weight: 600;
+      font-size: 1.1rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      color: var(--text-color);
+      transition: color 0.3s ease;
     }
+
     .game-rating2 {
       font-size: 0.9rem;
-      color: #555;
+      color: var(--light-text-color);
+      transition: color 0.3s ease;
     }
 
     footer {
@@ -123,42 +376,733 @@
       right: 0;
       display: flex;
       justify-content: space-around;
-      background: #fff;
-      border-top: 1px solid #ddd;
-      padding: 6px 0;
-      z-index: 10;
+      background: var(--secondary-bg);
+      border-top: 1px solid var(--border-color);
+      padding: 10px 0;
+      z-index: 99;
+      box-shadow: 0 -4px 10px var(--card-shadow);
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
+
     footer a {
       display: flex;
       flex-direction: column;
       align-items: center;
       font-size: 12px;
-      color: #000;
+      color: var(--light-text-color);
       text-decoration: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+      padding: 5px;
+      border-radius: 8px;
     }
+
+    footer a:hover {
+      color: var(--accent-color);
+      transform: translateY(-3px);
+    }
+
     footer img {
-      width: 24px;
-      height: 24px;
-      margin-bottom: 2px;
+      width: 26px;
+      height: 26px;
+      margin-bottom: 4px;
+      filter: var(--icon-default-filter-dark);
+      transition: filter 0.3s ease;
+    }
+
+    body.light-mode footer img {
+        filter: var(--icon-default-filter-light);
+    }
+
+    footer a.active img {
+      filter: var(--icon-active-filter-dark);
+    }
+
+    body.light-mode footer a.active img {
+        filter: var(--icon-active-filter-light);
+    }
+
+    footer a.active span {
+      color: var(--accent-color);
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #1a1a2e, #0f3460, #16213e);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+      z-index: -1;
+      opacity: 0.5;
+      transition: background 0.3s ease, opacity 0.3s ease;
+    }
+
+    body.light-mode::before {
+        background: linear-gradient(45deg, #e0f7fa, #bbdefb, #e0e0e0);
+        opacity: 0.8;
+    }
+
+    /* --- Modal Styles (General adjustments for full screen) --- */
+    #music-player-modal,
+    #send-message-modal,
+    #report-issue-modal,
+    #profile-modal,
+    #profile-selection-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--secondary-bg);
+      border-radius: 0;
+      box-shadow: 0 0 20px var(--card-shadow);
+      z-index: 102;
+      opacity: 0;
+      display: none; /* Changed for better control with transitions */
+      transform: translateY(-100%); /* Start off-screen above for slide-down effect */
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+      flex-direction: column;
+      padding: 0 20px;
+    }
+
+    #music-player-modal.expanded,
+    #send-message-modal.expanded,
+    #report-issue-modal.expanded,
+    #profile-modal.expanded,
+    #profile-selection-modal.expanded {
+      opacity: 1;
+      transform: translateY(0); /* Slide down to full screen */
+      padding-bottom: 80px; /* Space for footer if needed by content */
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-color);
+      flex-shrink: 0;
+      transition: border-color 0.3s ease;
+    }
+
+    .modal-header h3 {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      letter-spacing: 0.8px;
+      transition: color 0.3s ease;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 2.5rem;
+      color: var(--light-text-color);
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--text-color);
+    }
+
+    /* Content containers for modals */
+    #playlist-container,
+    #message-form-container,
+    #report-form-container,
+    #profile-content-container,
+    #profile-selection-container {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-color) var(--secondary-bg);
+    }
+    #playlist-container::-webkit-scrollbar,
+    #message-form-container::-webkit-scrollbar,
+    #report-form-container::-webkit-scrollbar,
+    #profile-content-container::-webkit-scrollbar,
+    #profile-selection-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    #playlist-container::-webkit-scrollbar-track,
+    #message-form-container::-webkit-scrollbar-track,
+    #report-form-container::-webkit-scrollbar-track,
+    #profile-content-container::-webkit-scrollbar-track,
+    #profile-selection-container::-webkit-scrollbar-track {
+      background: var(--primary-bg);
+      border-radius: 10px;
+    }
+    #playlist-container::-webkit-scrollbar-thumb,
+    #message-form-container::-webkit-scrollbar-thumb,
+    #report-form-container::-webkit-scrollbar-thumb,
+    #profile-content-container::-webkit-scrollbar-thumb,
+    #profile-selection-container::-webkit-scrollbar-thumb {
+      background-color: var(--accent-color);
+      border-radius: 10px;
+      border: 2px solid var(--primary-bg);
+    }
+
+
+    .track {
+      display: flex;
+      align-items: center;
+      padding: 12px 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      background: var(--primary-bg);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .track:hover {
+      background: #253855;
+    }
+    body.light-mode .track:hover {
+        background: #e3f2fd;
+    }
+
+    .track.active {
+      background: var(--accent-color);
+      color: var(--primary-bg);
+      box-shadow: 0 4px 10px rgba(233, 69, 96, 0.4);
+    }
+
+    body.light-mode .track.active {
+        background: var(--accent-color);
+        color: var(--text-light);
+        box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
+    }
+
+    .track.active .track-title,
+    .track.active .track-artist {
+      color: var(--primary-bg);
+    }
+    body.light-mode .track.active .track-title,
+    body.light-mode .track.active .track-artist {
+        color: var(--text-light);
+    }
+
+    .track img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      margin-right: 15px;
+      object-fit: cover;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .track-info {
+      flex: 1;
+    }
+
+    .track-title {
+      font-weight: 600;
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s ease;
+    }
+
+    .track-artist {
+      font-size: 0.85rem;
+      color: var(--light-text-color);
+      transition: color 0.3s ease;
+    }
+
+    /* --- Send Message / Report Issue Forms --- */
+    #contact-form, #report-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    #contact-form input, #report-form input,
+    #contact-form textarea, #report-form textarea {
+      background: var(--input-bg-dark);
+      color: var(--text-color);
+      padding: 12px 15px;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+
+    #contact-form input::placeholder, #report-form input::placeholder,
+    #contact-form textarea::placeholder, #report-form textarea::placeholder {
+        color: var(--light-text-color);
+        transition: color 0.3s ease;
+    }
+
+    #contact-form input:focus, #report-form input:focus,
+    #contact-form textarea:focus, #report-form textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+    }
+    body.light-mode #contact-form input:focus, body.light-mode #report-form input:focus,
+    body.light-mode #contact-form textarea:focus, body.light-mode #report-form textarea:focus {
+        box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+    }
+
+    #contact-form button, #report-form button {
+      background: var(--accent-color);
+      color: var(--text-color);
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #contact-form button:hover, #report-form button:hover {
+      background: #c73750;
+      transform: translateY(-2px);
+    }
+    body.light-mode #contact-form button, body.light-mode #report-form button {
+        background: var(--accent-color);
+        color: var(--text-light);
+    }
+    body.light-mode #contact-form button:hover, body.light-mode #report-form button:hover {
+        background: #1976D2; /* Darker blue for light mode */
+    }
+
+    #status, #report-status {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    #status.success, #report-status.success {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: var(--success-color);
+      border: 1px solid var(--success-color);
+    }
+
+    #status.error, #report-status.error {
+      background-color: rgba(244, 67, 54, 0.2);
+      color: var(--error-color);
+      border: 1px solid var(--error-color);
+    }
+
+    /* --- Profile Modal Styles --- */
+    .profile-card {
+      background: var(--profile-card-bg);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      text-align: center;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-card h2 {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      color: var(--accent-color);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .profile-card img.profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px auto;
+      border: 3px solid var(--accent-color);
+      box-shadow: 0 0 15px rgba(233, 69, 96, 0.7);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    body.light-mode .profile-card img.profile-pic {
+        box-shadow: 0 0 15px rgba(33, 150, 243, 0.7);
+    }
+
+    .profile-card p {
+      font-size: 0.95rem;
+      color: var(--text-color);
+      margin: 8px 0;
+      text-align: left;
+      padding-left: 10px;
+      border-left: 2px solid var(--border-color);
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    .profile-card p strong {
+      color: var(--accent-color);
+      transition: color 0.3s ease;
+    }
+
+    /* --- Side Menu (Hamburger) Styles --- */
+    #side-menu {
+      position: fixed;
+      top: 0;
+      right: -70%;
+      width: 70%;
+      max-width: 300px;
+      height: 100%;
+      background: var(--secondary-bg);
+      box-shadow: -8px 0 20px var(--card-shadow);
+      z-index: 101;
+      transition: right 0.4s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    #side-menu.open {
+      right: 0;
+    }
+
+    #side-menu .menu-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+        transition: border-color 0.3s ease;
+    }
+
+    #side-menu .menu-header h3 {
+        font-size: 1.4rem;
+        color: var(--accent-color);
+        transition: color 0.3s ease;
+    }
+
+    #side-menu .close-side-menu-btn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--light-text-color);
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+    #side-menu .close-side-menu-btn:hover {
+        color: var(--text-color);
+    }
+
+    #side-menu .menu-options {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 10px;
+    }
+
+    #side-menu .menu-option {
+        display: flex;
+        align-items: center;
+        padding: 12px 10px;
+        background: var(--primary-bg);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease, color 0.3s ease;
+    }
+
+    #side-menu .menu-option:hover {
+        background: #253855;
+        transform: translateX(-5px);
+    }
+    body.light-mode #side-menu .menu-option:hover {
+        background: #e3f2fd;
+    }
+
+
+    #side-menu .menu-option i {
+        font-size: 1.2rem;
+        margin-right: 15px;
+        color: var(--accent-color);
+        transition: color 0.3s ease;
+    }
+
+    #side-menu .menu-option span {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-color);
+        flex-grow: 1;
+        transition: color 0.3s ease;
+    }
+
+    #side-menu .menu-option .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+    }
+
+    #side-menu .menu-option .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    #side-menu .menu-option .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--light-text-color);
+        transition: .4s;
+        border-radius: 20px;
+    }
+
+    #side-menu .menu-option .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: var(--primary-bg);
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    #side-menu .menu-option input:checked + .slider {
+        background-color: var(--accent-color);
+    }
+
+    #side-menu .menu-option input:focus + .slider {
+        box-shadow: 0 0 1px var(--accent-color);
+    }
+
+    #side-menu .menu-option input:checked + .slider:before {
+        transform: translateX(20px);
+    }
+
+    #side-menu .menu-option input[type="range"] {
+        width: calc(100% - 70px);
+        margin-left: 10px;
+        -webkit-appearance: none;
+        height: 8px;
+        background: var(--border-color);
+        border-radius: 5px;
+        outline: none;
+    }
+    #side-menu .menu-option input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+    #side-menu .menu-option input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+
+    /* Profile Selection Options in Side Menu */
+    .profile-selection-option {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin-bottom: 8px;
+        background: var(--primary-bg);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .profile-selection-option:hover {
+        background: #253855;
+        transform: translateX(3px);
+    }
+    body.light-mode .profile-selection-option:hover {
+        background: #e3f2fd;
+    }
+
+
+    .profile-selection-option img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid var(--border-color);
+        transition: border-color 0.3s ease;
+    }
+
+    .profile-selection-option span {
+        font-weight: 500;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+    }
+
+    .profile-selection-option.active-selection {
+        background: var(--accent-color);
+        color: var(--primary-bg);
+        box-shadow: 0 2px 8px rgba(233, 69, 96, 0.4);
+    }
+    .profile-selection-option.active-selection img {
+        border-color: var(--primary-bg);
+    }
+    .profile-selection-option.active-selection span {
+        color: var(--primary-bg);
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+      header {
+          padding: 15px;
+      }
+      .header-top {
+          margin-bottom: 5px;
+      }
+      #integrated-music-player {
+          font-size: 0.8rem;
+          gap: 8px;
+      }
+      #integrated-music-player .vinyl-icon {
+          width: 18px;
+          height: 18px;
+      }
+      #integrated-music-player .vinyl-icon::before {
+          width: 5px;
+          height: 5px;
+      }
+      .profile {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+        margin: 15px auto;
+        max-width: 95%;
+      }
+      .profile-img {
+        width: 50px;
+        height: 50px;
+      }
+      .profile-greeting {
+        font-size: 1rem;
+      }
+      .section {
+        padding: 0 15px;
+        margin-top: 20px;
+      }
+      .section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+      }
+      .game-card {
+        min-width: 150px;
+      }
+      .game-card img {
+        height: 100px;
+      }
+      .game-grid2 {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 15px;
+      }
+      .game-item2 img {
+        height: 120px;
+      }
+      .game-title2 {
+        font-size: 1rem;
+      }
+      /* Modals full height on mobile */
+      #music-player-modal.expanded,
+      #send-message-modal.expanded,
+      #profile-modal.expanded,
+      #report-issue-modal.expanded,
+      #profile-selection-modal.expanded {
+        padding-bottom: 60px; /* Adjust padding for mobile footer */
+      }
+      .track img {
+        width: 45px;
+        height: 45px;
+      }
+      .track-title {
+        font-size: 0.95rem;
+      }
+      .track-artist {
+        font-size: 0.8rem;
+      }
+      #contact-form, #report-form {
+        gap: 12px;
+      }
+      #contact-form input, #report-form input,
+      #contact-form textarea, #report-form textarea,
+      #contact-form button, #report-form button {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+      .profile-card {
+        padding: 15px;
+      }
+      .profile-card h2 {
+        font-size: 1.4rem;
+      }
+      .profile-card img.profile-pic {
+        width: 100px;
+        height: 100px;
+      }
+      .profile-card p {
+        font-size: 0.9rem;
+      }
+      #side-menu {
+          width: 80%;
+          right: -80%;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div>ChrisbiM</div>
-    <div class="icons">
-    <a href="https://bimtolproject.github.io/chibimemories/notif">
-      <img src="https://img.icons8.com/ios-glyphs/30/appointment-reminders--v1.png"/></a>
+    <div class="header-top">
+      <div class="header-logo">ChrisbiM</div>
+      <div class="icons">
+        <button class="menu-toggle-btn" id="open-side-menu">
+          <img src="https://img.icons8.com/ios-filled/50/000000/menu--v1.png" alt="Menu"/>
+        </button>
+      </div>
     </div>
+    <div id="integrated-music-player">
+      <div class="vinyl-icon"></div>
+      <span class="current-song-title">Tidak ada lagu yang diputar</span>
+      <audio id="audio" controls style="display: none;"></audio> </div>
   </header>
 
   <div class="profile">
-    <img src="https://bimtolproject.github.io/chibimemories/resource/chian.png" alt="CHIAN">
-    <span>Hai, Chian!</span>
+    <img src="https://bimtolproject.github.io/chibimemories/resource/chian.png" alt="CHIAN" class="profile-img" id="dynamic-profile-img">
+    <span class="profile-greeting" id="dynamic-profile-greeting">Selamat Pagi, Chian!</span>
   </div>
 
   <div class="section">
-    <h3>Alat dan Acara</h3>
+    <h3>Alat & Acara</h3>
     <div class="game-scroll">
       <a href="https://bimtolproject.github.io/chibimemories/ai.html" class="game-card">
         <img src="https://bimtolproject.github.io/chibimemories/resource/bai.png" alt="BiSTaoAI Banner">
@@ -223,22 +1167,686 @@
   </div>
 
   <footer>
-    <a href="https://bimtolproject.github.io/chibimemories/dashboard">
-  <img src="https://img.icons8.com/ios-filled/50/FF0000/home.png"/>
-  <span style="color: red;">Beranda</span>
-</a>
-    <a href="https://bimtolproject.github.io/chibimemories/musik">
-      <img src="https://img.icons8.com/ios-filled/50/000000/spotify.png"/>
+    <a href="#" id="home-link" class="active">
+      <img src="https://img.icons8.com/ios-filled/50/FF0000/home.png" alt="Home Icon"/>
+      <span>Beranda</span>
+    </a>
+    <a href="#" id="music-link">
+      <img src="https://img.icons8.com/ios-filled/50/000000/spotify.png" alt="Music Icon"/>
       <span>Musik</span>
     </a>
-    <a href="https://bimtolproject.github.io/chibimemories/send">
-      <img src="https://img.icons8.com/ios-filled/50/000000/send.png"/>
+    <a href="#" id="send-link">
+      <img src="https://img.icons8.com/ios-filled/50/000000/send.png" alt="Send Icon"/>
       <span>Pesan</span>
     </a>
-    <a href="https://bimtolproject.github.io/chibimemories/setting">
-      <img src="https://img.icons8.com/ios-filled/50/000000/settings--v1.png"/>
-      <span>Pengaturan</span>
+    <a href="#" id="profile-link">
+      <img src="https://img.icons8.com/ios-filled/50/000000/settings--v1.png" alt="Profile Icon"/>
+      <span>Profil</span>
     </a>
   </footer>
+
+
+  <div id="music-player-modal">
+    <div class="modal-header">
+      <h3>Playlist Kita</h3>
+      <button class="close-btn" id="close-music-modal">&times;</button>
+    </div>
+    <div id="playlist-container">
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/line.mp3" data-title="A Line Without A Hook" data-artist="Ricky Montgomery">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+        <div class="track-info">
+          <div class="track-title">A Line Without A hook</div>
+          <div class="track-artist">Ricky Montgomery</div>
+        </div>
+      </div>
+
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/Perfectes.mp3" data-title="Night Changes" data-artist="One Direction">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+        <div class="track-info">
+          <div class="track-title">Night Changes</div>
+          <div class="track-artist">One Direction</div>
+        </div>
+      </div>
+
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/thousandyears.mp3" data-title="A Thousand Years" data-artist="James Arthur">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+        <div class="track-info">
+          <div class="track-title">A thousand years</div>
+          <div class="track-artist">James Arthur</div>
+        </div>
+      </div>
+
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/rahasiahati.mp3" data-title="Rahasia Hati" data-artist="Nidji">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+        <div class="track-info">
+          <div class="track-title">Rahasia Hati</div>
+          <div class="track-artist">Nidji</div>
+        </div>
+      </div>
+
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/tothebone.mp3" data-title="To The Bone" data-artist="Pamungkas">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+        <div class="track-info">
+          <div class="track-title">To The Bone</div>
+          <div class="track-artist">Pamungkas</div>
+        </div>
+      </div>
+
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/cry.mp3" data-title="Cry" data-artist="Cigarettes After Sex">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+        <div class="track-info">
+          <div class="track-title">Cry</div>
+          <div class="track-artist">Cigarettes After Sex</div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <div id="send-message-modal">
+    <div class="modal-header">
+      <h3>Kirim Pesan</h3>
+      <button class="close-btn" id="close-send-modal">&times;</button>
+    </div>
+    <div id="message-form-container">
+      <form id="contact-form">
+        <input type="text" id="name" name="name" placeholder="Judul Pesan" required />
+        <textarea id="message" name="message" placeholder="Pesan Chian untuk Bima" rows="5" required></textarea>
+        <button type="submit">Kirim</button>
+        <div id="status"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="report-issue-modal">
+    <div class="modal-header">
+      <h3>Laporkan Masalah</h3>
+      <button class="close-btn" id="close-report-modal">&times;</button>
+    </div>
+    <div id="report-form-container">
+      <form id="report-form">
+        <input type="text" id="report-title" name="report-title" placeholder="Subjek Masalah" required />
+        <textarea id="report-message" name="report-message" placeholder="Jelaskan masalah Anda secara detail..." rows="5" required></textarea>
+        <button type="submit">Kirim Laporan</button>
+        <div id="report-status"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="profile-modal">
+    <div class="modal-header">
+      <h3>Profil Kita</h3>
+      <button class="close-btn" id="close-profile-modal">&times;</button>
+    </div>
+    <div id="profile-content-container">
+      <div class="profile-card" id="bima-profile-card">
+          <h2>TENTANG BIMTOL</h2>
+          <img src="https://bimtolproject.github.io/chibimemories/resource/bimtol.png" alt="FOTO BIMTOL" class="profile-pic">
+          <p><strong>Nama Lengkap:</strong> Bima Rachmat Priyanto</p>
+          <p><strong>Tanggal Lahir:</strong> 25/02/2009</p>
+          <p><strong>Kelahiran:</strong> Karawang</p>
+          <p><strong>Hobi:</strong> Makan</p>
+          <p><strong>Game Favorit:</strong> Genshin Impact, Mobile Legends, PUBGM, Roblox</p>
+          <p><strong>5 Hero ML Favorit:</strong> Lylia, Fanny, Franco, Brody, Ling</p>
+          <p><strong>5 Karakter GI Favorit:</strong> Nahida, Hutao, Furina, Yelan, Raiden Shogun</p>
+          <p><strong>5 Makanan Berat Favorit:</strong> Mie ayam, Ayam bumbu hitam, Opor ayam, Martabak Telur, Ayam Katsu</p>
+          <p><strong>5 Makanan Ringan Favorit:</strong> Risol Mayo, Cireng ayam pedas, Pastel kentang, Gehu, Cakwe</p>
+          <p><strong>5 Hidangan Manis Favorit:</strong> Martabak Manis cokju, Bakpia Pathok, Roti Bagelen, Smoothies, Sop buah</p>
+          <p><strong>5 Lagu Favorit:</strong> Line Without a Hook, A thousand years - James Arthur, Night Changes, Perfect - Ed Sheeran, Diary Depresiku</p>
+          <p><strong>Sifat yang disadari:</strong> Ceroboh, Sifat suka ke Nahida</p>
+      </div>
+      <div class="profile-card" id="chian-profile-card">
+          <h2>TENTANG CHIAN</h2>
+          <img src="https://bimtolproject.github.io/chibimemories/resource/chian.png" alt="FOTO CHIAN" class="profile-pic">
+          <p><strong>Nama Lengkap:</strong> Christianna Putri Simangunsong</p>
+          <p><strong>Tanggal Lahir:</strong> 30/05/2008</p>
+          <p><strong>Kelahiran:</strong> Medan</p>
+          <p><strong>Hobi:</strong> Berenang, Baca Novel, Makan</p>
+          <p><strong>Game Favorit:</strong> Genshin Impact, Mobile Legends, Toca World</p>
+          <p><strong>5 Hero ML Favorit:</strong> Angela, Floryn, Lylia, Kagura, Lunox</p>
+          <p><strong>5 Karakter GI Favorit:</strong> Kazuha, Hu Tao, Neuvillette, Xiao, Kinich</p>
+          <p><strong>5 Makanan Berat Favorit:</strong> Ayam geprek, Sate padang, Seblak, Mie gomak, Pasta carbonara</p>
+          <p><strong>5 Makanan Ringan Favorit:</strong> Kentang goreng, Perkedel, Cireng, Crepes, Basreng</p>
+          <p><strong>5 Hidangan Manis Favorit:</strong> Puding, Donat, Es krim mochi, Sop buah, Cheese roll</p>
+          <p><strong>5 Lagu Favorit:</strong> Fix You, Watch - Billie Eilish, Cardigan, Apocalypse, Do I Wanna Know</p>
+          <p><strong>Sifat yang disadari:</strong> Pemalu, Pelupa</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="side-menu">
+      <div class="menu-header">
+          <h3>Pengaturan</h3>
+          <button class="close-side-menu-btn" id="close-side-menu">&times;</button>
+      </div>
+      <div class="menu-options">
+          <div class="menu-option">
+              <i class="fas fa-moon"></i>
+              <span>Mode Terang/Gelap</span>
+              <label class="switch">
+                  <input type="checkbox" id="darkModeToggle">
+                  <span class="slider round"></span>
+              </label>
+          </div>
+          <div class="menu-option">
+              <i class="fas fa-volume-up"></i>
+              <span>Volume Suara</span>
+              <input type="range" id="volumeControl" min="0" max="1" step="0.01">
+          </div>
+          <div class="menu-option" id="reportIssueOption">
+              <i class="fas fa-exclamation-triangle"></i>
+              <span>Laporkan Masalah</span>
+          </div>
+          <div class="menu-option" id="toggleProfileSelection">
+              <i class="fas fa-user-friends"></i>
+              <span>Ganti Profil</span>
+          </div>
+      </div>
+  </div>
+
+  <div id="profile-selection-modal">
+      <div class="modal-header">
+          <h3>Pilih Profil</h3>
+          <button class="close-btn" id="close-profile-selection-modal">&times;</button>
+      </div>
+      <div id="profile-selection-container">
+          <div class="profile-selection-option" data-profile="chian">
+              <img src="https://bimtolproject.github.io/chibimemories/resource/chian.png" alt="Chian">
+              <span>Chian</span>
+          </div>
+          <div class="profile-selection-option" data-profile="bima">
+              <img src="https://bimtolproject.github.io/chibimemories/resource/bimtol.png" alt="Bima">
+              <span>Bima</span>
+          </div>
+      </div>
+  </div>
+
+
+  <script>
+    // Audio Player Elements
+    const audio = document.getElementById('audio');
+    const integratedMusicPlayer = document.getElementById('integrated-music-player');
+    const currentSongTitle = document.querySelector('#integrated-music-player .current-song-title');
+    const vinylIcon = document.querySelector('#integrated-music-player .vinyl-icon');
+
+    // Dashboard UI Elements
+    const dynamicProfileImg = document.getElementById('dynamic-profile-img');
+    const dynamicProfileGreeting = document.getElementById('dynamic-profile-greeting');
+
+    // Modals & Navigation
+    const musicPlayerModal = document.getElementById('music-player-modal');
+    const musicLink = document.getElementById('music-link');
+    const closeMusicModalBtn = document.getElementById('close-music-modal');
+    const tracks = document.querySelectorAll('#playlist-container .track');
+    let currentTrackIndex = 0; // To keep track of current song for sequential playback
+    let currentTrackElement = null; // Stores the currently playing track's div
+
+    const sendMessageModal = document.getElementById('send-message-modal');
+    const sendLink = document.getElementById('send-link'); // Corrected typo
+    const closeSendModalBtn = document.getElementById('close-send-modal');
+    const contactForm = document.getElementById('contact-form');
+    const statusDiv = document.getElementById('status');
+
+    const profileModal = document.getElementById('profile-modal');
+    const profileLink = document.getElementById('profile-link');
+    const closeProfileModalBtn = document.getElementById('close-profile-modal');
+    const bimaProfileCard = document.getElementById('bima-profile-card');
+    const chianProfileCard = document.getElementById('chian-profile-card');
+
+    const reportIssueModal = document.getElementById('report-issue-modal');
+    const closeReportModalBtn = document.getElementById('close-report-modal');
+    const reportForm = document.getElementById('report-form');
+    const reportStatusDiv = document.getElementById('report-status');
+
+    // Side Menu Elements
+    const sideMenu = document.getElementById('side-menu');
+    const openSideMenuBtn = document.getElementById('open-side-menu');
+    const closeSideMenuBtn = document.getElementById('close-side-menu');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const volumeControl = document.getElementById('volumeControl');
+    const reportIssueOption = document.getElementById('reportIssueOption');
+    const toggleProfileSelection = document.getElementById('toggleProfileSelection');
+
+    // Profile Selection Modal Elements
+    const profileSelectionModal = document.getElementById('profile-selection-modal');
+    const closeProfileSelectionModalBtn = document.getElementById('close-profile-selection-modal');
+    const profileSelectionOptions = document.querySelectorAll('.profile-selection-option');
+
+    const footerLinks = document.querySelectorAll('footer a');
+
+    // --- Profile Data for easy switching ---
+    const profiles = {
+      chian: {
+        name: 'Chian',
+        img: 'https://bimtolproject.github.io/chibimemories/resource/chian.png'
+      },
+      bima: {
+        name: 'Bima',
+        img: 'https://bimtolproject.github.io/chibimemories/resource/bimtol.png'
+      }
+    };
+    let currentActiveUser = 'chian'; // Default active user
+
+    // --- Functions ---
+
+    // Function to get current time greeting
+    function getTimeGreeting() {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 11) return 'Selamat Pagi';
+      if (hour >= 11 && hour < 15) return 'Selamat Siang';
+      if (hour >= 15 && hour < 18) return 'Selamat Sore';
+      return 'Selamat Malam';
+    }
+
+    // Function to update the dynamic profile (greeting and image)
+    function updateDynamicProfile() {
+      const activeProfile = profiles[currentActiveUser];
+      dynamicProfileImg.src = activeProfile.img;
+      dynamicProfileImg.alt = activeProfile.name;
+      dynamicProfileGreeting.textContent = `${getTimeGreeting()}, ${activeProfile.name}!`;
+      localStorage.setItem('activeUser', currentActiveUser);
+
+      profileSelectionOptions.forEach(option => {
+          if (option.dataset.profile === currentActiveUser) {
+              option.classList.add('active-selection');
+          } else {
+              option.classList.remove('active-selection');
+          }
+      });
+    }
+
+    // Function to set active footer link
+    function setActiveFooterLink(activeLink) {
+      footerLinks.forEach(link => {
+        link.classList.remove('active');
+        const iconImg = link.querySelector('img');
+        if (document.body.classList.contains('light-mode')) {
+            iconImg.style.filter = 'var(--icon-default-filter-light)';
+        } else {
+            iconImg.style.filter = 'var(--icon-default-filter-dark)';
+        }
+      });
+      activeLink.classList.add('active');
+      const activeIconImg = activeLink.querySelector('img');
+      if (document.body.classList.contains('light-mode')) {
+        activeIconImg.style.filter = 'var(--icon-active-filter-light)';
+      } else {
+        activeIconImg.style.filter = 'var(--icon-active-filter-dark)';
+      }
+    }
+
+    // Function to close all modals with slide-down effect
+    function closeAllModals() {
+        const modals = [musicPlayerModal, sendMessageModal, profileModal, reportIssueModal, profileSelectionModal];
+        modals.forEach(modal => {
+            if (modal.classList.contains('expanded')) {
+                modal.classList.remove('expanded');
+                // Hide after transition
+                modal.addEventListener('transitionend', function handler() {
+                    modal.style.display = 'none';
+                    modal.removeEventListener('transitionend', handler);
+                }, { once: true });
+            }
+        });
+      
+        statusDiv.textContent = "";
+        statusDiv.className = "";
+        contactForm.reset();
+        reportStatusDiv.textContent = "";
+        reportStatusDiv.className = "";
+        reportForm.reset();
+    }
+
+    // Function to open a specific modal with slide-up effect
+    function openModal(modalElement) {
+        closeAllModals(); // Close any other open modals first
+        modalElement.style.display = 'flex'; // Make it visible (display: flex)
+        // Force reflow to ensure display change takes effect before transition
+        modalElement.offsetWidth; 
+        modalElement.classList.add('expanded');
+    }
+
+    // Function to play a specific track by its index
+    function playTrack(index) {
+        if (tracks.length === 0) return;
+
+        // Reset active class for previously playing track
+        if (currentTrackElement) {
+            currentTrackElement.classList.remove('active');
+        }
+
+        currentTrackIndex = index % tracks.length; // Loop back to start if end reached
+        const trackToPlay = tracks[currentTrackIndex];
+        
+        const src = trackToPlay.getAttribute('data-src');
+        const title = trackToPlay.getAttribute('data-title');
+        const artist = trackToPlay.getAttribute('data-artist');
+
+        trackToPlay.classList.add('active');
+        audio.src = src;
+        currentSongTitle.textContent = `${title} - ${artist}`;
+        integratedMusicPlayer.classList.add('visible');
+        vinylIcon.style.animationPlayState = 'running';
+        
+        audio.play().catch(error => {
+            console.log("Autoplay blocked or failed on playTrack:", error);
+            // Indicate to user they might need to interact to start audio
+            alert("Untuk memutar musik, browser mungkin memerlukan interaksi pertama Anda.");
+        });
+
+        currentTrackElement = trackToPlay;
+
+        localStorage.setItem('lastPlayedSongSrc', src);
+        localStorage.setItem('lastPlayedSongTitle', title);
+        localStorage.setItem('lastPlayedSongArtist', artist);
+        localStorage.setItem('currentTrackIndex', currentTrackIndex);
+    }
+
+    // --- Initialization on page load ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // Restore active user preference
+      const savedActiveUser = localStorage.getItem('activeUser');
+      if (savedActiveUser && profiles[savedActiveUser]) {
+          currentActiveUser = savedActiveUser;
+      }
+      updateDynamicProfile(); // Apply the correct profile and greeting on load
+
+      setActiveFooterLink(document.getElementById('home-link'));
+
+      // Load dark mode preference
+      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+      if (isDarkMode) {
+        document.body.classList.add('light-mode');
+        darkModeToggle.checked = true;
+      } else {
+        document.body.classList.remove('light-mode');
+        darkModeToggle.checked = false;
+      }
+      const menuToggleImage = openSideMenuBtn.querySelector('img');
+      if (document.body.classList.contains('light-mode')) {
+        menuToggleImage.style.filter = 'var(--icon-default-filter-light)';
+      } else {
+        menuToggleImage.style.filter = 'var(--icon-default-filter-dark)';
+      }
+
+      // Load and apply volume setting
+      const savedVolume = localStorage.getItem('audioVolume');
+      if (savedVolume !== null) {
+          audio.volume = parseFloat(savedVolume);
+          volumeControl.value = parseFloat(savedVolume);
+      } else {
+          audio.volume = 0.5;
+          volumeControl.value = 0.5;
+      }
+
+      // Auto-play/resume music on page load
+      const lastPlayedSrc = localStorage.getItem('lastPlayedSongSrc');
+      const lastPlayedIndex = localStorage.getItem('currentTrackIndex');
+
+      if (lastPlayedSrc && lastPlayedIndex !== null) {
+          currentTrackIndex = parseInt(lastPlayedIndex);
+          if (tracks[currentTrackIndex]) { // Ensure track exists
+              const trackData = tracks[currentTrackIndex].dataset;
+              audio.src = trackData.src;
+              currentSongTitle.textContent = `${trackData.title} - ${trackData.artist}`;
+              integratedMusicPlayer.classList.add('visible');
+              vinylIcon.style.animationPlayState = 'paused'; 
+              currentTrackElement = tracks[currentTrackIndex];
+              currentTrackElement.classList.add('active'); 
+              audio.load(); // Load the audio
+              // Attempt to play after a short delay to allow elements to render
+              setTimeout(() => {
+                audio.play().catch(error => {
+                    console.log("Autoplay blocked on page load:", error);
+                    // User might need to interact first. Keep player visible but paused.
+                    integratedMusicPlayer.classList.add('visible');
+                    vinylIcon.style.animationPlayState = 'paused';
+                });
+              }, 100);
+          } else {
+              // Fallback if index is out of bounds
+              playTrack(0); 
+          }
+      } else if (tracks.length > 0) {
+          // If no last played, start from the first song
+          playTrack(0); 
+      }
+    });
+
+    // --- Event Listeners ---
+
+    // Music Player Logic
+    musicLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal(musicPlayerModal);
+      sideMenu.classList.remove('open');
+      setActiveFooterLink(musicLink);
+    });
+
+    closeMusicModalBtn.addEventListener('click', () => {
+      closeAllModals(); // This will handle the slide-down
+      setActiveFooterLink(document.getElementById('home-link'));
+    });
+
+    tracks.forEach((track, index) => {
+      track.addEventListener('click', () => {
+        if (currentTrackElement === track) {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        } else {
+            playTrack(index);
+        }
+      });
+    });
+
+    audio.addEventListener('ended', () => {
+        playTrack(currentTrackIndex + 1); // Play next song
+    });
+
+    audio.addEventListener('play', () => {
+      integratedMusicPlayer.classList.add('visible');
+      vinylIcon.style.animationPlayState = 'running';
+      if (currentTrackElement) {
+          currentTrackElement.classList.add('active');
+      }
+    });
+
+    audio.addEventListener('pause', () => {
+      vinylIcon.style.animationPlayState = 'paused';
+      if (currentTrackElement) {
+          currentTrackElement.classList.remove('active');
+      }
+    });
+
+
+    // Send Message Modal Logic
+    sendLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(sendMessageModal);
+        sideMenu.classList.remove('open');
+        setActiveFooterLink(sendLink);
+    });
+
+    closeSendModalBtn.addEventListener('click', () => {
+        closeAllModals(); // This will handle the slide-down
+        setActiveFooterLink(document.getElementById('home-link'));
+        statusDiv.textContent = "";
+        statusDiv.className = "";
+        contactForm.reset();
+    });
+
+    contactForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const nama = document.getElementById("name").value;
+        const pesan = document.getElementById("message").value;
+        const token = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0";
+        const chat_id = "1917708915";
+        const text = `Pesan Baru dari ${profiles[currentActiveUser].name}:\n\nJudul: ${nama}\nPesan: ${pesan}`;
+        statusDiv.textContent = "Sedang mengirim pesan...";
+        statusDiv.className = "";
+        statusDiv.style.display = "block";
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: chat_id, text: text })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.ok) {
+                statusDiv.textContent = "Pesan telah berhasil dikirim!";
+                statusDiv.classList.add("success");
+                contactForm.reset();
+            } else {
+                statusDiv.textContent = "Gagal mengirim: " + data.description;
+                statusDiv.classList.add("error");
+            }
+        })
+        .catch(err => {
+            statusDiv.textContent = "Terjadi kesalahan saat mengirim. Silakan cek koneksi internet Anda dan coba lagi.";
+            statusDiv.classList.add("error");
+            console.error(err);
+        });
+    });
+
+    // Profile Modal Logic
+    profileLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(profileModal);
+        sideMenu.classList.remove('open');
+        if (currentActiveUser === 'bima') {
+            bimaProfileCard.style.display = 'block';
+            chianProfileCard.style.display = 'none';
+        } else {
+            bimaProfileCard.style.display = 'none';
+            chianProfileCard.style.display = 'block';
+        }
+        setActiveFooterLink(profileLink);
+    });
+
+    closeProfileModalBtn.addEventListener('click', () => {
+        closeAllModals(); // This will handle the slide-down
+        setActiveFooterLink(document.getElementById('home-link'));
+    });
+
+    // Side Menu Logic
+    openSideMenuBtn.addEventListener('click', () => {
+        closeAllModals(); // Close any modals before opening side menu
+        sideMenu.classList.add('open');
+    });
+
+    closeSideMenuBtn.addEventListener('click', () => {
+        sideMenu.classList.remove('open');
+    });
+
+    // Dark Mode Toggle
+    darkModeToggle.addEventListener('change', () => {
+      document.body.classList.toggle('light-mode', darkModeToggle.checked);
+      localStorage.setItem('darkMode', darkModeToggle.checked);
+      const currentActiveLink = document.querySelector('footer a.active');
+      if (currentActiveLink) {
+        setActiveFooterLink(currentActiveLink);
+      }
+      const menuToggleImage = openSideMenuBtn.querySelector('img');
+      if (document.body.classList.contains('light-mode')) {
+        menuToggleImage.style.filter = 'var(--icon-default-filter-light)';
+      } else {
+        menuToggleImage.style.filter = 'var(--icon-default-filter-dark)';
+      }
+    });
+
+    // Volume Control
+    volumeControl.addEventListener('input', (e) => {
+        audio.volume = e.target.value;
+        localStorage.setItem('audioVolume', e.target.value);
+    });
+
+    // Report Issue Option (Opens new modal)
+    reportIssueOption.addEventListener('click', () => {
+        openModal(reportIssueModal);
+        sideMenu.classList.remove('open');
+    });
+
+    closeReportModalBtn.addEventListener('click', () => {
+        closeAllModals(); // This will handle the slide-down
+        reportStatusDiv.textContent = "";
+        reportStatusDiv.className = "";
+        reportForm.reset();
+    });
+
+    reportForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const reportTitle = document.getElementById("report-title").value;
+        const reportMessage = document.getElementById("report-message").value;
+        const token = "7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0";
+        const chat_id = "1917708915";
+        const text = `LAPORAN MASALAH DARI ${profiles[currentActiveUser].name}:\n\nSubjek: ${reportTitle}\nDetail: ${reportMessage}`;
+        reportStatusDiv.textContent = "Sedang mengirim laporan...";
+        reportStatusDiv.className = "";
+        reportStatusDiv.style.display = "block";
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: chat_id, text: text })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.ok) {
+                reportStatusDiv.textContent = "Laporan masalah telah berhasil dikirim!";
+                reportStatusDiv.classList.add("success");
+                reportForm.reset();
+            } else {
+                reportStatusDiv.textContent = "Gagal mengirim laporan: " + data.description;
+                reportStatusDiv.classList.add("error");
+            }
+        })
+        .catch(err => {
+            reportStatusDiv.textContent = "Terjadi kesalahan saat mengirim laporan. Silakan cek koneksi internet Anda dan coba lagi.";
+            reportStatusDiv.classList.add("error");
+            console.error(err);
+        });
+    });
+
+    // --- Profile Selection Modal Logic ---
+    toggleProfileSelection.addEventListener('click', () => {
+        openModal(profileSelectionModal);
+        sideMenu.classList.remove('open');
+    });
+
+    closeProfileSelectionModalBtn.addEventListener('click', () => {
+        closeAllModals(); // This will handle the slide-down
+    });
+
+    profileSelectionOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            currentActiveUser = option.dataset.profile;
+            updateDynamicProfile(); // Update dashboard greeting and image
+            closeAllModals(); // Close selection modal
+        });
+    });
+
+    // Ensure home link still works and closes everything
+    document.getElementById('home-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      closeAllModals();
+      sideMenu.classList.remove('open');
+      setActiveFooterLink(document.getElementById('home-link'));
+    });
+
+    // Close side menu if user clicks outside of it (but not on header elements)
+    document.addEventListener('click', (e) => {
+        const isClickInsideSideMenu = sideMenu.contains(e.target);
+        const isClickOnMenuButton = openSideMenuBtn.contains(e.target);
+        const isClickInsideAnyModal = musicPlayerModal.contains(e.target) || sendMessageModal.contains(e.target) || profileModal.contains(e.target) || reportIssueModal.contains(e.target) || profileSelectionModal.contains(e.target);
+        const isClickOnFooter = e.target.closest('footer');
+
+        if (!isClickInsideSideMenu && !isClickOnMenuButton && sideMenu.classList.contains('open') && !isClickInsideAnyModal && !isClickOnFooter) {
+            sideMenu.classList.remove('open');
+        }
+    });
+  </script>
 </body>
 </html>
