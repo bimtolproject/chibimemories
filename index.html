@@ -53,6 +53,19 @@
       overflow-x: hidden;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE 10+ */
+    }
+
+    body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
 
     h2 {
       font-size: 1.8rem;
@@ -249,8 +262,9 @@
 
     .game-scroll::-webkit-scrollbar {
       height: 8px;
+      display: none;
     }
-
+    
     .game-scroll::-webkit-scrollbar-track {
       background: var(--secondary-bg);
       border-radius: 10px;
@@ -463,7 +477,8 @@
     #chat-memories-modal,
     #favorite-modal, /* New Modal */
     #spam-modal, /* New Modal */
-    #countdown-modal { /* New Modal */
+    #countdown-modal, /* New Modal */
+    #download-modal { /* New Modal */
       position: fixed;
       top: 0;
       left: 0;
@@ -490,7 +505,8 @@
     #chat-memories-modal.expanded,
     #favorite-modal.expanded, /* New Modal */
     #spam-modal.expanded, /* New Modal */
-    #countdown-modal.expanded { /* New Modal */
+    #countdown-modal.expanded, /* New Modal */
+    #download-modal.expanded { /* New Modal */
       opacity: 1;
       transform: translateY(0);
       padding-bottom: 80px; /* Space for footer if needed by content */
@@ -536,7 +552,8 @@
     #chat-content-container,
     #favorite-content-container, /* New Modal */
     #spam-content-container, /* New Modal */
-    #countdown-content-container { /* New Modal */
+    #countdown-content-container, /* New Modal */
+    #download-content-container { /* New Modal */
       flex-grow: 1;
       overflow-y: auto;
       padding: 20px 0;
@@ -552,7 +569,8 @@
     #chat-content-container::-webkit-scrollbar,
     #favorite-content-container::-webkit-scrollbar, /* New Modal */
     #spam-content-container::-webkit-scrollbar, /* New Modal */
-    #countdown-content-container::-webkit-scrollbar { /* New Modal */
+    #countdown-content-container::-webkit-scrollbar, /* New Modal */
+    #download-content-container::-webkit-scrollbar { /* New Modal */
       width: 8px;
     }
     #playlist-container::-webkit-scrollbar-track,
@@ -564,7 +582,8 @@
     #chat-content-container::-webkit-scrollbar-track,
     #favorite-content-container::-webkit-scrollbar-track, /* New Modal */
     #spam-content-container::-webkit-scrollbar-track, /* New Modal */
-    #countdown-content-container::-webkit-scrollbar-track { /* New Modal */
+    #countdown-content-container::-webkit-scrollbar-track, /* New Modal */
+    #download-content-container::-webkit-scrollbar-track { /* New Modal */
       background: var(--primary-bg);
       border-radius: 10px;
     }
@@ -577,7 +596,8 @@
     #chat-content-container::-webkit-scrollbar-thumb,
     #favorite-content-container::-webkit-scrollbar-thumb, /* New Modal */
     #spam-content-container::-webkit-scrollbar-thumb, /* New Modal */
-    #countdown-content-container::-webkit-scrollbar-thumb { /* New Modal */
+    #countdown-content-container::-webkit-scrollbar-thumb, /* New Modal */
+    #download-content-container::-webkit-scrollbar-thumb { /* New Modal */
       background-color: var(--accent-color);
       border-radius: 10px;
       border: 2px solid var(--primary-bg);
@@ -1207,6 +1227,128 @@
         color: var(--light-text-color);
     }
 
+    /* Styles for Download Modal */
+    #download-modal .video-bg {
+        position: absolute; /* Changed from fixed to absolute for modal containment */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        border-radius: 0; /* Ensures it fills the modal perfectly */
+        opacity: 0.7; /* Make it slightly transparent inside the modal */
+    }
+    #download-modal .download-container {
+        max-width: 900px; /* Adjust as needed for modal content */
+        width: 100%;
+        background: rgba(255, 255, 255, 0); /* Fully transparent as modal handles background */
+        padding: 0; /* Remove padding from this inner container */
+        border-radius: 0; /* No border-radius for inner container */
+        box-shadow: none; /* No shadow for inner container */
+        position: relative;
+        color: var(--text-color);
+    }
+    #download-modal .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-top: 20px; /* Add some padding at the top */
+    }
+    #download-modal .header i {
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        text-align: center;
+        width: 100%;
+    }
+    #download-modal .profile-info { /* Renamed to download-item-category for clarity */
+        background: var(--secondary-bg); /* Use theme variables */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px var(--card-shadow);
+        margin: 20px 0;
+        text-align: left;
+        position: relative;
+        color: var(--text-color);
+    }
+    #download-modal .profile-info h2 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        color: var(--accent-color);
+        text-align: left; /* Align to left for category titles */
+    }
+    #download-modal .profile-info p {
+        font-size: 0.95rem;
+        color: var(--text-color);
+        margin: 10px 0;
+        line-height: 1.4;
+    }
+    #download-modal .profile-info .btn {
+        display: inline-block;
+        padding: 8px 15px;
+        color: var(--primary-bg); /* Text color for buttons in download modal */
+        background: var(--accent-color);
+        border: none;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.3s;
+        margin-top: 5px;
+    }
+    #download-modal .profile-info .btn:hover {
+        background: #c73750; /* Darker accent */
+    }
+    body.light-mode #download-modal .profile-info .btn {
+        color: var(--text-light); /* Darker text for light mode buttons */
+    }
+    body.light-mode #download-modal .profile-info .btn:hover {
+        background: #1976D2; /* Darker blue */
+    }
+
+    #download-modal .search-container {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+    #download-modal .search-container input[type=text] {
+        flex: 1;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 5px 0 0 5px;
+        background: var(--input-bg-dark);
+        color: var(--text-color);
+        transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+    #download-modal .search-container input[type=text]::placeholder {
+        color: var(--light-text-color);
+    }
+    #download-modal .search-container .search-btn {
+        padding: 10px;
+        background-color: var(--accent-color);
+        color: var(--primary-bg);
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    #download-modal .search-container .search-btn:hover {
+        background-color: #c73750;
+    }
+    body.light-mode #download-modal .search-container .search-btn {
+        color: var(--text-light);
+    }
+    body.light-mode #download-modal .search-container .search-btn:hover {
+        background-color: #1976D2;
+    }
+    #download-modal .highlight {
+        background-color: yellow; /* Warna penyorotan */
+        color: #000; /* Ensure text is visible on highlight */
+        transition: background-color 0.3s; /* Efek transisi */
+    }
+
 
     /* Media Queries for Responsiveness */
     @media (max-width: 768px) {
@@ -1279,7 +1421,8 @@
       #chat-memories-modal.expanded,
       #favorite-modal.expanded, /* New Modal */
       #spam-modal.expanded, /* New Modal */
-      #countdown-modal.expanded { /* New Modal */
+      #countdown-modal.expanded, /* New Modal */
+      #download-modal.expanded { /* New Modal */
         padding-bottom: 60px; /* Adjust padding for mobile footer */
       }
       .track img {
@@ -1361,6 +1504,25 @@
       #countdown-modal .countdown-content p {
         font-size: 0.9rem;
       }
+      /* Download Modal Responsive */
+      #download-modal .profile-info {
+        padding: 15px;
+      }
+      #download-modal .profile-info h2 {
+        font-size: 1.2rem;
+      }
+      #download-modal .profile-info p {
+        font-size: 0.85rem;
+      }
+      #download-modal .profile-info .btn {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+      }
+      #download-modal .search-container input[type=text],
+      #download-modal .search-container .search-btn {
+        font-size: 0.85rem;
+        padding: 8px;
+      }
     }
   </style>
 </head>
@@ -1401,7 +1563,7 @@
         <p>Ingat!</p>
         <span class="rating">diperbarui pada 09/06/25</span>
       </a>
-      <a href="https://bimtolproject.github.io/chibimemories/downloadr" class="game-card">
+      <a href="#" class="game-card" id="download-link">
         <img src="https://bimtolproject.github.io/chibimemories/resource/bdownload.png" alt="DOWNLOAD BANNER">
         <p>Unduh</p>
         <span class="rating">diperbarui pada 09/06/25</span>
@@ -1461,7 +1623,7 @@
       <span>Pesan</span>
     </a>
     <a href="#" id="profile-link">
-      <img src="https://img.icons8.com/ios-filled/50/000000/settings--v1.png" alt="Profile Icon"/>
+      <img src="https://img.icons8.com/ios-filled/50/000000/star--v1.png" alt="Profile Icon"/>
       <span>Profil</span>
     </a>
   </footer>
@@ -1473,53 +1635,166 @@
       <button class="close-btn" id="close-music-modal">&times;</button>
     </div>
     <div id="playlist-container">
-      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/line.mp3" data-title="A Line Without A Hook" data-artist="Ricky Montgomery">
-        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+    <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/Do_I_Wanna_Know.mp3" data-title="Do I Wanna Know" data-artist="Arctic Monkeys">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Do I Wanna Know">
         <div class="track-info">
-          <div class="track-title">A Line Without A hook</div>
-          <div class="track-artist">Ricky Montgomery</div>
+          <div class="track-title">Do I Wanna Know</div>
+          <div class="track-artist">Arctic Monkeys</div>
         </div>
       </div>
-
-      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/Perfectes.mp3" data-title="Night Changes" data-artist="One Direction">
-        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/watch.mp3" data-title="Watch" data-artist="Billie Elish">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Watch">
         <div class="track-info">
-          <div class="track-title">Night Changes</div>
-          <div class="track-artist">One Direction</div>
+          <div class="track-title">Watch</div>
+          <div class="track-artist">Billie Elish</div>
         </div>
       </div>
-
-      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/thousandyears.mp3" data-title="A Thousand Years" data-artist="James Arthur">
-        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/apocalypse.mp3" data-title="Apocalypse" data-artist="Cigarettes After Sex">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Apocalypse">
         <div class="track-info">
-          <div class="track-title">A thousand years</div>
-          <div class="track-artist">James Arthur</div>
+          <div class="track-title">Apocalypse</div>
+          <div class="track-artist">Cigarettes After Sex</div>
         </div>
       </div>
-
-      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/rahasiahati.mp3" data-title="Rahasia Hati" data-artist="Nidji">
-        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
-        <div class="track-info">
-          <div class="track-title">Rahasia Hati</div>
-          <div class="track-artist">Nidji</div>
-        </div>
-      </div>
-
-      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/tothebone.mp3" data-title="To The Bone" data-artist="Pamungkas">
-        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rewrite">
-        <div class="track-info">
-          <div class="track-title">To The Bone</div>
-          <div class="track-artist">Pamungkas</div>
-        </div>
-      </div>
-
+      
       <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/cry.mp3" data-title="Cry" data-artist="Cigarettes After Sex">
-        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Car's Outside">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Cry">
         <div class="track-info">
           <div class="track-title">Cry</div>
           <div class="track-artist">Cigarettes After Sex</div>
         </div>
       </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/fix_you.mp3" data-title="Fix You" data-artist="Cold Play">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Fix You">
+        <div class="track-info">
+          <div class="track-title">Fix You</div>
+          <div class="track-artist">Cold Play</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/Perfectes.mp3" data-title="Perfect" data-artist="Ed Sheeran">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Perfect Es">
+        <div class="track-info">
+          <div class="track-title">Perfect</div>
+          <div class="track-artist">Ed Sheeran</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/thousandyears.mp3" data-title="A Thousand Years" data-artist="James Arthur">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="A Thousand Years">
+        <div class="track-info">
+          <div class="track-title">A Thousand Years</div>
+          <div class="track-artist">James Arthur</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/cibh.mp3" data-title="Can I Be Him" data-artist="James Arthur">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="CIBH">
+        <div class="track-info">
+          <div class="track-title">Can I Be Him</div>
+          <div class="track-artist">James Arthur</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/rahasiahati.mp3" data-title="Rahasia Hati" data-artist="Nidji">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Rahasia Hati">
+        <div class="track-info">
+          <div class="track-title">Rahasia Hati</div>
+          <div class="track-artist">Nidji</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/backburner.mp3" data-title="Backburner" data-artist="NIKI">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Backburner">
+        <div class="track-info">
+          <div class="track-title">Backburner</div>
+          <div class="track-artist">NIKI</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/tacwm.mp3" data-title="Take A Chance With Me" data-artist="NIKI">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="TACWM">
+        <div class="track-info">
+          <div class="track-title">Take A Chance With Me</div>
+          <div class="track-artist">NIKI</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/ybmh.mp3" data-title="You'll Be in My Heart" data-artist="NIKI">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="YBMH">
+        <div class="track-info">
+          <div class="track-title">You'll Be in My Heart</div>
+          <div class="track-artist">NIKI</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/Nightchanges.mp3" data-title="Night Changes" data-artist="One Direction">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Night Changes">
+        <div class="track-info">
+          <div class="track-title">Night Changes</div>
+          <div class="track-artist">One Direction</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/perfecto.mp3" data-title="Perfect" data-artist="One Direction">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Perfect O">
+        <div class="track-info">
+          <div class="track-title">Perfect</div>
+          <div class="track-artist">One Direction</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/tothebone.mp3" data-title="To The Bone" data-artist="Pamungkas">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="TTB">
+        <div class="track-info">
+          <div class="track-title">To The Bone</div>
+          <div class="track-artist">Pamungkas</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/line.mp3" data-title="A Line Without A Hook" data-artist="Ricky Montgomery">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="ALWH">
+        <div class="track-info">
+          <div class="track-title">A Line Without a Hook</div>
+          <div class="track-artist">Ricky Montgomery</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/badak.mp3" data-title="Treat You Better" data-artist="Shawn Mendes">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Badak dan Ikan">
+        <div class="track-info">
+          <div class="track-title">Treat You Better</div>
+          <div class="track-artist">Shawn Mendes</div>
+        </div>
+      </div>
+      
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/cardigan.mp3" data-title="Cardigan" data-artist="Taylor Swift">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Cardigan">
+        <div class="track-info">
+          <div class="track-title">Cardigan</div>
+          <div class="track-artist">Taylor Swift</div>
+        </div>
+      </div>
+
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/enchanted.mp3" data-title="Enchanted" data-artist="Taylor Swift">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Enchanted">
+        <div class="track-info">
+          <div class="track-title">Enchanted</div>
+          <div class="track-artist">Taylor Swift</div>
+        </div>
+      </div>
+
+      <div class="track" data-src="https://bimtolproject.github.io/chibimemories/resource/lovestory.mp3" data-title="Love Story" data-artist="Taylor Swift">
+        <img src="https://i.imgur.com/8zQ4rJh.jpg" alt="Ls">
+        <div class="track-info">
+          <div class="track-title">Love Story</div>
+          <div class="track-artist">Taylor Swift</div>
+        </div>
+      </div>
+      
       </div>
   </div>
 
@@ -1546,7 +1821,7 @@
     <div id="report-form-container">
       <form id="report-form">
         <input type="text" id="report-title" name="report-title" placeholder="Subjek Masalah" required />
-        <textarea id="report-message" name="report-message" placeholder="Jelaskan masalah Anda secara detail..." rows="5" required></textarea>
+        <textarea id="report-message" name="report-message" placeholder="Jelaskan masalah chian secara detail..." rows="5" required></textarea>
         <button type="submit">Kirim Laporan</button>
         <div id="report-status"></div>
       </form>
@@ -1610,7 +1885,7 @@
           </div>
           <div class="menu-option">
               <i class="fas fa-volume-up"></i>
-              <span>Volume Suara</span>
+              <span>Volume</span>
               <input type="range" id="volumeControl" min="0" max="1" step="0.01">
           </div>
           <div class="menu-option" id="reportIssueOption">
@@ -1685,7 +1960,7 @@
               <source src="https://ik.imagekit.io/gx6hlpliy/nanigasuki.mp4?updatedAt=1749292089049" type="video/mp4">
               Your browser does not support the video tag.
           </video>
-          <p>Nasi ga suki!😡<br>AI SCREAM! - MLBB</p>
+          <p>Nasi ga suki!丕<br>AI SCREAM! - MLBB</p>
       </div>
       <div class="video-memory-card">
           <h2>27 Januari 2025</h2>
@@ -1717,7 +1992,7 @@
               <source src="https://bimtolproject.github.io/chibimemories/konten_natlan.mp4" type="video/mp4">
               Your browser does not support the video tag.
           </video>
-          <p>Burung nya baru belajar terbang bjirr🗿<br>Natlan - Genshin Impact</p>
+          <p>Burung nya baru belajar terbang bjirr料<br>Natlan - Genshin Impact</p>
       </div>
        <div class="video-memory-card">
           <h2>1 Juli 2024</h2>
@@ -1769,17 +2044,17 @@
             <h2 class="iy" text-align="center">TENTANG BIMTOL</h2>
             <img src="https://bimtolproject.github.io/chibimemories/resource/bimtol.png" alt="FOTO BIMTOL" class="profile-pic">
             <p><strong>Nama Lengkap:</strong> Bima Rachmat Priyanto</p>
-            <p><strong>Tanggal Lahir:</strong> 25/02/2009</p>
-            <p><strong>Kelahiran:</strong> Karawang</p>
-            <p><strong>Hobi:</strong> Makan</p>
-            <p><strong>Fav Game:</strong> Genshin Impact, Mobile Legends, PUBGM, Roblox</p>
-            <p><strong>5 Fav Hero ML:</strong> Lylia, Fanny, Franco, Brody, Ling</p>
-            <p><strong>5 Fav Karakter GI:</strong> Nahida, Hutao, Furina, Yelan, Raiden Shogun</p>
-            <p><strong>5 Fav Makanan Berat:</strong> Mie ayam, Ayam bumbu hitam, Opor ayam, Martabak Telur, Ayam Katsu</p>
-            <p><strong>5 Fav Makanan Ringan:</strong> Risol Mayo, Cireng ayam pedas, Pastel kentang, Gehu, Cakwe</p>
-            <p><strong>5 Fav Hidangan Manis:</strong> Martabak Manis cokju, Bakpia Pathok, Roti Bagelen, Smoothies, Sop buah</p>
-            <p><strong>5 Lagu terfav:</strong> Line Without a Hook, A thousand years - James Arthur, Night Changes, Perfect - Ed Sheeran, Diary Depresiku</p>
-            <p><strong>Sifat yg sadar ada di diri:</strong> Ceroboh, Sifat suka ke nahida</p>
+          <p><strong>Tanggal Lahir:</strong> 25/02/2009</p>
+          <p><strong>Kelahiran:</strong> Karawang</p>
+          <p><strong>Hobi:</strong> Makan, ngemil</p>
+          <p><strong>Game Favorit:</strong> Genshin Impact, Mobile Legends, PUBGM, Roblox</p>
+          <p><strong>5 Hero ML Favorit:</strong> Lylia, Valentina, Zhuxin, Franco</p>
+          <p><strong>5 Karakter GI Favorit:</strong> Nahida, Hutao, Furina, Yelan, Raiden Shogun</p>
+          <p><strong>5 Makanan Berat Favorit:</strong> Mie ayam, Ayam bumbu hitam, Opor ayam, Martabak Telur, Ayam Katsu, Sambal kentang balado</p>
+          <p><strong>5 Makanan Ringan Favorit:</strong> Risol Mayo, Cireng ayam pedas, Pastel kentang, Gehu, Cakwe, Tempe goreng/mendoan</p>
+          <p><strong>5 Hidangan Manis Favorit:</strong> Martabak Manis cokju, Bakpia Pathok, Roti Bagelen, Sop buah</p>
+          <p><strong>5 Lagu Favorit:</strong> Line Without a Hook, A thousand years - James Arthur, Night Changes, Perfect - Ed Sheeran</p>
+          <p><strong>Sifat yang disadari:</strong> Ceroboh, Sifat suka ke Nahida</p>
         </div>
         <div class="profile-card" id="chian-profile-card">
             <h2 class="iy" text-align="center">TENTANG CHIAN</h2>
@@ -1876,6 +2151,87 @@
     </div>
   </div>
 
+  <div id="download-modal">
+    <div class="modal-header">
+        <h3>Unduh File</h3>
+        <button class="close-btn" id="close-download-modal">&times;</button>
+    </div>
+    <div id="download-content-container">
+        <div class="download-container">
+            <div class="profile-info">
+                <div class="search-container">
+                    <input type="text" id="searchDownload" placeholder="ini kolom buat nyari ya cill...">
+                    <button class="search-btn"><i class="fa fa-search"></i></button>
+                </div>
+                <h2>Video</h2>
+                <p>Latern Rite 5.3<br>(Resolusi 1440p - Size 15 MB - Format .mp4)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/latern2.mp4"  class="btn">Donwload</a>
+                <p>Ling Angela<br>(Resolusi 720p - Size 23 MB - Format .mp4)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/mlbb.mp4"  class="btn">Donwload</a>
+                <p>Showcase Mualani<br>(Resolusi 1080p - Size 14 MB - Format .mp4)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/sc.mp4"  class="btn">Donwload</a>
+                <p>Konten Natlan<br>(Resolusi 1080p - Size 7 MB - Format .mp4)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/konten_natlan.mp4"  class="btn">Donwload</a>
+                <p>JJ Perebutan MVP<br>(Resolusi 1080p - Size 14,49 MB - Format .mp4)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/adumvp.mp4"  class="btn">Donwload</a>
+                <p>Konten PP Couple<br>(Resolusi 1440p - Size 2,29 MB - Format .mp4)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/ppcouple.mp4"  class="btn">Donwload</a>
+                <p>Konten Genshin Latern Rite<br>(Resolusi 1080p - Size 8,76 MB - Format .mp4)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/latern.mp4"  class="btn">Donwload</a>
+                <h2>Foto</h2>
+                <p>BIMTOL & MONYET<br>(Resolusi 1080px - Size 758 KB - Format .jpg)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/bimtol.png"  class="btn">Donwload</a>
+                <p>CHIAN & MONYET<br>(Resolusi 1440px - Size 3,11 MB - Format .png)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/chian.png"  class="btn">Donwload</a>
+                <p>KELUARGA BERSAMA MONYET<br>(Resolusi 1440px - Size 2,68 MB - Format .png)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/keluarga.png"  class="btn">Donwload</a>
+                <p>QR WEB<br>(Resolusi 1440px - Size 304 KB - Format .png)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/qr.png" class="btn">Download</a>
+                <h2>File Lainnya</h2>
+                <p>Pesan WhatsApp Bersama<br>(Size 1,21 MB - Format .txt)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/1.txt"  class="btn">Donwload</a>
+                <p>Pesan WhatsApp Bersama<br>(Size 13,42 MB - Format .html)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/10.html"  class="btn">Donwload</a>
+                <p>Pesan WhatsApp Bersama<br>(Size 4,89 MB - Format .pdf)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/1.pdf" class="btn">Download</a>
+                <h2>Musik</h2>
+                <p>One Direction - Night Changes<br>(Durasi 05:00 - Size 4,59 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/Nightchanges.mp3"  class="btn">Donwload</a>
+                <p>Ed Sheeran - Perfect<br>(Durasi 04:23 - Size 4,02 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/Perfectes.mp3"  class="btn">Donwload</a>
+                <p>Dimas M - sekarang hingga nanti kita tua<br>(Durasi 03:22 - Size 3,11 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/sekarang.mp3" class="btn">Donwload</a>
+                <p>Ricky M - Line without a hook<br>(Durasi 04:09 - Size 3,85 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/line.mp3"  class="btn">Donwload</a>
+                <p>Cigarattes After Sex - Apocalypse<br>(Durasi 04:50 - Size 4,47 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/apocalypse.mp3"  class="btn">Donwload</a>
+                <p>Cigarattes After Sex - Cry<br>(Durasi 04:16 - Size 3,96 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/cry.mp3"  class="btn">Donwload</a>
+                <p>Taylor Swift - Cardigan<br>(Durasi 04:34 - Size 4,23 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/cardigan.mp3"  class="btn">Donwload</a>
+                <p>Hindia - Cincin<br>(Durasi 04:26 - Size 4,11 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/cincin.mp3"  class="btn">Donwload</a>
+                <p>Last Child - Diary Depresiku<br>(Durasi 05:17 - Size 4,90 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/diarydepresiku.mp3" class="btn">Donwload</a>
+                <p>Arctic Monkeys - Do I Wanna Know<br>(Durasi 04:25 - Size 4,10 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/Do_I_Wanna_Know.mp3"  class="btn">Donwload</a>
+                <p>Taylor Swift - Enchanted<br>(Durasi 05:52 - Size 5,43 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/enchanted.mp3"  class="btn">Donwload</a>
+                <p>Cold Play - Fix You<br>(Durasi 04:16 - Size 3,96 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/fix_you.mp3"  class="btn">Donwload</a>
+                <p>Nidji - Rahasia Hati<br>(Durasi 04:10 - Size 3,87 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/rahasiahati.mp3"  class="btn">Donwload</a>
+                <p>James Arthur - A thousand years<br>(Durasi 04:14 - Size 3,92 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/thousandyear.mp3"  class="btn">Donwload</a>
+                <p>Pamungkas - To The Bone<br>(Durasi 05:53 - Size 5,45 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/tothebone.mp3" class="btn">Donwload</a>
+                <p>Billie Elish - Watch<br>(Durasi 03:19 - Size 3,07 MB - Format .mp3)</p>
+                <a href="https://github.com/bimtolproject/chibimemories/raw/main/resource/watch.mp3"  class="btn">Donwload</a>
+            </div>
+        </div>
+    </div>
+  </div>
+
 
   <script>
     // Audio Player Elements
@@ -1941,6 +2297,7 @@
     const hbdLink = document.getElementById('hbd-link');
     const favoriteLink = document.getElementById('favorite-link');
     const spamLink = document.getElementById('spam-link');
+    const downloadLink = document.getElementById('download-link'); // New Download Link
 
     const favoriteModal = document.getElementById('favorite-modal');
     const closeFavoriteModalBtn = document.getElementById('close-favorite-modal');
@@ -1955,6 +2312,11 @@
     const closeCountdownModalBtn = document.getElementById('close-countdown-modal');
     const countdownTimer = document.getElementById('countdown-timer');
     let countdownInterval;
+
+    const downloadModal = document.getElementById('download-modal'); // New Download Modal
+    const closeDownloadModalBtn = document.getElementById('close-download-modal'); // New Close Download Modal Button
+    const searchDownloadInput = document.getElementById('searchDownload'); // Search input for download modal
+    const searchDownloadBtn = document.querySelector('#download-modal .search-btn'); // Search button for download modal
 
     const footerLinks = document.querySelectorAll('footer a');
 
@@ -2021,7 +2383,7 @@
 
     // Function to close all modals with slide-down effect
     function closeAllModals() {
-        const modals = [musicPlayerModal, sendMessageModal, profileModal, reportIssueModal, profileSelectionModal, videoMemoriesModal, chatMemoriesModal, favoriteModal, spamModal, countdownModal];
+        const modals = [musicPlayerModal, sendMessageModal, profileModal, reportIssueModal, profileSelectionModal, videoMemoriesModal, chatMemoriesModal, favoriteModal, spamModal, countdownModal, downloadModal];
         modals.forEach(modal => {
             if (modal.classList.contains('expanded')) {
                 modal.classList.remove('expanded');
@@ -2046,6 +2408,13 @@
             video.pause();
             video.currentTime = 0;
         });
+        // Pause download modal video if playing
+        const downloadBgVideo = document.getElementById('downloadBackgroundVideo');
+        if (downloadBgVideo) {
+            downloadBgVideo.pause();
+            downloadBgVideo.currentTime = 0;
+        }
+
         // Stop any iframe content that might be playing (less direct control)
         document.querySelectorAll('#chat-content-container iframe').forEach(iframe => {
             // This is a security feature; cannot directly pause iframe video/audio.
@@ -2061,6 +2430,16 @@
         // Force reflow to ensure display change takes effect before transition
         modalElement.offsetWidth;
         modalElement.classList.add('expanded');
+
+        // If the download modal is opened, ensure its video background plays
+        if (modalElement.id === 'download-modal') {
+            const downloadBgVideo = document.getElementById('downloadBackgroundVideo');
+            if (downloadBgVideo) {
+                downloadBgVideo.play().catch(error => {
+                    console.warn("Download modal video autoplay blocked:", error);
+                });
+            }
+        }
     }
 
     // Function to play a specific track by its index
@@ -2133,6 +2512,35 @@
         }, 1000);
     }
 
+    // Function to search content within the download modal
+    function searchDownloadContent() {
+        const searchTerm = searchDownloadInput.value.trim().toLowerCase();
+        const allDownloadItems = document.querySelectorAll('#download-content-container .profile-info p');
+        
+        allDownloadItems.forEach(function(item) {
+            const originalText = item.textContent;
+            const lowerCaseText = originalText.toLowerCase();
+            
+            // Remove previous highlights
+            item.querySelectorAll('mark').forEach(mark => {
+                mark.replaceWith(mark.textContent);
+            });
+
+            if (searchTerm) {
+                const index = lowerCaseText.indexOf(searchTerm);
+                if (index !== -1) {
+                    const before = originalText.substring(0, index);
+                    const after = originalText.substring(index + searchTerm.length);
+                    
+                    const markElement = document.createElement('mark');
+                    markElement.textContent = originalText.substring(index, index + searchTerm.length);
+                    
+                    item.innerHTML = `${before}${markElement.outerHTML}${after}`;
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    }
 
     // --- Initialization on page load ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -2554,7 +2962,7 @@
 
     function streakRandom() {
         const pesanAcak = [
-            "Woyy Api Woyyyyy🔥",
+            "Woyy Api Woyyyyy櫨",
             "Apinya belum nyalaaa",
             "NYALAIN APINYA!"
         ];
@@ -2603,7 +3011,7 @@
 
     function streakRandomC() {
         const pesanAcak = [
-            "Woyy Api Woyyyyy🔥",
+            "Woyy Api Woyyyyy櫨",
             "Apinya belum nyalaaa",
             "NYALAIN APINYA!"
         ];
@@ -2613,6 +3021,29 @@
             kirimPesan(pesan, chat_idC); // Send to Chian
         }
     }
+
+    // --- Download Modal Logic ---
+    downloadLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(downloadModal);
+    });
+
+    closeDownloadModalBtn.addEventListener('click', () => {
+        closeAllModals();
+    });
+
+    // Download modal search functionality
+    searchDownloadBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        searchDownloadContent();
+    });
+
+    searchDownloadInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            searchDownloadContent();
+        }
+    });
 
     // Ensure home link still works and closes everything
     document.getElementById('home-link').addEventListener('click', (e) => {
@@ -2626,7 +3057,7 @@
     document.addEventListener('click', (e) => {
         const isClickInsideSideMenu = sideMenu.contains(e.target);
         const isClickOnMenuButton = openSideMenuBtn.contains(e.target);
-        const isClickInsideAnyModal = musicPlayerModal.contains(e.target) || sendMessageModal.contains(e.target) || profileModal.contains(e.target) || reportIssueModal.contains(e.target) || profileSelectionModal.contains(e.target) || videoMemoriesModal.contains(e.target) || chatMemoriesModal.contains(e.target) || favoriteModal.contains(e.target) || spamModal.contains(e.target) || countdownModal.contains(e.target);
+        const isClickInsideAnyModal = musicPlayerModal.contains(e.target) || sendMessageModal.contains(e.target) || profileModal.contains(e.target) || reportIssueModal.contains(e.target) || profileSelectionModal.contains(e.target) || videoMemoriesModal.contains(e.target) || chatMemoriesModal.contains(e.target) || favoriteModal.contains(e.target) || spamModal.contains(e.target) || countdownModal.contains(e.target) || downloadModal.contains(e.target);
         const isClickOnFooter = e.target.closest('footer');
 
         if (!isClickInsideSideMenu && !isClickOnMenuButton && sideMenu.classList.contains('open') && !isClickInsideAnyModal && !isClickOnFooter) {
