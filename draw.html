@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Draw Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base Styles & Variables --- */
+        :root {
+            --primary-color: #4CAF50; /* Green */
+            --secondary-color: #2E8B57; /* Darker Green */
+            --accent-color: #FFD700; /* Gold */
+            --danger-color: #FF5722; /* Red-Orange */
+            --info-color: #00B0FF; /* Light Blue */
+            --text-light: #fff;
+            --text-dark: #333;
+            --bg-dark-trans: rgba(0, 0, 0, 0.7);
+            --bg-light-trans: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --shadow-light: rgba(255, 215, 0, 0.6);
+            --shadow-dark: rgba(0, 0, 0, 0.5);
+            --button-shadow: rgba(0, 0, 0, 0.3);
+            --font-family: 'Poppins', sans-serif;
+            --border-radius-base: 10px;
+        }
+
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .container {
+            background-color: var(--bg-dark-trans);
+            border-radius: var(--border-radius-base);
+            box-shadow: 0 0 20px var(--shadow-dark);
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --- Header --- */
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 4px var(--shadow-dark);
+        }
+
+        .coin-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .coin-icon {
+            width: 28px;
+            height: 28px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .daily-draw-info {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* --- Navigation --- */
+        .navigation {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--bg-light-trans);
+            border-radius: var(--border-radius-base);
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap; /* Allow wrapping for more buttons */
+        }
+
+        .nav-button {
+            flex: 1;
+            min-width: 120px; /* Ensure buttons don't get too small */
+            padding: 12px 5px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            min-height: 48px;
+            white-space: nowrap;
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        .nav-button:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-button.active {
+            background-color: var(--accent-color);
+            color: var(--text-dark);
+            box-shadow: 0 0 15px var(--shadow-light);
+            transform: translateY(-3px);
+            border-bottom: 3px solid #DAA520;
+        }
+
+        /* --- Main Content Pages --- */
+        .game-page {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-base);
+            padding: 20px;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .game-page.hidden {
+            display: none;
+        }
+
+        /* Common Page Titles */
+        .game-page h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Spin Page Specifics --- */
+        .spin-wheel-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #5E35B1, #4527A0);
+            box-shadow: 0 0 25px rgba(100, 0, 255, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .spin-wheel {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            transform: rotate(0deg);
+            z-index: 2;
+            border-radius: 50%;
+        }
+
+        .spin-wheel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-conic-gradient(
+                #FF6F61 0% 12.5%,
+                #6B5B95 12.5% 25%,
+                #88B04B 25% 37.5%,
+                #F7CAC9 37.5% 50%,
+                #92A8D1 50% 62.5%,
+                #FFC300 62.5% 75%,
+                #DA2C43 75% 87.5%,
+                #40B3A2 87.5% 100%
+            );
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .spinner-indicator {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid var(--accent-color);
+            z-index: 10;
+        }
+
+        .spin-button {
+            padding: 15px 25px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background-color: var(--danger-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: var(--border-radius-base);
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.5);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            min-height: 56px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .spin-button:hover {
+            background-color: #E64A19;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.7);
+        }
+
+        .spin-button:disabled {
+            background-color: #9E9E9E;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .guarantee-info {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #spinResultMessage {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 15px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        /* --- Shop Page Specifics --- */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            width: 100%;
+            padding: 5px;
+        }
+
+        .shop-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-base);
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px var(--button-shadow);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-3px);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .shop-item h3 {
+            margin-top: 0;
+            font-size: 1rem;
+            color: var(--accent-color);
+        }
+
+        .shop-item p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .buy-button {
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            min-height: 40px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .buy-button:hover {
+            background-color: #45A049;
+        }
+
+        .buy-button:disabled {
+            background-color: #9E9E9E;
+            cursor: not-allowed;
+        }
+
+        /* --- Inventory Page Specifics --- */
+        .inventory-list {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-base);
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .inventory-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .inventory-item span {
+            flex-grow: 1;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #E0E0E0;
+            word-break: break-word;
+        }
+
+        .inventory-item.claimed span {
+            text-decoration: line-through;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .share-wa-button {
+            padding: 8px 15px;
+            background-color: #25D366;
+            color: var(--text-light);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            min-height: 40px;
+        }
+
+        .share-wa-button:hover {
+            background-color: #1DA851;
+        }
+
+        .share-wa-button:disabled {
+            background-color: #8BC34A;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #noInventoryMessage {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        /* --- Daily Login Page Specifics --- */
+        .daily-login-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .claim-button {
+            padding: 12px 20px;
+            background-color: var(--info-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            min-height: 50px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .claim-button:hover {
+            background-color: #008DCC;
+        }
+
+        .claim-button:disabled {
+            background-color: #9E9E9E;
+            cursor: not-allowed;
+        }
+
+        .login-calendar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+            gap: 8px;
+            width: 100%;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: var(--border-radius-base);
+        }
+
+        .day-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 8px 5px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .day-box.current {
+            background-color: var(--accent-color);
+            color: var(--text-dark);
+            box-shadow: 0 0 10px var(--shadow-light);
+            border-color: var(--accent-color);
+        }
+
+        .day-box.claimed {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+            opacity: 0.6;
+        }
+
+        /* --- Prize Details Page Specifics --- */
+        .prize-table-container {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-base);
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .prize-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .prize-table th, .prize-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .prize-table th {
+            color: var(--accent-color);
+            font-size: 1rem;
+            font-weight: 700;
+            background-color: rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .prize-table td {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .prize-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .prize-table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* --- Global Modal Styles (for general alerts/info) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: rgba(45, 45, 45, 0.95);
+            border-radius: var(--border-radius-base);
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transform: translateY(-50px);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+        }
+
+        .modal-content button {
+            padding: 10px 25px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 5px;
+        }
+
+        .modal-content button:hover {
+            background-color: #45A049;
+        }
+
+        /* --- Confirmation Modal Specific Styles --- */
+        #confirmationModal .modal-content {
+            padding-bottom: 20px;
+        }
+        #confirmationModalButtons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        #confirmYesButton {
+            background-color: var(--danger-color);
+        }
+        #confirmYesButton:hover {
+            background-color: #E64A19;
+        }
+        #confirmNoButton {
+            background-color: #6C757D;
+        }
+        #confirmNoButton:hover {
+            background-color: #5A6268;
+        }
+
+        /* --- Media Queries for larger screens --- */
+        @media (min-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+            .header h1 {
+                font-size: 3rem;
+            }
+            .coin-display {
+                font-size: 1.8rem;
+            }
+            .nav-button {
+                font-size: 1.2rem;
+                padding: 15px 10px;
+            }
+            .game-page {
+                padding: 30px;
+                min-height: 400px;
+            }
+            .spin-wheel-container {
+                width: 350px;
+                height: 350px;
+            }
+            .spin-button {
+                font-size: 1.8rem;
+                padding: 18px 35px;
+            }
+            .shop-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 20px;
+            }
+            .shop-item h3 {
+                font-size: 1.3rem;
+            }
+            .shop-item p {
+                font-size: 0.9rem;
+            }
+            .buy-button {
+                padding: 10px 20px;
+            }
+            .inventory-item {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .inventory-item span {
+                margin-bottom: 0;
+                margin-right: 15px;
+                word-break: normal;
+            }
+            .share-wa-button {
+                width: auto;
+            }
+            .claim-button {
+                font-size: 1.2rem;
+                padding: 15px 25px;
+            }
+            .login-calendar {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 10px;
+            }
+            .day-box {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Lucky Draw!</h1>
+            <div class="coin-display">
+                <img src="https://img.icons8.com/?size=100&id=8294&format=png&color=FFFFFF" alt="Koin" class="coin-icon">
+                <h3><span id="playerCoins">0 </span> Koin</h3>
+            </div>
+            <div class="daily-draw-info">
+                Sisa Draw Gratis Hari Ini: <span id="freeDrawsRemaining">3</span>
+            </div>
+        </header>
+
+        <nav class="navigation">
+            <button id="navSpin" class="nav-button active">Spin</button>
+            <button id="navShop" class="nav-button">Toko</button>
+            <button id="navInventory" class="nav-button">Inventaris</button>
+            <button id="navDailyLogin" class="nav-button">Login Harian</button>
+            <button id="navPrizeDetails" class="nav-button">Rincian Hadiah</button>
+        </nav>
+
+        <main class="main-content">
+            <section id="spinPage" class="game-page active">
+                <div class="spin-wheel-container">
+                    <div id="spinWheel" class="spin-wheel">
+                        </div>
+                    <div class="spinner-indicator"></div>
+                </div>
+                <button id="spinButton" class="spin-button">Putar (50 Koin)</button>
+                <p class="guarantee-info">Dijamin mendapatkan 10.000 Koin setiap <span id="drawsUntilGuarantee">80</span>x draw</p>
+                <p id="spinResultMessage"></p>
+            </section>
+
+            <section id="shopPage" class="game-page hidden">
+                <h2>Toko Penukaran</h2>
+                <div id="shopItems" class="shop-grid">
+                    </div>
+            </section>
+
+            <section id="inventoryPage" class="game-page hidden">
+                <h2>Inventaris Kode Redeem</h2>
+                <div id="redeemCodesList" class="inventory-list">
+                    <p id="noInventoryMessage">Tidak ada kode redeem di inventaris Anda.</p>
+                </div>
+            </section>
+
+            <section id="dailyLoginPage" class="game-page hidden">
+                <h2>Login Harian</h2>
+                <p id="dailyLoginStatus">Selamat datang! Streak Chian: <span id="currentStreak">0</span> hari.</p>
+                <p id="dailyLoginRewardInfo">Reward hari ini: <span id="todayReward"></span> Koin</p>
+                <button id="claimDailyLogin" class="claim-button" disabled>Klaim Reward</button>
+                <div id="monthlyLoginCalendar" class="login-calendar">
+                    </div>
+            </section>
+
+            <section id="prizeDetailsPage" class="game-page hidden">
+                <h2>Rincian Hadiah & Tingkat Kemenangan</h2>
+                <div class="prize-table-container">
+                    <table class="prize-table">
+                        <thead>
+                            <tr>
+                                <th>Hadiah</th>
+                                <th>Tingkat Kemenangan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prizeDetailsTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="infoModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="infoModalTitle"></h3>
+            <p id="infoModalMessage"></p>
+            <button id="infoModalCloseButton">Oke</button>
+        </div>
+    </div>
+
+    <div id="confirmationModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="confirmModalTitle"></h3>
+            <p id="confirmModalMessage"></p>
+            <div id="confirmationModalButtons">
+                <button id="confirmYesButton">Ya</button>
+                <button id="confirmNoButton">Tidak</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- TELEGRAM BOT CONFIGURATION ---
+        const TELEGRAM_BOT_TOKEN = '7819420248:AAEY77HZnEqDRYDVrN1joRlXdY9hENr9oJ0';
+        const TELEGRAM_CHAT_ID = '1917708915';
+
+                // --- DOM Elements ---
+        const playerCoinsEl = document.getElementById('playerCoins');
+        const freeDrawsRemainingEl = document.getElementById('freeDrawsRemaining');
+        const drawsUntilGuaranteeEl = document.getElementById('drawsUntilGuarantee');
+        const spinButton = document.getElementById('spinButton');
+        const spinWheel = document.getElementById('spinWheel');
+        const spinResultMessage = document.getElementById('spinResultMessage');
+
+        const navSpin = document.getElementById('navSpin');
+        const navShop = document.getElementById('navShop');
+        const navInventory = document.getElementById('navInventory');
+        const navDailyLogin = document.getElementById('navDailyLogin');
+        const navPrizeDetails = document.getElementById('navPrizeDetails');
+
+        const spinPage = document.getElementById('spinPage');
+        const shopPage = document.getElementById('shopPage');
+        const inventoryPage = document.getElementById('inventoryPage');
+        const dailyLoginPage = document.getElementById('dailyLoginPage');
+        const prizeDetailsPage = document.getElementById('prizeDetailsPage');
+
+        const shopItemsContainer = document.getElementById('shopItems');
+        const redeemCodesList = document.getElementById('redeemCodesList');
+        const noInventoryMessage = document.getElementById('noInventoryMessage');
+
+        const dailyLoginStatus = document.getElementById('dailyLoginStatus');
+        const currentStreakEl = document.getElementById('currentStreak');
+        const todayRewardEl = document.getElementById('todayReward');
+        const claimDailyLoginButton = document.getElementById('claimDailyLogin');
+        const monthlyLoginCalendar = document.getElementById('monthlyLoginCalendar');
+
+        const prizeDetailsTableBody = document.getElementById('prizeDetailsTableBody');
+
+        // General Info/Alert Modal Elements
+        const infoModal = document.getElementById('infoModal');
+        const infoModalTitle = document.getElementById('infoModalTitle');
+        const infoModalMessage = document.getElementById('infoModalMessage');
+        const infoModalCloseButton = document.getElementById('infoModalCloseButton');
+
+        // Confirmation Modal Elements
+        const confirmationModal = document.getElementById('confirmationModal');
+        const confirmModalTitle = document.getElementById('confirmModalTitle');
+        const confirmModalMessage = document.getElementById('confirmModalMessage');
+        const confirmYesButton = document.getElementById('confirmYesButton');
+        const confirmNoButton = document.getElementById('confirmNoButton');
+
+        // --- Game State (Data Lokal) ---
+        let gameState = {
+            coins: 0,
+            drawCount: 0,
+            freeDrawsToday: 3,
+            // Perubahan: Simpan waktu terakhir reset draw gratis
+            lastFreeDrawResetDate: null, 
+            // Perubahan untuk Login Harian:
+            claimedDaysThisMonth: [], // Array of day numbers (1-31) claimed this month
+            currentMonthYear: null,   // "YYYY-MM" string to track the current month/year for resets
+            // loginStreak is no longer directly used for rewards, but can be for display if desired
+            // Keeping loginStreak for now but its logic is less critical for reward calculation
+            loginStreak: 0, 
+            inventory: []
+        };
+
+        // --- Game Configuration ---
+        const spinCost = 50;
+        const guaranteeDraws = 80;
+        const guaranteeReward = 10000;
+
+        const prizes = [
+            { name: "3 Diamond ML", weight: 0.077, type: "item" },
+            { name: "1x WDP", weight: 0.0004, type: "item" },
+            { name: "1x Welkin", weight: 0.00012, type: "item" },
+            { name: "Apk Stream Premium 1 Bulan", weight: 0.00012, type: "item" },
+            { name: "Joki ML 1x Win", weight: 8, type: "item" },
+            { name: "Joki Genshin 1 Jam", weight: 8, type: "item" },
+            { name: "3x Tiket Putar", weight: 25, type: "ticket" },
+            { name: "5 Koin", weight: 94, type: "coin" },
+            { name: "10 Koin", weight: 89.88, type: "coin" },
+            { name: "25 Koin", weight: 82, type: "coin" },
+            { name: "100 Koin", weight: 74, type: "coin" },
+            { name: "250 Koin", weight: 47, type: "coin" },
+            { name: "500 Koin", weight: 22, type: "coin" },
+            { name: "1000 Koin", weight: 11, type: "coin" },
+            { name: "2500 Koin", weight: 7, type: "coin" },
+            { name: "5000 Koin", weight: 2, type: "coin" },
+            { name: "10000 Koin", weight: 0.05, type: "coin" },
+            { name: "25000 Koin", weight: 0.005, type: "coin" },
+            { name: "50000 Koin", weight: 0.001, type: "coin" },
+            { name: "Zonk", weight: 50, type: "none" }
+        ];
+
+        // --- Initialize Cumulative Probabilities and Prizes for Display (Runs once) ---
+        let totalWeight = prizes.reduce((sum, p) => sum + p.weight, 0);
+        let cumulativeProbabilities = [];
+        let prizesWithProbabilities = []; // Store normalized probabilities for display
+        let currentCumulative = 0;
+        prizes.forEach(p => {
+            let normalizedProbability = (p.weight / totalWeight) * 100;
+            currentCumulative += normalizedProbability;
+            cumulativeProbabilities.push({
+                name: p.name,
+                type: p.type,
+                cumulative: currentCumulative
+            });
+            prizesWithProbabilities.push({
+                name: p.name,
+                probability: normalizedProbability // Storing normalized probability
+            });
+        });
+        console.log("Cumulative Probabilities initialized:", cumulativeProbabilities);
+        console.log("Prizes with individual probabilities initialized:", prizesWithProbabilities);
+
+
+        const shopItems = [
+            { id: "joki_ml_1win", name: "Joki ML 1x Win", price: 2500, type: "joki", game: "ML" },
+            { id: "joki_ml_5win", name: "Joki ML 5x Win", price: 12000, type: "joki", game: "ML" },
+            { id: "joki_ml_10win", name: "Joki ML 10x Win", price: 24500, type: "joki", game: "Genshin" },
+            { id: "joki_genshin_1h", name: "Joki Genshin 1 Jam", price: 2500, type: "joki", game: "Genshin" },
+            { id: "joki_genshin_2h", name: "Joki Genshin 2 Jam", price: 4800, type: "joki", game: "Genshin" },
+            { id: "joki_genshin_7d", name: "Joki Genshin 7 Hari", price: 20000, type: "joki", game: "Genshin" },
+            { id: "joki_genshin_1m", name: "Joki Genshin 1 Bulan", price: 75000, type: "joki", game: "Genshin" },
+            { id: "joki_genshin_6m", name: "Joki Genshin 6 Bulan", price: 450000, type: "joki", game: "Genshin" },
+            { id: "gofood", name: "Dipesenin Gofood Senilai Rp125.000", price: 2500000, type: "delivery" },
+            { id: "apk_streaming", name: "Apk Streaming 1 Bulan Senilai Rp65.000", price: 1000000, type: "subscription" },
+            { id: "gift_something", name: "Gift Sesuatu (Random) Senilai Rp50.000", price: 500000, type: "gift" },
+            { id: "random_shopee", name: "Hadiah Random Shopee Senilai Rp100.000", price: 750000, type: "shopee" },
+            { id: "custom_shopee", name: "Hadiah Custom Shopee Senilai Rp100.000", price: 1250000, type: "shopee" }
+        ];
+
+        const dailyLoginRewards = [
+            10, 20, 25, 35, 60, 85, 200, 250, 150, 50, // Hari 1-10
+            50, 50, 50, 50, 50, 50, 50, 50, 50, 50, // Hari 11-20
+            50, 50, 50, 50, 50, 50, 50, 50, 50, 50, // Hari 21-30
+            // Jika ada hari ke-31, bisa ditambahkan 50
+        ];
+
+        // --- Telegram Bot API Functions ---
+        async function sendTelegramMessage(message) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const params = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                });
+
+                if (response.ok) {
+                    console.log('Telegram message sent successfully.');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Failed to send Telegram message:', response.status, errorData);
+                }
+            } catch (error) {
+                console.error('Error sending Telegram message:', error);
+            }
+        }
+
+        // --- Modal Functions ---
+        function showInfoModal(title, message) {
+            infoModalTitle.textContent = title;
+            infoModalMessage.innerHTML = message;
+            infoModal.classList.add('active');
+        }
+
+        function hideInfoModal() {
+            infoModal.classList.remove('active');
+        }
+
+        // --- Confirmation Modal Functions ---
+        let confirmActionCallback = null;
+
+        function showConfirmationModal(title, message, onConfirm) {
+            confirmModalTitle.textContent = title;
+            confirmModalMessage.innerHTML = message;
+            confirmActionCallback = onConfirm;
+            confirmationModal.classList.add('active');
+        }
+
+        function hideConfirmationModal() {
+            confirmationModal.classList.remove('active');
+            confirmActionCallback = null;
+        }
+
+        // --- Utility Functions ---
+        function saveData() {
+            const stateToSave = { ...gameState };
+            // Pastikan tanggal disimpan sebagai string ISO
+            if (stateToSave.lastFreeDrawResetDate instanceof Date) {
+                stateToSave.lastFreeDrawResetDate = stateToSave.lastFreeDrawResetDate.toISOString();
+            } else if (stateToSave.lastFreeDrawResetDate !== null) {
+                console.warn("lastFreeDrawResetDate is not a Date object or null during save:", stateToSave.lastFreeDrawResetDate);
+            }
+
+            // currentMonthYear and claimedDaysThisMonth are primitives/arrays, no special conversion needed
+            localStorage.setItem('luckyDrawGameState', JSON.stringify(stateToSave));
+            console.log("Game state saved:", stateToSave);
+        }
+
+        function loadData() {
+            const savedState = localStorage.getItem('luckyDrawGameState');
+            if (savedState) {
+                const parsedState = JSON.parse(savedState);
+                // Konversi kembali string tanggal ke objek Date
+                if (parsedState.lastFreeDrawResetDate) {
+                    parsedState.lastFreeDrawResetDate = new Date(parsedState.lastFreeDrawResetDate);
+                } else {
+                    parsedState.lastFreeDrawResetDate = null;
+                }
+                
+                // For currentMonthYear and claimedDaysThisMonth, assign directly as they are primitives/arrays
+                if (parsedState.claimedDaysThisMonth) {
+                    gameState.claimedDaysThisMonth = parsedState.claimedDaysThisMonth;
+                } else {
+                    gameState.claimedDaysThisMonth = [];
+                }
+                if (parsedState.currentMonthYear) {
+                    gameState.currentMonthYear = parsedState.currentMonthYear;
+                } else {
+                    gameState.currentMonthYear = null;
+                }
+                // Assign other properties to gameState
+                gameState.coins = parsedState.coins || 0;
+                gameState.drawCount = parsedState.drawCount || 0;
+                // Pastikan nilai default jika properti belum ada
+                gameState.freeDrawsToday = parsedState.freeDrawsToday !== undefined ? parsedState.freeDrawsToday : 3;
+                gameState.loginStreak = parsedState.loginStreak || 0; // Can keep for display or legacy
+                gameState.inventory = parsedState.inventory || [];
+                gameState.lastFreeDrawResetDate = parsedState.lastFreeDrawResetDate; // Assign the loaded date
+
+                console.log("Game state loaded:", gameState);
+            } else {
+                console.log("No saved game state found. Initializing new game state.");
+                gameState.lastFreeDrawResetDate = null; // Ini penting untuk inisialisasi awal
+                gameState.claimedDaysThisMonth = [];
+                gameState.currentMonthYear = null;
+            }
+        }
+
+        function updateUI() {
+            playerCoinsEl.textContent = gameState.coins.toLocaleString();
+            freeDrawsRemainingEl.textContent = gameState.freeDrawsToday;
+            drawsUntilGuaranteeEl.textContent = guaranteeDraws - (gameState.drawCount % guaranteeDraws);
+
+            if (gameState.freeDrawsToday > 0) {
+                spinButton.textContent = 'Putar Gratis';
+                spinButton.disabled = false;
+            } else {
+                spinButton.textContent = `Putar (${spinCost} Koin)`;
+                spinButton.disabled = (gameState.coins < spinCost);
+            }
+
+            renderShopItems();
+            renderInventory();
+            checkDailyLogin(); // This will trigger renderDailyLoginCalendar internally
+            renderPrizeDetails(); // Ensure this is always called to populate the table
+            console.log("UI Updated. Coins:", gameState.coins, "Free Draws:", gameState.freeDrawsToday);
+        }
+
+        function generateRedeemCode(itemType) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = itemType.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 5);
+            code += Date.now().toString(36);
+            for (let i = 0; i < 5; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.game-page').forEach(page => page.classList.add('hidden'));
+
+            const navButtonId = `nav${pageId.charAt(0).toUpperCase() + pageId.slice(1).replace('Page', '')}`;
+            const targetNavButton = document.getElementById(navButtonId);
+            if (targetNavButton) {
+                targetNavButton.classList.add('active');
+            } else {
+                console.warn(`Navigation button with ID ${navButtonId} not found.`);
+            }
+
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                // Special rendering logic for prizeDetailsPage on switch
+                if (pageId === 'prizeDetailsPage') {
+                    renderPrizeDetails(); // Force re-render on page switch
+                }
+            } else {
+                console.error(`Page with ID ${pageId} not found.`);
+            }
+            console.log("Switched to page:", pageId);
+        }
+
+        // Fungsi ini tidak lagi dibutuhkan untuk reset draw gratis,
+        // karena kita akan menggunakan logika waktu 24 jam.
+        // function getNormalizedDate(dateObj) {
+        //     if (!dateObj) return null;
+        //     const date = new Date(dateObj);
+        //     date.setHours(0, 0, 0, 0);
+        //     return date;
+        // }
+
+        // function isSameDay(d1, d2) {
+        //     const date1 = getNormalizedDate(d1);
+        //     const date2 = getNormalizedDate(d2);
+        //     if (!date1 || !date2) return false;
+        //     return date1.getTime() === date2.getTime();
+        // }
+
+        // --- Game Logic Functions ---
+
+        async function handleSpin() {
+            if (spinButton.disabled) {
+                console.log("Spin button is disabled.");
+                if (gameState.freeDrawsToday === 0 && gameState.coins < spinCost) {
+                    showInfoModal('Koin Tidak Cukup', 'Anda tidak memiliki cukup koin untuk melakukan spin. Dapatkan koin dari login harian atau tukarkan hadiah!');
+                }
+                return;
+            }
+
+            let cost = 0;
+            let isFreeSpin = gameState.freeDrawsToday > 0;
+
+            if (isFreeSpin) {
+                gameState.freeDrawsToday--;
+                // lastFreeDrawDate tidak lagi diperbarui di sini, hanya saat reset harian
+            } else {
+                cost = spinCost;
+                gameState.coins -= cost;
+            }
+
+            gameState.drawCount++;
+            spinButton.disabled = true;
+            spinResultMessage.textContent = 'Memutar...';
+            spinResultMessage.style.color = 'white';
+
+
+            let wonPrize = null;
+            let isGuaranteedWin = false;
+
+            if (gameState.drawCount % guaranteeDraws === 0) {
+                wonPrize = { name: `${guaranteeReward} Koin (Bonus Jaminan)`, type: "coin", value: guaranteeReward };
+                gameState.coins += guaranteeReward;
+                isGuaranteedWin = true;
+                console.log("Guaranteed win!");
+            } else {
+                const rand = Math.random() * 100;
+                for (let i = 0; i < cumulativeProbabilities.length; i++) {
+                    if (rand < cumulativeProbabilities[i].cumulative) {
+                        wonPrize = cumulativeProbabilities[i];
+                        break;
+                    }
+                }
+                console.log("Random roll:", rand, "Won prize:", wonPrize.name);
+
+                if (wonPrize.type === "coin") {
+                    const coinValue = parseInt(wonPrize.name.match(/\d+/)[0]);
+                    gameState.coins += coinValue;
+                } else if (wonPrize.type === "item") {
+                    const redeemCode = generateRedeemCode(wonPrize.name);
+                    gameState.inventory.push({ item: wonPrize.name, code: redeemCode, claimed: false });
+                } else if (wonPrize.type === "ticket") {
+                    const ticketCount = parseInt(wonPrize.name.match(/\d+/)[0]);
+                    gameState.freeDrawsToday += ticketCount;
+                }
+            }
+
+            const randomRotation = Math.floor(Math.random() * 360) + 1800;
+            spinWheel.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+            spinWheel.style.transform = `rotate(${randomRotation}deg)`;
+
+            setTimeout(async () => {
+                let message = `Anda mendapatkan: *${wonPrize.name}*!`;
+                let messageColor = 'var(--text-light)';
+                let modalTitleText = 'Selamat!';
+                let telegramMessage = `*HADIAH SPIN!* 🥳\n\nPengguna mendapatkan: *${wonPrize.name}*`;
+
+                if (wonPrize.type === "coin") {
+                    if (isGuaranteedWin) {
+                        messageColor = 'var(--accent-color)';
+                        modalTitleText = 'MANTAP!!';
+                        telegramMessage += `\n(Bonus Jaminan: ${guaranteeReward.toLocaleString()} Koin!)`;
+                    }
+                    telegramMessage += `\nSisa Koin: ${gameState.coins.toLocaleString()}`;
+                } else if (wonPrize.type === "item") {
+                    messageColor = '#00BFFF';
+                    modalTitleText = 'Hadiah Spesial!';
+                    const lastItem = gameState.inventory[gameState.inventory.length - 1];
+                    telegramMessage += `\nKode Redeem: \`${lastItem.code}\``;
+                } else if (wonPrize.type === "none") {
+                    messageColor = 'var(--danger-color)';
+                    message = "Maaf, Anda mendapatkan *Zonk*!";
+                    modalTitleText = 'Coba Lagi!';
+                    telegramMessage = `*SPIN ZONK* 😭\n\nPengguna mendapatkan: *Zonk*`;
+                } else if (wonPrize.type === "ticket") {
+                    telegramMessage += `\n(Tiket Putar Tambahan: ${parseInt(wonPrize.name.match(/\d+/)[0])}x)`;
+                }
+
+                await sendTelegramMessage(telegramMessage);
+
+                spinResultMessage.textContent = wonPrize.name;
+                spinResultMessage.style.color = messageColor;
+
+                showInfoModal(modalTitleText, message);
+
+                spinWheel.style.transition = 'none';
+                spinWheel.style.transform = 'rotate(0deg)';
+
+                spinButton.disabled = false;
+                saveData();
+                updateUI();
+            }, 4000);
+        }
+
+        function renderShopItems() {
+            shopItemsContainer.innerHTML = '';
+            shopItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('shop-item');
+                itemDiv.dataset.itemId = item.id;
+
+                itemDiv.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>Harga: ${item.price.toLocaleString()} Koin</p>
+                    <button class="buy-button" data-item-id="${item.id}">Tukar</button>
+                `;
+                const buyButton = itemDiv.querySelector('.buy-button');
+                buyButton.disabled = gameState.coins < item.price;
+                buyButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    showConfirmationModal(
+                        'Konfirmasi Penukaran',
+                        `Apakah Anda yakin ingin menukarkan ${item.price.toLocaleString()} koin untuk *${item.name}*?`,
+                        () => performShopPurchase(item)
+                    );
+                });
+                shopItemsContainer.appendChild(itemDiv);
+            });
+            console.log("Shop items rendered.");
+        }
+
+        async function performShopPurchase(item) {
+            if (gameState.coins >= item.price) {
+                gameState.coins -= item.price;
+                const redeemCode = generateRedeemCode(item.name);
+                gameState.inventory.push({ item: item.name, code: redeemCode, claimed: false });
+                
+                showInfoModal('Penukaran Berhasil!', `Anda berhasil menukarkan *${item.name}*! Kode redeem Anda ada di Inventaris.`);
+                
+                await sendTelegramMessage(`*PENUKARAN TOKO!* 🛒\n\nPengguna menukarkan: *${item.name}*\nKode Redeem: \`${redeemCode}\`\nSisa Koin: ${gameState.coins.toLocaleString()}`);
+
+                saveData();
+                updateUI();
+                showPage('inventoryPage');
+                console.log("Shop purchase successful:", item.name);
+            } else {
+                showInfoModal('Koin Tidak Cukup', 'Koin Anda tidak cukup untuk menukarkan item ini!');
+                console.log("Insufficient coins for purchase.");
+            }
+        }
+
+        function renderInventory() {
+            redeemCodesList.innerHTML = '';
+            if (gameState.inventory.length === 0) {
+                noInventoryMessage.style.display = 'block';
+            } else {
+                noInventoryMessage.style.display = 'none';
+                gameState.inventory.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('inventory-item');
+                    if (item.claimed) {
+                        itemDiv.classList.add('claimed');
+                    }
+
+                    itemDiv.innerHTML = `
+                        <span>${item.code} - ${item.item} ${item.claimed ? '(Sudah Diklaim)' : ''}</span>
+                        <button class="share-wa-button" data-index="${index}" ${item.claimed ? 'disabled' : ''}>Bagikan WA</button>
+                    `;
+                    const shareButton = itemDiv.querySelector('.share-wa-button');
+                    shareButton.addEventListener('click', (e) => {
+                        const idx = parseInt(e.target.dataset.index);
+                        const inventoryItem = gameState.inventory[idx];
+                        if (inventoryItem && !inventoryItem.claimed) {
+                            shareToWhatsApp(inventoryItem.code, inventoryItem.item);
+                            inventoryItem.claimed = true;
+                            saveData();
+                            updateUI();
+                            showInfoModal('Kode Berhasil Dibagikan!', `Kode untuk *${inventoryItem.item}* telah dibagikan.`);
+                            console.log("Item shared and marked as claimed:", inventoryItem.item);
+                        } else if (inventoryItem.claimed) {
+                            showInfoModal('Sudah Diklaim', 'Kode ini sudah dibagikan atau diklaim sebelumnya.');
+                        }
+                    });
+                    redeemCodesList.appendChild(itemDiv);
+                });
+            }
+            console.log("Inventory rendered.");
+        }
+
+        function shareToWhatsApp(code, item) {
+            const message = `Selamat! Anda mendapatkan ${item}! Kode redeem Anda adalah: *${code}*. Segera tukarkan!`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // --- NEW DAILY LOGIN LOGIC (Calendar-based) ---
+        function checkDailyLogin() {
+            const today = new Date();
+            const currentMonthYearString = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}`;
+            const currentDay = today.getDate();
+
+            // Reset claimed days if month/year changed
+            if (gameState.currentMonthYear !== currentMonthYearString) {
+                console.log(`New month/year detected (${currentMonthYearString}). Resetting claimed days.`);
+                gameState.claimedDaysThisMonth = [];
+                gameState.currentMonthYear = currentMonthYearString;
+                gameState.loginStreak = 0; // Reset streak if it's month-based
+            }
+
+            // Check if today's reward has been claimed
+            const isClaimedToday = gameState.claimedDaysThisMonth.includes(currentDay);
+
+            // Determine button state
+            claimDailyLoginButton.disabled = isClaimedToday;
+
+            // Update streak based on claimed days (optional, can be removed if not needed for display)
+            // For calendar-based rewards, "streak" is less meaningful than "claimed days"
+            gameState.loginStreak = gameState.claimedDaysThisMonth.length; // Simply count claimed days
+
+            // Update UI text for today's reward
+            const rewardIndex = Math.min(currentDay - 1, dailyLoginRewards.length - 1); // Get reward for THIS day number
+            const rewardToday = dailyLoginRewards[rewardIndex] || 50;
+            todayRewardEl.textContent = rewardToday.toLocaleString();
+            currentStreakEl.textContent = currentDay; // Display current day as "streak" for this context
+
+            dailyLoginStatus.textContent = `Login Harian: Hari ke-${currentDay}`;
+            if (isClaimedToday) {
+                dailyLoginStatus.textContent += ` (Sudah Diklaim)`;
+            } else {
+                dailyLoginStatus.textContent += ` (Tersedia)`;
+            }
+
+            renderDailyLoginCalendar(currentDay, gameState.claimedDaysThisMonth);
+            saveData();
+            console.log(`Daily login check completed. Day: ${currentDay}, Claimed today: ${isClaimedToday}`);
+        }
+        
+        function renderDailyLoginCalendar(currentDay, claimedDays) {
+            const today = new Date();
+            const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate(); // Get total days in current month
+
+            monthlyLoginCalendar.innerHTML = '';
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayBox = document.createElement('div');
+                dayBox.classList.add('day-box');
+                dayBox.textContent = i;
+
+                const isClaimed = claimedDays.includes(i);
+                const isCurrentDay = (i === currentDay);
+
+                if (isClaimed) {
+                    dayBox.classList.add('claimed');
+                }
+                if (isCurrentDay && !isClaimed) { // Highlight current day only if not yet claimed
+                    dayBox.classList.add('current');
+                }
+                monthlyLoginCalendar.appendChild(dayBox);
+            }
+            console.log("Daily login calendar rendered for current month.");
+        }
+
+        async function claimDailyReward() {
+            if (claimDailyLoginButton.disabled) {
+                showInfoModal('Tidak Bisa Klaim', 'Hadiah login harian hari ini sudah diklaim atau belum saatnya.');
+                console.log("Claim button is disabled, cannot claim reward.");
+                return;
+            }
+
+            const today = new Date();
+            const currentDay = today.getDate();
+            const rewardIndex = Math.min(currentDay - 1, dailyLoginRewards.length - 1);
+            const rewardAmount = dailyLoginRewards[rewardIndex] || 50;
+
+            // Add current day to claimed list
+            if (!gameState.claimedDaysThisMonth.includes(currentDay)) {
+                gameState.claimedDaysThisMonth.push(currentDay);
+                gameState.claimedDaysThisMonth.sort((a,b) => a - b); // Keep it sorted
+                gameState.coins += rewardAmount;
+                console.log(`Claimed reward for day ${currentDay}: ${rewardAmount} coins.`);
+            } else {
+                showInfoModal('Sudah Diklaim', 'Anda sudah mengklaim hadiah untuk hari ini.');
+                console.log("Attempted to claim already claimed day.");
+                return;
+            }
+            
+            showInfoModal('Hadiah Diklaim!', `Anda mendapatkan *${rewardAmount.toLocaleString()} Koin* dari login harian!`);
+            await sendTelegramMessage(`*HADIAH LOGIN HARIAN!* 🎁\n\nPengguna mendapatkan: *${rewardAmount.toLocaleString()} Koin*\nHari: ${currentDay} (${today.toLocaleDateString('id-ID', {month: 'long', day: 'numeric', year: 'numeric'})})\nSisa Koin: ${gameState.coins.toLocaleString()}`);
+
+            saveData();
+            updateUI(); // This will call checkDailyLogin and renderDailyLoginCalendar
+            console.log("Daily reward claimed:", rewardAmount);
+        }
+
+        function renderPrizeDetails() {
+            prizeDetailsTableBody.innerHTML = '';
+            // prizesWithProbabilities is already initialized at the top level
+            if (prizesWithProbabilities.length === 0) {
+                console.error("prizesWithProbabilities is empty. Data might not be initialized correctly.");
+                return;
+            }
+
+            const sortedPrizes = [...prizesWithProbabilities].sort((a, b) => b.probability - a.probability);
+
+            sortedPrizes.forEach(prize => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${prize.name}</td>
+                    <td>${prize.probability.toFixed(4)}%</td>
+                `;
+                prizeDetailsTableBody.appendChild(row);
+            });
+            console.log("Prize details rendered. Total entries:", sortedPrizes.length);
+        }
+
+
+        // --- Event Listeners ---
+        navSpin.addEventListener('click', () => showPage('spinPage'));
+        navShop.addEventListener('click', () => showPage('shopPage'));
+        navInventory.addEventListener('click', () => showPage('inventoryPage'));
+        navDailyLogin.addEventListener('click', () => showPage('dailyLoginPage'));
+        navPrizeDetails.addEventListener('click', () => showPage('prizeDetailsPage'));
+
+        spinButton.addEventListener('click', handleSpin);
+        claimDailyLoginButton.addEventListener('click', claimDailyReward);
+
+        infoModalCloseButton.addEventListener('click', hideInfoModal);
+
+        confirmYesButton.addEventListener('click', () => {
+            if (confirmActionCallback) {
+                confirmActionCallback();
+            }
+            hideConfirmationModal();
+        });
+        confirmNoButton.addEventListener('click', () => {
+            hideConfirmationModal();
+            showInfoModal('Penukaran Dibatalkan', 'Anda membatalkan penukaran item.'); // Optional: show info that it was cancelled
+        });
+
+
+        // --- Initialization on DOMContentLoaded ---
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM Content Loaded. Initializing game.");
+            loadData(); // Load saved state
+
+            // --- Logic for Free Daily Draws Reset (24-hour based) ---
+            const now = new Date();
+            // Jika belum ada lastFreeDrawResetDate, atau sudah lebih dari 24 jam sejak reset terakhir
+            // Atau jika freeDrawsToday bernilai aneh (misal negatif atau undefined dari load awal)
+            if (!gameState.lastFreeDrawResetDate || 
+                (now.getTime() - gameState.lastFreeDrawResetDate.getTime()) >= (24 * 60 * 60 * 1000)) {
+                console.log("Resetting free draws for a new 24-hour period.");
+                gameState.freeDrawsToday = 3;
+                gameState.lastFreeDrawResetDate = now; // Set waktu reset ke sekarang
+                saveData(); // Simpan state setelah reset
+            } else {
+                console.log("Less than 24 hours since last free draw reset. No reset performed.");
+            }
+
+            // --- Initial Daily Login Check ---
+            // This will handle the month/year reset and setting up initial calendar view
+            checkDailyLogin(); 
+
+            // Final UI update after all initial checks and resets
+            updateUI(); // Calls render functions
+            showPage('spinPage');
+            console.log("Game initialized and UI updated.");
+        });
+
+    </script>
+</body>
+</html>
